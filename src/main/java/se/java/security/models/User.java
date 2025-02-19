@@ -1,8 +1,7 @@
 package se.java.security.models;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -37,16 +36,29 @@ public class User {
                     "one uppercase letter, one number, and one special character"
     )
     private String password;
-
     private Set<Role> roles;
+
+    @NotEmpty(message = "First name cannot be empty")
+    @Size(max = 16, message = "First name cannot be longer than 16 characters")
+    private String firstName;
+
+    @Size(max = 16, message = "Last name cannot be longer than 16 characters")
+    private String lastName;
+
+    @Value("https://homi.se/default-profile-pic.jpg") //we can use this to set a default profile picture
+    private String profilePic;                        //to users if they don't want to upload one themselves
+
 
     public User() {
     }
 
-    public User(String username, String password,  Set<Role> roles) {
+    public User(String username, String password, Set<Role> roles, String firstname, String lastname, String profilepic) {
         this.username = username;
         this.password = password;
         this.roles = roles;
+        this.firstName = firstname;
+        this.lastName = lastname;
+        this.profilePic = profilepic;
     }
 
 
@@ -94,4 +106,29 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
 }
