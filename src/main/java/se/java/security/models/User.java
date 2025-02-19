@@ -1,5 +1,6 @@
 package se.java.security.models;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.data.annotation.Id;
@@ -17,6 +18,18 @@ public class User {
     @NotEmpty(message = "Username cannot be empty")
     private String username;
 
+    @Indexed(unique = true)
+    @Email //this is an annotation for email validation in Spring that checks if the email is valid
+    @NotEmpty(message = "Please enter a valid email address")
+    private String email;
+
+    @Indexed(unique = true)
+    @Pattern(
+            regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", //this is valid: +46 7234567890. So country number +46 and 10 numbers
+            message = "Please enter a valid phone number"
+    )
+    private String phonenumber;
+
     @Pattern(
             regexp = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\\-_=+{};:,<.>])(?=.{8,})" +
                     ".*$",
@@ -30,7 +43,7 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, Set<Role> roles) {
+    public User(String username, String password,  Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.roles = roles;
@@ -55,6 +68,22 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 
