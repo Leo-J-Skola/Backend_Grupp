@@ -17,12 +17,11 @@ public class User {
     @NotEmpty(message = "Username cannot be empty")
     private String username;
 
-    @Indexed(unique = true)
-    @Email //this is an annotation for email validation in Spring that checks if the email is valid
-    @NotEmpty(message = "Please enter a valid email address")
+/*    @Indexed(unique = true)*/
+    @Email(message = "Please enter a valid email address") //this is an annotation for email validation in Spring that checks if the email is valid
     private String email;
 
-    @Indexed(unique = true)
+/*    @Indexed(unique = true)*/
     @Pattern(
             regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", //this is valid: +46 7234567890. So country number +46 and 10 numbers
             message = "Please enter a valid phone number"
