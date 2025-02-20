@@ -1,6 +1,6 @@
 package se.java.security.models;
 
-import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
@@ -11,19 +11,20 @@ public class Report {
     @Id
     private String id;
 
-    @NotEmpty(message = "User id can not be empty")
+    @NotBlank(message = "User id can not be empty")
     private String user_id;
 
-    @NotEmpty(message = "Listing id can not be empty")
+    @NotBlank(message = "Listing id can not be empty")
     private String listing_id;
 
-    @NotEmpty(message = "Host id can not be empty")
+    @NotBlank(message = "Host id can not be empty")
     private String host;
 
     @NotBlank
+    @Max(value = 100, message = "Description max characters exceeded")
     private String description;
 
-    @NotBlank
+    @NotBlank(message = "No photo has been applied")
     private String photo;
 
     public Report(String id, String user_id, String listing_id, String host, String description, String photo) {
@@ -46,43 +47,43 @@ public class Report {
         this.id = id;
     }
 
-    public @NotEmpty(message = "User id can not be empty") String getUser_id() {
+    public @NotBlank(message = "User id can not be empty") String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(@NotEmpty(message = "User id can not be empty") String user_id) {
+    public void setUser_id(@NotBlank(message = "User id can not be empty") String user_id) {
         this.user_id = user_id;
     }
 
-    public @NotEmpty(message = "Listing id can not be empty") String getListing_id() {
+    public @NotBlank(message = "Listing id can not be empty") String getListing_id() {
         return listing_id;
     }
 
-    public void setListing_id(@NotEmpty(message = "Listing id can not be empty") String listing_id) {
+    public void setListing_id(@NotBlank(message = "Listing id can not be empty") String listing_id) {
         this.listing_id = listing_id;
     }
 
-    public @NotEmpty(message = "Host id can not be empty") String getHost() {
+    public @NotBlank(message = "Host id can not be empty") String getHost() {
         return host;
     }
 
-    public void setHost(@NotEmpty(message = "Host id can not be empty") String host) {
+    public void setHost(@NotBlank(message = "Host id can not be empty") String host) {
         this.host = host;
     }
 
-    public @NotBlank String getDescription() {
+    public @NotBlank @Max(value = 100, message = "Description max characters exceeded") String getDescription() {
         return description;
     }
 
-    public void setDescription(@NotBlank String description) {
+    public void setDescription(@NotBlank @Max(value = 100, message = "Description max characters exceeded") String description) {
         this.description = description;
     }
 
-    public @NotBlank String getPhoto() {
+    public @NotBlank(message = "No photo has been applied") String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(@NotBlank String photo) {
+    public void setPhoto(@NotBlank(message = "No photo has been applied") String photo) {
         this.photo = photo;
     }
 }
