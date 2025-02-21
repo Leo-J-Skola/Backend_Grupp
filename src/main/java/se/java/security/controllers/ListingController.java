@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import se.java.security.models.Listing;
 import se.java.security.repository.ListingRepository;
+import se.java.security.services.ListingService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/listing")
 public class ListingController {
-
     private final ListingController listingController;
     private final ListingService listingService;
     private final ListingRepository listingRepository;
