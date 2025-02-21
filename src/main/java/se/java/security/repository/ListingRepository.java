@@ -2,11 +2,12 @@ package se.java.security.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import se.java.security.models.User;
+import se.java.security.models.Listing;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
-    Optional<User> findByUsername(String username);
+public interface ListingRepository extends MongoRepository<Listing, String> {
+    Optional<Listing> findById(String id);
 }
+
