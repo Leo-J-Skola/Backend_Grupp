@@ -53,7 +53,12 @@ public class ListingController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Listing not found"));
 
         // change listing details
-
+        existingListing.setTitle(listingDetails.getTitle());
+        existingListing.setDescription(listingDetails.getDescription());
+        existingListing.setRooms(listingDetails.getRooms());
+        existingListing.setPricePerNight(listingDetails.getPricePerNight());
+        existingListing.setLocation(listingDetails.getLocation());
+        existingListing.setImageUrl(listingDetails.getImageUrl());
 
         // return values of the listing object
         return ResponseEntity.ok(listingRepository.save(existingListing));
