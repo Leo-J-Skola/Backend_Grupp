@@ -1,8 +1,7 @@
 package se.java.security.models;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,17 +17,16 @@ public class User {
     @NotEmpty(message = "Username cannot be empty")
     private String username;
 
-    @Indexed(unique = true)
-    @Email //this is an annotation for email validation in Spring that checks if the email is valid
-    @NotEmpty(message = "Please enter a valid email address")
+/*    @Indexed(unique = true)*/
+    @Email(message = "Please enter a valid email address") //this is an annotation for email validation in Spring that checks if the email is valid
     private String email;
 
-    @Indexed(unique = true)
+/*    @Indexed(unique = true)*/
     @Pattern(
             regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", //this is valid: +46 7234567890. So country number +46 and 10 numbers
             message = "Please enter a valid phone number"
     )
-    private String phonenumber;
+    private String phoneNumber;
 
     @Pattern(
             regexp = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\\-_=+{};:,<.>])(?=.{8,})" +
@@ -37,16 +35,37 @@ public class User {
                     "one uppercase letter, one number, and one special character"
     )
     private String password;
-
     private Set<Role> roles;
+
+    @NotEmpty(message = "First name cannot be empty")
+    @Size(max = 16, message = "First name cannot be longer than 16 characters")
+    private String firstName;
+
+    @Size(max = 16, message = "Last name cannot be longer than 16 characters")
+    private String lastName;
+
+    @Min(value = 15, message = "Minimum age is 15")
+    private int age;
+
+    @Size(max = 100, message = "A bio cannot be longer than 100 characters")
+    private String bio; //this is "description" where a user can write something about themselves
+
+    @Value("https://homi.se/default-profile-pic.jpg") //we can use this to set a default profile picture
+    private String profilePic;                        //to users if they don't want to upload one themselves
+
 
     public User() {
     }
 
-    public User(String username, String password,  Set<Role> roles) {
+    public User(String username, String password, Set<Role> roles, String firstName, String lastName, int age, String bio, String profilePic) {
         this.username = username;
         this.password = password;
         this.roles = roles;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.bio = bio;
+        this.profilePic = profilePic;
     }
 
 
@@ -70,12 +89,12 @@ public class User {
         this.password = password;
     }
 
-    public String getPhonenumber() {
-        return phonenumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
@@ -94,4 +113,45 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
 }
