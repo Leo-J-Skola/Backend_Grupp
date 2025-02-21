@@ -22,6 +22,13 @@ public class ListingController {
         this.listingRepository = listingRepository;
     }
 
+    @PostMapping("/newListing")
+    public ResponseEntity<Listing> createListing(@RequestBody Listing listing) {
+         listing  = listingRepository.save(listing);
+        return ResponseEntity.status(HttpStatus.CREATED).body(listing);
+    }
+
+
     // list all listing objects
     @GetMapping
     public ResponseEntity<List<Listing>> getAllListings() {

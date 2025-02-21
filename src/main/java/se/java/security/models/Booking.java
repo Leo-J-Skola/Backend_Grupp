@@ -14,11 +14,12 @@ import java.util.Date;
 public class Booking {
     @Id
     private String bookingId;
+
     @NotEmpty(message = "User id can not be empty")
-    private String userID;
+    private String userId;
 
     @NotEmpty(message = "Listing id can not be empty")
-    private String listingID;
+    private String listingId;
 
     @NotEmpty(message = "Status can not be empty")
     private String status;
@@ -37,10 +38,10 @@ public class Booking {
     @NotNull(message = "Total amount can not be null")
     private double totalAmount;
 
-    public Booking(String bookingId, String userID, String listingID, String status, double fee, Date startDate, Date endDate, double totalAmount) {
+    public Booking(String bookingId, String userId, String listingId, String status, double fee, Date startDate, Date endDate, double totalAmount) {
         this.bookingId = bookingId;
-        this.userID = userID;
-        this.listingID = listingID;
+        this.userId = userId;
+        this.listingId = listingId;
         this.status = status;
         this.fee = fee;
         this.startDate = startDate;
@@ -60,19 +61,19 @@ public class Booking {
     }
 
     public @NotEmpty(message = "User id can not be empty") String getUserID() {
-        return userID;
+        return userId;
     }
 
-    public void setUserID(@NotEmpty(message = "User id can not be empty") String userID) {
-        this.userID = userID;
+    public void setUserID(@NotEmpty(message = "User id can not be empty") String userId) {
+        this.userId = userId;
     }
 
     public @NotEmpty(message = "Listing id can not be empty") String getListingID() {
-        return listingID;
+        return userId;
     }
 
-    public void setListingID(@NotEmpty(message = "Listing id can not be empty") String listingID) {
-        this.listingID = listingID;
+    public void setListingID(@NotEmpty(message = "Listing id can not be empty") String listingId) {
+        this.listingId = listingId;
     }
 
     public @NotEmpty(message = "Status can not be empty") String getStatus() {

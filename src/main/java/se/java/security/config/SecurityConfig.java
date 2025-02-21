@@ -49,8 +49,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                        //.requestMatchers("/products/**").permitAll()
-                        // any other requests the user need to be logged
+                        .requestMatchers("/auth/**").authenticated()
+                        .requestMatchers("/listing/**").hasAnyRole("USER", "ADMIN")
+                        // any other requests the user need to be logged in
                         .anyRequest().authenticated()
                 )
                 // disable session due to jwt statelessness

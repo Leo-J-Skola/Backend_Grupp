@@ -17,11 +17,11 @@ public class User {
     @NotEmpty(message = "Username cannot be empty")
     private String username;
 
-/*    @Indexed(unique = true)*/
+    @Indexed(unique = true)
     @Email(message = "Please enter a valid email address") //this is an annotation for email validation in Spring that checks if the email is valid
     private String email;
 
-/*    @Indexed(unique = true)*/
+    @Indexed(unique = true)
     @Pattern(
             regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", //this is valid: +46 7234567890. So country number +46 and 10 numbers
             message = "Please enter a valid phone number"
@@ -44,7 +44,7 @@ public class User {
     @Size(max = 16, message = "Last name cannot be longer than 16 characters")
     private String lastName;
 
-    @Min(value = 15, message = "Minimum age is 15")
+    @Min(value = 18, message = "Minimum age is 18")
     private int age;
 
     @Size(max = 100, message = "A bio cannot be longer than 100 characters")

@@ -2,7 +2,6 @@ package se.java.security.models;
 
 import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
 @Document(collection = "ratings")
 public class Rating {
     @Id
-    private String id;
+    private String ratingId;
 
     @NotBlank(message = "userId cannot be empty")
     private String userId;
@@ -26,8 +25,8 @@ public class Rating {
 
     private LocalDateTime updatedAt;
 
-    public Rating(String id, String userId, String listingId, int rating, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public Rating(String ratingId, String userId, String listingId, int rating, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.ratingId = ratingId;
         this.userId = userId;
         this.listingId = listingId;
         this.rating = rating;
@@ -41,11 +40,11 @@ public class Rating {
     }
 
     public String getId() {
-        return id;
+        return ratingId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String ratingId) {
+        this.ratingId = ratingId;
     }
 
     public String getUserId() {

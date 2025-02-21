@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "reports")
 public class Report {
     @Id
-    private String id;
+    private String reportId;
 
     @NotBlank(message = "User id can not be empty")
     private String user_id;
@@ -27,8 +27,8 @@ public class Report {
     @NotBlank(message = "No photo has been applied")
     private String photo;
 
-    public Report(String id, String user_id, String listing_id, String host, String description, String photo) {
-        this.id = id;
+    public Report(String reportId, String user_id, String listing_id, String host, String description, String photo) {
+        this.reportId = reportId;
         this.user_id = user_id;
         this.listing_id = listing_id;
         this.host = host;
@@ -40,11 +40,11 @@ public class Report {
     }
 
     public String getId() {
-        return id;
+        return reportId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String reportId) {
+        this.reportId = reportId;
     }
 
     public @NotBlank(message = "User id can not be empty") String getUser_id() {
