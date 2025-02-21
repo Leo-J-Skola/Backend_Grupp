@@ -57,7 +57,7 @@ public class UserController {
         existingUser.setUsername(userDetails.getUsername());
         existingUser.setPassword(userDetails.getPassword());
         existingUser.setEmail(userDetails.getEmail());
-        existingUser.setPhonenumber(userDetails.getPhonenumber());
+        existingUser.setPhoneNumber(userDetails.getPhoneNumber());
 
         // return values of the user object
         return ResponseEntity.ok(userRepository.save(existingUser));
