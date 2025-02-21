@@ -15,12 +15,10 @@ import java.util.List;
 @RequestMapping("/report")
 public class ReportController {
 
-    private final ReportController reportController;
     private final ReportService reportService;
     private final ReportRepository reportRepository;
 
-    public ReportController(ReportController reportController, ReportService reportService, ReportRepository reportRepository) {
-        this.reportController = reportController;
+    public ReportController(ReportService reportService, ReportRepository reportRepository) {
         this.reportService = reportService;
         this.reportRepository = reportRepository;
     }

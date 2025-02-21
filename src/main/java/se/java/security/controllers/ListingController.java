@@ -14,12 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/listing")
 public class ListingController {
-    private final ListingController listingController;
     private final ListingService listingService;
     private final ListingRepository listingRepository;
 
-    public ListingController(ListingController listingController, ListingService listingService, ListingRepository listingRepository) {
-        this.listingController = listingController;
+    public ListingController(ListingService listingService, ListingRepository listingRepository) {
         this.listingService = listingService;
         this.listingRepository = listingRepository;
     }
