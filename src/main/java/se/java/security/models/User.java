@@ -17,24 +17,8 @@ public class User {
     @NotEmpty(message = "Username cannot be empty")
     private String username;
 
-    @Indexed(unique = true)
-    @Email(message = "Please enter a valid email address") //this is an annotation for email validation in Spring that checks if the email is valid
-    private String email;
-
-    @Indexed(unique = true)
-    @Pattern(
-            regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", //this is valid: +46 7234567890. So country number +46 and 10 numbers
-            message = "Please enter a valid phone number"
-    )
-    private String phoneNumber;
-
-    @Pattern(
-            regexp = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\\-_=+{};:,<.>])(?=.{8,})" +
-                    ".*$",
-            message = "Password must be at least 8 characters long and contain at least " +
-                    "one uppercase letter, one number, and one special character"
-    )
     private String password;
+
     private Set<Role> roles;
 
     @NotEmpty(message = "First name cannot be empty")
@@ -52,6 +36,24 @@ public class User {
 
     @Value("https://homi.se/default-profile-pic.jpg") //we can use this to set a default profile picture
     private String profilePic;                        //to users if they don't want to upload one themselves
+
+//    @Indexed(unique = true)
+    @Email(message = "Please enter a valid email address") //this is an annotation for email validation in Spring that checks if the email is valid
+    private String email;
+
+//    @Indexed(unique = true)
+    @Pattern(
+            regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", //this is valid: +46 7234567890. So country number +46 and 10 numbers
+            message = "Please enter a valid phone number"
+    )
+    private String phoneNumber;
+
+    @Pattern(
+            regexp = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\\-_=+{};:,<.>])(?=.{8,})" +
+                    ".*$",
+            message = "Password must be at least 8 characters long and contain at least " +
+                    "one uppercase letter, one number, and one special character"
+    )
 
 
     public User() {
