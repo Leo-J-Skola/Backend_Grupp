@@ -33,6 +33,14 @@ public class ReportController {
         return ResponseEntity.ok(report);
     }
 
+    // create a report object
+    @PostMapping("/create")
+    public ResponseEntity<Report> createReport(@RequestBody Report report) {
+        report  = reportRepository.save(report);
+        // return
+        return ResponseEntity.status(HttpStatus.CREATED).body(report);
+    }
+
     // get specific report
     @GetMapping("/{id}")
     public ResponseEntity<?> getSpecificReport(@PathVariable String id) {
