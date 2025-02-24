@@ -44,6 +44,16 @@ public class UserService {
         return userRepository.findByUsername(username).isPresent();
     }
 
+    public boolean emailNotNull(String email)  {
+        if (email == null) {
+            throw new NullPointerException("Email is null");
+        }
+        return true; // Return true if email is not null
+    }
+
+
+
+
 
 
 

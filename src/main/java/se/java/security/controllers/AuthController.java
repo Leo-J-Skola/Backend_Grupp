@@ -47,6 +47,7 @@ public class AuthController {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("Username already exists.");
+
         }
 
         // map the AuthRequest to a User entity
@@ -60,11 +61,11 @@ public class AuthController {
         } else {
             user.setRoles(registerRequest.getRoles());
         }
-
+        if(userService.emailNotNull(user.getEmail()))
         // register the user using UserService
-        userService.registerUser(user);
+            userService.registerUser(user);
 
-        // create respons object
+        // create response object
         RegisterResponse response = new RegisterResponse(
                 "User registered successfully",
                 user.getUsername(),
@@ -97,7 +98,7 @@ public class AuthController {
             ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwt)
                     .httpOnly(true) // prevents javascript to get cookie
                     .secure(false) //IMPORTANT TO CHANGE IN PRODUCTION TO TRUE
-                    .path("/")  // cookies is available in all application
+                    .path("/")  // cookies are available in all application
                     .maxAge(10 * 60 * 60) // valid for 10h
                     .sameSite("Strict") // Lax & None
                     .build();

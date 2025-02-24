@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/auth/**").authenticated()
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/listing/**").hasAnyRole("USER", "ADMIN")
                         // any other requests the user need to be logged in
                         .anyRequest().authenticated()
