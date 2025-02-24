@@ -37,11 +37,11 @@ public class User {
     @Value("https://homi.se/default-profile-pic.jpg") //we can use this to set a default profile picture
     private String profilePic;                        //to users if they don't want to upload one themselves
 
-//    @Indexed(unique = true)
+    @Indexed(unique = true)
     @Email(message = "Please enter a valid email address") //this is an annotation for email validation in Spring that checks if the email is valid
     private String email;
 
-//    @Indexed(unique = true)
+    @Indexed(unique = true)
     @Pattern(
             regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", //this is valid: +46 7234567890. So country number +46 and 10 numbers
             message = "Please enter a valid phone number"
