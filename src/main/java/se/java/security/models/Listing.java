@@ -27,6 +27,7 @@ public class Listing {
     private String imageUrl;
 
     private Set<Availability> availability;
+    private double rating;
 
     public Listing(String id, String title, String description, Integer rooms, double pricePerNight, Object location, String imageUrl, Set<Availability> availability) {
         this.id = id;
@@ -105,5 +106,13 @@ public class Listing {
 
     public void setAvailability(Set<Availability> availability) {
         this.availability = availability;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public double getRating() {
+        return rating;
     }
 }
