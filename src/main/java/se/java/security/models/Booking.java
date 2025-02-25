@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -38,7 +37,7 @@ public class Booking {
     @NotNull(message = "Total amount can not be null")
     private double totalAmount;
 
-    public Booking(String bookingId, String userId, String listingId, String status, double fee, Date startDate, Date endDate, double totalAmount) {
+    public Booking(String bookingId, String userId, String listingId, Status status, double fee, Date startDate, Date endDate, double totalAmount) {
         this.bookingId = bookingId;
         this.userId = userId;
         this.listingId = listingId;
@@ -76,11 +75,11 @@ public class Booking {
         this.listingId = listingId;
     }
 
-    public @NotEmpty(message = "Status can not be empty") String getStatus() {
+    public @NotEmpty(message = "Status can not be empty") Status getStatus() {
         return status;
     }
 
-    public void setStatus(@NotEmpty(message = "Status can not be empty") String status) {
+    public void setStatus(@NotEmpty(message = "Status can not be empty") Status status) {
         this.status = status;
     }
 
