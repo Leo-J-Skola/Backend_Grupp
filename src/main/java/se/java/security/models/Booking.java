@@ -22,7 +22,7 @@ public class Booking {
     private String listingId;
 
     @NotEmpty(message = "Status can not be empty")
-    private String status;
+    private Status status;
 
     @NotNull(message = "fee can not be null")
     private double fee;
