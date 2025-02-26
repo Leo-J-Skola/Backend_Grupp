@@ -12,10 +12,10 @@ public class Report {
     private String reportId;
 
     @NotBlank(message = "User id can not be empty")
-    private String user_id;
+    private String UserId;
 
     @NotBlank(message = "Listing id can not be empty")
-    private String listing_id;
+    private String ListingId;
 
     @NotBlank(message = "Host id can not be empty")
     private String host;
@@ -27,10 +27,10 @@ public class Report {
     @NotBlank(message = "No photo has been applied")
     private String photo;
 
-    public Report(String reportId, String user_id, String listing_id, String host, String description, String photo) {
+    public Report(String reportId, String userId, String listingId, String host, String description, String photo) {
         this.reportId = reportId;
-        this.user_id = user_id;
-        this.listing_id = listing_id;
+        this.UserId = userId;
+        this.ListingId = listingId;
         this.host = host;
         this.description = description;
         this.photo = photo;
@@ -48,19 +48,19 @@ public class Report {
     }
 
     public @NotBlank(message = "User id can not be empty") String getUser_id() {
-        return user_id;
+        return UserId;
     }
 
     public void setUser_id(@NotBlank(message = "User id can not be empty") String user_id) {
-        this.user_id = user_id;
+        this.UserId = user_id;
     }
 
     public @NotBlank(message = "Listing id can not be empty") String getListing_id() {
-        return listing_id;
+        return ListingId;
     }
 
     public void setListing_id(@NotBlank(message = "Listing id can not be empty") String listing_id) {
-        this.listing_id = listing_id;
+        this.ListingId = listing_id;
     }
 
     public @NotBlank(message = "Host id can not be empty") String getHost() {
