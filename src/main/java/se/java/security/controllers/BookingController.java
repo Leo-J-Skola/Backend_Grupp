@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import se.java.security.models.Booking;
+import se.java.security.repository.BookingRepository;
 
 import java.util.List;
 
@@ -39,13 +40,13 @@ public class BookingController {
 
     // get specific booking
     @GetMapping("/{id}")
-    public ResponseEntity<Booking> getBookingById(@RequestParam("bookingId") Long bookingId) {
+    public ResponseEntity<Booking> getSpecificBooking(@PathVariable String id) {
         // check if booking id exists, or throw
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
 
         // return values of the booking object
-        return ResponseEntity.ok(listing);
+        return ResponseEntity.ok(booking);
     }
 
     // update booking object
@@ -66,7 +67,7 @@ public class BookingController {
         existingBooking.setTotalAmount(bookingDetails.getTotalAmount());
 
         // return values of the booking object
-        return ResponseEntity.ok(bookingRepository).save(existingBooking);
+        return ResponseEntity.ok(bookingRepository.save(existingBooking));
     }
 
     // delete a booking object
