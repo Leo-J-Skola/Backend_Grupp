@@ -39,51 +39,51 @@ public class Report {
     public Report() {
     }
 
-    public String getId() {
+    public String getReportId() {
         return reportId;
     }
 
-    public void setId(String reportId) {
+    public void setReportId(String reportId) {
         this.reportId = reportId;
     }
 
-    public @NotBlank(message = "User id can not be empty") String getUser_id() {
+    public String getUserId() {
         return UserId;
     }
 
-    public void setUser_id(@NotBlank(message = "User id can not be empty") String user_id) {
-        this.UserId = user_id;
+    public void setUserId(String userId) {
+        UserId = userId;
     }
 
-    public @NotBlank(message = "Listing id can not be empty") String getListing_id() {
+    public String getListingId() {
         return ListingId;
     }
 
-    public void setListing_id(@NotBlank(message = "Listing id can not be empty") String listing_id) {
-        this.ListingId = listing_id;
+    public void setListingId(String listingId) {
+        ListingId = listingId;
     }
 
-    public @NotBlank(message = "Host id can not be empty") String getHost() {
+    public String getHost() {
         return host;
     }
 
-    public void setHost(@NotBlank(message = "Host id can not be empty") String host) {
+    public void setHost(String host) {
         this.host = host;
     }
 
-    public @NotBlank @Max(value = 100, message = "Description max characters exceeded") String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(@NotBlank @Max(value = 100, message = "Description max characters exceeded") String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public @NotBlank(message = "No photo has been applied") String getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(@NotBlank(message = "No photo has been applied") String photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 }

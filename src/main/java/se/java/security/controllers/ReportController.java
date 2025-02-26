@@ -36,9 +36,11 @@ public class ReportController {
     // create a report object
     @PostMapping("/create")
     public ResponseEntity<Report> createReport(@RequestBody Report report) {
-        report  = reportRepository.save(report);
-        // return
-        return ResponseEntity.status(HttpStatus.CREATED).body(report);
+        if (!reportService.canCreateReport(report.getUserId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(report);
+
+        }else reportRepository.save(report);
+        return ResponseEntity.ok(report);
     }
 
     // get specific report
@@ -60,8 +62,8 @@ public class ReportController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Report not found"));
 
         // change report details
-        existingReport.setUser_id(reportDetails.getUser_id());
-        existingReport.setListing_id(reportDetails.getListing_id());
+        existingReport.setListingId(reportDetails.getListingId());
+        existingReport.setUserId(reportDetails.getUserId());
         existingReport.setHost(reportDetails.getHost());
         existingReport.setDescription(reportDetails.getDescription());
         existingReport.setPhoto(reportDetails.getPhoto());
