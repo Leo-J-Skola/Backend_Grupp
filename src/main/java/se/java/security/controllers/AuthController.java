@@ -61,10 +61,8 @@ public class AuthController {
         } else {
             user.setRoles(registerRequest.getRoles());
         }
-        if(userService.emailNotNull(user.getEmail()))
-        // register the user using UserService
-            userService.registerUser(user);
 
+            userService.registerUser(user);
         // create response object
         RegisterResponse response = new RegisterResponse(
                 "User registered successfully",

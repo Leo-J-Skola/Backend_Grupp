@@ -12,7 +12,7 @@ public class Rating {
     private String ratingId;
 
     @NotBlank(message = "userId cannot be empty")
-    private String userId;
+    private String UserId;
 
     @NotBlank(message = "listingId cannot be empty")
     private String listingId;
@@ -25,9 +25,9 @@ public class Rating {
 
     private LocalDateTime updatedAt;
 
-    public Rating(String ratingId, String userId, String listingId, int rating, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Rating(String ratingId, String UserId, String listingId, int rating, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.ratingId = ratingId;
-        this.userId = userId;
+        this.UserId = UserId;
         this.listingId = listingId;
         this.rating = rating;
         this.createdAt = createdAt;
@@ -48,11 +48,11 @@ public class Rating {
     }
 
     public String getUserId() {
-        return userId;
+        return UserId;
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        this.UserId = userId;
     }
 
     public String getListingId() {
