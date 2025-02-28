@@ -22,14 +22,12 @@ public class ListingController {
         this.listingRepository = listingRepository;
     }
 
-    // create a listing object
     @PostMapping("/create")
     public ResponseEntity<Listing> createListing(@RequestBody Listing listing) {
-         listing  = listingRepository.save(listing);
-         // return
+        listingService.createListing(listing); //go to ListingService class to authenticate and validate before creating a listing
+        listingRepository.save(listing);
         return ResponseEntity.status(HttpStatus.CREATED).body(listing);
     }
-
 
     // list all listing objects
     @GetMapping
