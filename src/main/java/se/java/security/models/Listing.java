@@ -13,6 +13,7 @@ public class Listing {
 
     @Id
     private String id;
+    private String username;
     @NotBlank(message = "Title can not be empty")
     private String title;
     @NotBlank(message = "Description can not be empty")
@@ -114,5 +115,13 @@ public class Listing {
 
     public double getRating() {
         return rating;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
