@@ -7,7 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Document(collection = "bookings")
 public class Booking {
@@ -28,23 +28,26 @@ public class Booking {
 
     @Valid
     @CreatedDate
-    private Date startDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @Valid
     @CreatedDate
-    private Date endDate;
+    private LocalDateTime lastModifiedDate;
+
+    private boolean isAcceptedByHost;
 
     @NotNull(message = "Total amount can not be null")
     private double totalAmount;
 
-    public Booking(String bookingId, String userId, String listingId, Status status, double fee, Date startDate, Date endDate, double totalAmount) {
+    public Booking(String bookingId, String userId, String listingId, Status status, double fee, LocalDateTime createdDate, LocalDateTime lastModifiedDate, boolean isAcceptedByHost, double totalAmount) {
         this.bookingId = bookingId;
         this.userId = userId;
         this.listingId = listingId;
         this.status = status;
         this.fee = fee;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+        this.isAcceptedByHost = isAcceptedByHost;
         this.totalAmount = totalAmount;
     }
 
@@ -92,20 +95,20 @@ public class Booking {
         this.fee = fee;
     }
 
-    public @Valid Date getStartDate() {
-        return startDate;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setStartDate(@Valid Date startDate) {
-        this.startDate = startDate;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public @Valid Date getEndDate() {
-        return endDate;
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    public void setEndDate(@Valid Date endDate) {
-        this.endDate = endDate;
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @NotNull(message = "Total amount can not be null")
@@ -115,5 +118,29 @@ public class Booking {
 
     public void setTotalAmount(@NotNull(message = "Total amount can not be null") double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getListingId() {
+        return listingId;
+    }
+
+    public void setListingId(String listingId) {
+        this.listingId = listingId;
+    }
+
+    public boolean isAcceptedByHost() {
+        return isAcceptedByHost;
+    }
+
+    public void setAcceptedByHost(boolean acceptedByHost) {
+        isAcceptedByHost = acceptedByHost;
     }
 }

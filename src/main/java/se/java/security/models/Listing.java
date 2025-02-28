@@ -1,5 +1,6 @@
 package se.java.security.models;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +22,8 @@ public class Listing {
     @NotNull(message = "Amount of rooms cannot be empty")
     private Integer rooms;
     @NotNull(message = "Please enter a valid price")
-    private double pricePerNight;
+    @Valid
+    private double pricePerNight = 150;
 
     private Object location;
     @NotEmpty(message = "Photo cannot be empty")

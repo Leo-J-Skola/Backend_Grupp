@@ -2,16 +2,16 @@ package se.java.security.models;
 
 import jakarta.validation.constraints.NotBlank;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Availability {
 
-    @NotBlank
-    private Date startDate;
-    @NotBlank
-    private Date endDate;
 
-    public Availability(Date startDate, Date endDate) {
+    private LocalDate startDate = LocalDate.of(2020, 1, 1);
+    private LocalDate endDate = LocalDate.of(2020, 1, 10);
+
+    public Availability(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -19,19 +19,19 @@ public class Availability {
     public Availability() {
     }
 
-    public @NotBlank Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(@NotBlank Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public @NotBlank Date getEndDate() {
+    public @NotBlank LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(@NotBlank Date endDate) {
+    public void setEndDate(@NotBlank LocalDate endDate) {
         this.endDate = endDate;
     }
 }
