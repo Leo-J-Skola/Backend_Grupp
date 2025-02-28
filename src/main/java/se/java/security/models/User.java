@@ -41,21 +41,6 @@ public class User {
     @Email(message = "Please enter a valid email address") //this is an annotation for email validation in Spring that checks if the email is valid
     private String email;
 
-    @Indexed(unique = true)
-    @Pattern(
-            regexp = "^(\\+\\d{1,3}[- ]?)?\\d{10}$", //this is valid: +46 7234567890. So country number +46 and 10 numbers
-            message = "Please enter a valid phone number"
-    )
-    private String phoneNumber;
-
-    @Pattern(
-            regexp = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()\\-_=+{};:,<.>])(?=.{8,})" +
-                    ".*$",
-            message = "Password must be at least 8 characters long and contain at least " +
-                    "one uppercase letter, one number, and one special character"
-    )
-
-
     public User() {
     }
 
@@ -89,14 +74,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getEmail() {
