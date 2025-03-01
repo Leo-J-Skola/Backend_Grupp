@@ -4,8 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import se.java.security.models.Availability;
 import se.java.security.models.Booking;
+import se.java.security.models.Listing;
 import se.java.security.repository.BookingRepository;
+import se.java.security.services.BookingService;
 
 import java.util.List;
 
@@ -23,9 +26,13 @@ public class BookingController {
 
     // create a booking object
     @PostMapping("/create")
-    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
+    public ResponseEntity<?> createBooking(@RequestBody Booking booking, Listing listing, Availability availability) {
+        if (!bookingService.confirmBooking(booking)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Booking was not confirmed");
+
+        }else bookingService.calculatePrice(booking, listing, availability);
         booking = bookingRepository.save(booking);
-        // return
+        ResponseEntity.ok().body("Booking was created");
         return ResponseEntity.status(HttpStatus.CREATED).body(booking);
     }
 
@@ -62,8 +69,7 @@ public class BookingController {
         existingBooking.setListingID(bookingDetails.getListingID());
         existingBooking.setStatus(bookingDetails.getStatus());
         existingBooking.setFee(bookingDetails.getFee());
-        existingBooking.setStartDate(bookingDetails.getStartDate());
-        existingBooking.setEndDate(bookingDetails.getEndDate());
+        existingBooking.setLastModifiedDate(bookingDetails.getLastModifiedDate());
         existingBooking.setTotalAmount(bookingDetails.getTotalAmount());
 
         // return values of the booking object
@@ -73,7 +79,7 @@ public class BookingController {
     // delete a booking object
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBooking(@PathVariable String id) {
-        // check if booking id exists, or thow
+        // check if booking id exists, or throw
         if(!bookingRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found");
         }
