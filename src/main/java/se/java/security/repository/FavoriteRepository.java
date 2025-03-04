@@ -2,6 +2,7 @@ package se.java.security.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
+import se.java.security.models.Favorite;
 
 import java.util.Optional;
 

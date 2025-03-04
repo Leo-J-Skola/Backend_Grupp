@@ -1,13 +1,11 @@
 package se.java.security.controllers;
 
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import se.java.security.models.Listing;
-import se.java.security.repository.ListingRepository;
-import se.java.security.services.ListingService;
+import se.java.security.models.Favorite;
+import se.java.security.repository.FavoriteRepository;
 
 import java.util.List;
 
