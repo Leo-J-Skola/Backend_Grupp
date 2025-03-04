@@ -13,7 +13,6 @@ public class RegisterRequest {
     private String username;
     @NotBlank
     private String password;
-    @NotEmpty
     private Set<Role> roles;
     @NotBlank
     private String firstName;

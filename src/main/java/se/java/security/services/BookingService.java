@@ -21,7 +21,7 @@ public class BookingService {
         if (status == Status.UNAVAILABLE) {
             throw new BookingUnavailableException("Booking is unavailable");
         }
-        if (status == Status.RESERVED){
+        if (status == Status.PENDING){
         throw new BookingReservedException("Booking is reserved");
     }
 }
