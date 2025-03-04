@@ -8,11 +8,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Favorite {
     @Id
     private String favoriteId;
-    @NotEmpty
+    @NotEmpty(message = "userId cannot be empty")
     private String userId;
-    @NotEmpty
+    @NotEmpty(message = "hostId cannot be empty")
     private String hostId;
-    @NotEmpty
+    @NotEmpty(message = "listingId cannot be empty")
     private String listingId;
 
 
