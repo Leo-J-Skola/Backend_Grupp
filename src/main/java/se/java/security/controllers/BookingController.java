@@ -1,15 +1,21 @@
 package se.java.security.controllers;
 
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import se.java.security.dto.BookingRequestDTO;
+import se.java.security.dto.BookingRequestResponse;
 import se.java.security.models.Availability;
 import se.java.security.models.Booking;
-import se.java.security.models.Listing;
+import se.java.security.models.Status;
+import se.java.security.models.User;
 import se.java.security.repository.BookingRepository;
 import se.java.security.services.BookingService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -18,22 +24,19 @@ public class BookingController {
 
     private final BookingService bookingService;
     private final BookingRepository bookingRepository;
-
+    @Autowired
     public BookingController(BookingService bookingService, BookingRepository bookingRepository) {
         this.bookingService = bookingService;
         this.bookingRepository = bookingRepository;
     }
 
     // create a booking object
-    @PostMapping("/create")
-    public ResponseEntity<?> createBooking(@RequestBody Booking booking, Listing listing, Availability availability) {
-        if (!bookingService.confirmBooking(booking)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Booking was not confirmed");
+    @PostMapping("/request")
+    public ResponseEntity<BookingRequestResponse> createBooking(@Valid @RequestBody BookingRequestDTO bookingRequestDTO) {
 
-        }else bookingService.calculatePrice(booking, listing, availability);
-        booking = bookingRepository.save(booking);
-        ResponseEntity.ok().body("Booking was created");
-        return ResponseEntity.status(HttpStatus.CREATED).body(booking);
+       BookingRequestResponse response = bookingService.bookingRequest(bookingRequestDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     // list all booking objects
@@ -58,19 +61,20 @@ public class BookingController {
 
     // update booking object
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBooking(@PathVariable String id, @RequestBody Booking bookingDetails) {
+    public ResponseEntity<?> updateBooking(@PathVariable String id, @RequestBody BookingRequestDTO bookingRequestDTO) {
         // check if booking id exists, or throw
         Booking existingBooking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
+        bookingService.confirmBooking(bookingRequestDTO);
 
         // change booking details
-        existingBooking.setBookingId(bookingDetails.getBookingId());
-        existingBooking.setUserID(bookingDetails.getUserID());
-        existingBooking.setListingID(bookingDetails.getListingID());
-        existingBooking.setStatus(bookingDetails.getStatus());
-        existingBooking.setFee(bookingDetails.getFee());
-        existingBooking.setLastModifiedDate(bookingDetails.getLastModifiedDate());
-        existingBooking.setTotalAmount(bookingDetails.getTotalAmount());
+        existingBooking.setBookingId(bookingRequestDTO.getBookingId());
+        existingBooking.setUserId(bookingRequestDTO.getUserId());
+        existingBooking.setListingId(bookingRequestDTO.getListingId());
+        existingBooking.setStatus(bookingRequestDTO.getStatus());
+        existingBooking.setFee(existingBooking.getFee());
+        existingBooking.setLastModifiedDate(existingBooking.getLastModifiedDate());
+        existingBooking.setTotalAmount(existingBooking.getTotalAmount());
 
         // return values of the booking object
         return ResponseEntity.ok(bookingRepository.save(existingBooking));

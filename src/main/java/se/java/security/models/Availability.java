@@ -8,8 +8,8 @@ import java.util.Date;
 public class Availability {
 
 
-    private LocalDate startDate = LocalDate.of(2020, 1, 1);
-    private LocalDate endDate = LocalDate.of(2020, 1, 10);
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public Availability(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
