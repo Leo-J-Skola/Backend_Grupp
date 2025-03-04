@@ -1,5 +1,6 @@
 package se.java.security.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,12 +9,15 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Document(collection = "bookings")
+@Valid
 public class Booking {
     @Id
     @NotBlank
+    @CreatedDate
     private String bookingId;
 
     @NotEmpty(message = "User id can not be empty")
@@ -28,28 +32,23 @@ public class Booking {
     @NotNull(message = "fee can not be null")
     private double fee;
 
-    @Valid
-    @CreatedDate
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    @Valid
-    @CreatedDate
-    private LocalDateTime lastModifiedDate;
-
     @NotNull(message = "Total amount can not be null")
     private double totalAmount;
 
     private boolean acceptedByHost;
 
-    public Booking(String bookingId, String userId, String listingId, Status status, double fee, LocalDateTime createdDate, LocalDateTime lastModifiedDate, double totalAmount) {
+    private Set<Availability> availabilities = new HashSet<>();
+
+
+    public Booking(String bookingId, String userId, String listingId, Status status, double fee, double totalAmount, boolean acceptedByHost, Set<Availability> availabilities) {
         this.bookingId = bookingId;
         this.userId = userId;
         this.listingId = listingId;
         this.status = status;
         this.fee = fee;
-        this.createdDate = createdDate;
-        this.lastModifiedDate = lastModifiedDate;
         this.totalAmount = totalAmount;
+        this.acceptedByHost = acceptedByHost;
+        this.availabilities = availabilities;
     }
 
     public Booking() {
@@ -95,22 +94,6 @@ public class Booking {
         this.fee = fee;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDateTime getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
-    }
-
     public boolean isAcceptedByHost() {
         return acceptedByHost;
     }
@@ -125,5 +108,13 @@ public class Booking {
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public Set<Availability> getAvailabilities() {
+        return availabilities;
+    }
+
+    public void setAvailabilities(Set<Availability> availabilities) {
+        this.availabilities = availabilities;
     }
 }

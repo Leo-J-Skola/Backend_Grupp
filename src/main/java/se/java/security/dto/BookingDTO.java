@@ -6,26 +6,36 @@ import org.springframework.data.annotation.Id;
 import se.java.security.models.Availability;
 import se.java.security.models.Status;
 
+import java.util.HashSet;
 import java.util.Set;
 
-public class BookingRequestDTO {
+public class BookingDTO {
     @Id
     private String bookingId;
-    @NotBlank
+    @NotBlank(message = "user id cannot be null")
     private String userId;
-    @NotBlank
+    @NotBlank(message = "listing id cannot be null")
     private String listingId;
     private Status status;
     @NotNull
     private boolean acceptedByHost;
 
-    private Set<Availability> availabilities;
+    private Set<Availability> availabilities =  new HashSet<>();
 
-    public BookingRequestDTO(String bookingId, String userId, String listingId, Status status) {
-        this.bookingId = bookingId;
+    @NotNull
+    private double totalAmount;
+
+
+    public BookingDTO(String userId, String listingId, Status status, boolean acceptedByHost, Set<Availability> availabilities, double totalAmount) {
         this.userId = userId;
         this.listingId = listingId;
         this.status = status;
+        this.acceptedByHost = acceptedByHost;
+        this.availabilities = availabilities;
+        this.totalAmount = totalAmount;
+    }
+
+    public BookingDTO() {
     }
 
     public String getBookingId() {
@@ -66,6 +76,14 @@ public class BookingRequestDTO {
 
     public void setAcceptedByHost(boolean acceptedByHost) {
         this.acceptedByHost = acceptedByHost;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public Set<Availability> getAvailabilities() {

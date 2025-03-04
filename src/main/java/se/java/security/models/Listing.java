@@ -24,7 +24,7 @@ public class Listing {
     private Integer rooms;
     @NotNull(message = "Please enter a valid price")
     @Valid
-    private double pricePerNight;
+    private double pricePerNight = 150;
 
     private Object location;
     @NotEmpty(message = "Photo cannot be empty")
@@ -127,4 +127,5 @@ public class Listing {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }

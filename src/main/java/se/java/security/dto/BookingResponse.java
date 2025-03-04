@@ -1,14 +1,15 @@
 package se.java.security.dto;
 
+import se.java.security.models.Availability;
 import se.java.security.models.Status;
 
-public class BookingRequestResponse {
+public class BookingResponse {
 
     private String bookingId;
     private String message;
     private Status status;
 
-    public BookingRequestResponse(String bookingId, String message, Status status) {
+    public BookingResponse(String bookingId, String message, Status status) {
         this.bookingId = bookingId;
         this.message = message;
         this.status = status;

@@ -6,17 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import se.java.security.dto.BookingRequestDTO;
-import se.java.security.dto.BookingRequestResponse;
-import se.java.security.models.Availability;
-import se.java.security.models.Booking;
-import se.java.security.models.Status;
-import se.java.security.models.User;
+import se.java.security.dto.BookingDTO;
+import se.java.security.dto.BookingResponse;
+import se.java.security.models.*;
 import se.java.security.repository.BookingRepository;
 import se.java.security.services.BookingService;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/booking")
@@ -32,9 +29,9 @@ public class BookingController {
 
     // create a booking object
     @PostMapping("/request")
-    public ResponseEntity<BookingRequestResponse> createBooking(@Valid @RequestBody BookingRequestDTO bookingRequestDTO) {
-
-       BookingRequestResponse response = bookingService.bookingRequest(bookingRequestDTO);
+    public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody BookingDTO bookingDTO) {
+        bookingService.convertBookingDTO(bookingDTO);
+        BookingResponse response = bookingService.bookingRequest(bookingDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -61,20 +58,20 @@ public class BookingController {
 
     // update booking object
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBooking(@PathVariable String id, @RequestBody BookingRequestDTO bookingRequestDTO) {
+    public ResponseEntity<?> updateBooking(@PathVariable String id, @RequestBody BookingDTO bookingDTO) {
         // check if booking id exists, or throw
         Booking existingBooking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
-        bookingService.confirmBooking(bookingRequestDTO);
+        bookingService.confirmBooking(bookingDTO);
 
         // change booking details
-        existingBooking.setBookingId(bookingRequestDTO.getBookingId());
-        existingBooking.setUserId(bookingRequestDTO.getUserId());
-        existingBooking.setListingId(bookingRequestDTO.getListingId());
-        existingBooking.setStatus(bookingRequestDTO.getStatus());
+        existingBooking.setBookingId(bookingDTO.getBookingId());
+        existingBooking.setUserId(bookingDTO.getUserId());
+        existingBooking.setListingId(bookingDTO.getListingId());
+        existingBooking.setStatus(bookingDTO.getStatus());
         existingBooking.setFee(existingBooking.getFee());
-        existingBooking.setLastModifiedDate(existingBooking.getLastModifiedDate());
         existingBooking.setTotalAmount(existingBooking.getTotalAmount());
+
 
         // return values of the booking object
         return ResponseEntity.ok(bookingRepository.save(existingBooking));
