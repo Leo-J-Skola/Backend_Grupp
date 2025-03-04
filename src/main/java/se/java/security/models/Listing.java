@@ -24,7 +24,7 @@ public class Listing {
     private Integer rooms;
     @NotNull(message = "Please enter a valid price")
     @Valid
-    private double pricePerNight = 150;
+    private double pricePerNight = 150.0;
 
     private Object location;
     @NotEmpty(message = "Photo cannot be empty")

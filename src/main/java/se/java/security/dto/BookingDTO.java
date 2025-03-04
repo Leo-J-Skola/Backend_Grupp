@@ -23,7 +23,7 @@ public class BookingDTO {
     private Set<Availability> availabilities =  new HashSet<>();
 
     @NotNull
-    private double totalAmount;
+    private double totalAmount = 150.0;
 
 
     public BookingDTO(String userId, String listingId, Status status, boolean acceptedByHost, Set<Availability> availabilities, double totalAmount) {

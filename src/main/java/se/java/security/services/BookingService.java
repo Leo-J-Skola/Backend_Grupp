@@ -64,10 +64,11 @@ public class BookingService {
             available.setBooking(booking); // Link the Availability to the Booking
             availabilities.add(availability);
         }
-        booking.setAvailabilities(availabilities); // Insert the available dates into a booking
+        booking.setAvailabilities(availabilities);// Insert the available dates into a booking
+
 
         // Calculate the total price with the method called calculatePrice
-        calculatePrice(bookingDTO, optional);
+        calculatePrice(booking, optional);
 
         // Save the booking
         Booking savedBooking = bookingRepository.save(booking);
@@ -92,7 +93,7 @@ public class BookingService {
     }
     // Calculates the price by taking the listings price and multiplication it by the days a user wants to book
     // After im adding the fee which is 5%
-    public void calculatePrice(@Valid BookingDTO bookingDTO, Optional<Listing> listingOpt) {
+    public void calculatePrice(Booking bookingDTO, Optional<Listing> listingOpt) {
 
         if (listingOpt.isEmpty()) {
             throw new IllegalArgumentException("Listing must not be null");
@@ -111,13 +112,16 @@ public class BookingService {
             if (availability.getEndDate() == null) {
                 throw new IllegalArgumentException("End date must not be null");
             }
-
+            System.out.println("Listing Price Per Night: " + listing.getPricePerNight());
             long numberOfDays = ChronoUnit.DAYS.between(availability.getStartDate(), availability.getEndDate());
+            System.out.println("Calculating price for availability:");
+            System.out.println("Start Date: " + availability.getStartDate());
+            System.out.println("End Date: " + availability.getEndDate());
+            System.out.println("Number of Days: " + numberOfDays);
             // Calculate price by listing price, how many days a user booked and add 5% booking fee
             double totalPrice = listing.getPricePerNight() * numberOfDays * 1.05;
 
             bookingDTO.setTotalAmount(totalPrice);
-
         }
     }
     public void convertBookingDTO(BookingDTO bookingDTO) {
@@ -127,6 +131,7 @@ public class BookingService {
         booking.setStatus(bookingDTO.getStatus());
         booking.setFee(1.05);
         booking.setAcceptedByHost(false);
+        booking.setTotalAmount(bookingDTO.getTotalAmount());
 
         Set<Availability> availabilities = new HashSet<>();
         for (Availability availability : bookingDTO.getAvailabilities()) {
@@ -136,5 +141,6 @@ public class BookingService {
             availabilities.add(availability);
         }
         bookingDTO.setAvailabilities(availabilities);
+
     }
 }
