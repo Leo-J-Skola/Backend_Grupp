@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import se.java.security.models.Favorite;
 import se.java.security.repository.FavoriteRepository;
+import se.java.security.services.FavoriteService;
 
 import java.util.List;
 
