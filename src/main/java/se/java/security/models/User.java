@@ -133,4 +133,7 @@ public class User {
         this.profilePic = profilePic;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }

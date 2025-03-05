@@ -1,57 +1,41 @@
-package se.java.security.models;
+package se.java.security.dto;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import se.java.security.models.Availability;
+import se.java.security.models.Status;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Document(collection = "bookings")
-@Valid
-public class Booking {
+public class BookingDTO {
     @Id
-    @NotBlank
-    @CreatedDate
     private String bookingId;
-
-    @NotEmpty(message = "User id can not be empty")
+    @NotBlank(message = "user id cannot be null")
     private String userId;
-
-    @NotEmpty(message = "Listing id can not be empty")
+    @NotBlank(message = "listing id cannot be null")
     private String listingId;
-
-    @NotEmpty(message = "Status can not be empty")
     private Status status;
-
-    @NotNull(message = "fee can not be null")
-    private double fee;
-
-    @NotNull(message = "Total amount can not be null")
-    private double totalAmount;
-
+    @NotNull
     private boolean acceptedByHost;
 
-    private Set<Availability> availabilities = new HashSet<>();
+    private Set<Availability> availabilities =  new HashSet<>();
+
+    @NotNull
+    private double totalAmount = 150.0;
 
 
-    public Booking(String bookingId, String userId, String listingId, Status status, double fee, double totalAmount, boolean acceptedByHost, Set<Availability> availabilities) {
-        this.bookingId = bookingId;
+    public BookingDTO(String userId, String listingId, Status status, boolean acceptedByHost, Set<Availability> availabilities, double totalAmount) {
         this.userId = userId;
         this.listingId = listingId;
         this.status = status;
-        this.fee = fee;
-        this.totalAmount = totalAmount;
         this.acceptedByHost = acceptedByHost;
         this.availabilities = availabilities;
+        this.totalAmount = totalAmount;
     }
 
-    public Booking() {
+    public BookingDTO() {
     }
 
     public String getBookingId() {
@@ -84,14 +68,6 @@ public class Booking {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public double getFee() {
-        return fee;
-    }
-
-    public void setFee(double fee) {
-        this.fee = fee;
     }
 
     public boolean isAcceptedByHost() {

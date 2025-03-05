@@ -13,6 +13,7 @@ import java.util.Set;
 public class Listing {
 
     @Id
+    @NotBlank
     private String id;
     private String username;
     @NotBlank(message = "Title can not be empty")
@@ -23,7 +24,7 @@ public class Listing {
     private Integer rooms;
     @NotNull(message = "Please enter a valid price")
     @Valid
-    private double pricePerNight = 150;
+    private double pricePerNight = 150.0;
 
     private Object location;
     @NotEmpty(message = "Photo cannot be empty")
@@ -126,4 +127,5 @@ public class Listing {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }
