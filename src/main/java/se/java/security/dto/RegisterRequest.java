@@ -15,7 +15,7 @@ public class RegisterRequest {
     private String firstName;
     @NotNull
     @Min(value = 18, message = "Minimum age is 18")
-    @Max(value = 100, message = "Maximun age is 100")
+    @Max(value = 100, message = "Maximum age is 100")
     private Integer age;
     @Email
     @NotBlank
