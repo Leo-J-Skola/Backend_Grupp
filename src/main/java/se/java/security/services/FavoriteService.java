@@ -3,8 +3,6 @@ package se.java.security.services;
 import org.springframework.stereotype.Service;
 import se.java.security.models.Favorite;
 import se.java.security.repository.FavoriteRepository;
-import se.java.security.repository.ListingRepository;
-import se.java.security.repository.UserRepository;
 
 @Service
 public class FavoriteService {
