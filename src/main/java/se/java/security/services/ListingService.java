@@ -1,5 +1,6 @@
 package se.java.security.services;
 
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class ListingService {
                 listing.getDescription() == null ||
                 listing.getDescription().isEmpty() ||
                 listing.getRooms() == null ||
-                /*                    listing.getPricePerNight() == null ||*/
+                listing.getPricePerNight() == null ||
                 listing.getLocation() == null ||
                 listing.getImageUrl() == null) {
             throw new IllegalArgumentException("All fields are required");
@@ -46,5 +47,6 @@ public class ListingService {
                 listing.setImageUrl(listing.getImageUrl());
                 listing.setDescription(listing.getDescription());
                 listing.setTitle(listing.getTitle());
+                listing.setPricePerNight(listing.getPricePerNight());
     }
 }

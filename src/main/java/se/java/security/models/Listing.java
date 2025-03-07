@@ -24,7 +24,7 @@ public class Listing {
     private Integer rooms;
     @NotNull(message = "Please enter a valid price")
     @Valid
-    private double pricePerNight = 150.0;
+    private Double pricePerNight;
 
     private Object location;
     @NotEmpty(message = "Photo cannot be empty")
@@ -33,7 +33,7 @@ public class Listing {
     private Set<Availability> availability;
     private double rating;
 
-    public Listing(String id, String title, String description, Integer rooms, double pricePerNight, Object location, String imageUrl, Set<Availability> availability) {
+    public Listing(String id, String title, String description, Integer rooms, Double pricePerNight, Object location, String imageUrl, Set<Availability> availability) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -80,11 +80,11 @@ public class Listing {
     }
 
     @NotNull(message = "Please enter a valid price")
-    public double getPricePerNight() {
+    public Double getPricePerNight() {
         return pricePerNight;
     }
 
-    public void setPricePerNight(@NotNull(message = "Please enter a valid price") double pricePerNight) {
+    public void setPricePerNight(@NotNull(message = "Please enter a valid price") Double pricePerNight) {
         this.pricePerNight = pricePerNight;
     }
 
