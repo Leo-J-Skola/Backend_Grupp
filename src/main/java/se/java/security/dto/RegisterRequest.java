@@ -12,6 +12,7 @@ public class RegisterRequest {
     private String password;
     private Set<Role> roles;
     @NotBlank
+    @Size(max = 16, message = "First name cannot be longer than 16 characters")
     private String firstName;
     @NotNull
     @Min(value = 18, message = "Minimum age is 18")
