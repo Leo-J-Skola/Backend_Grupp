@@ -1,9 +1,6 @@
 package se.java.security.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import se.java.security.models.Role;
 
 import java.util.Set;
@@ -17,6 +14,8 @@ public class RegisterRequest {
     @NotBlank
     private String firstName;
     @NotNull
+    @Min(value = 18, message = "Minimum age is 18")
+    @Max(value = 100, message = "Maximun age is 100")
     private Integer age;
     @Email
     @NotBlank
