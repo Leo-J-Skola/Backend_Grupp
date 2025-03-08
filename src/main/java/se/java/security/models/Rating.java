@@ -1,6 +1,7 @@
 package se.java.security.models;
 
 import jakarta.validation.constraints.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 @Document(collection = "ratings")
 public class Rating {
     @Id
+    @CreatedDate
     private String ratingId;
 
     @NotEmpty(message = "User id can not be empty")
@@ -21,22 +23,11 @@ public class Rating {
     @Max(value = 5, message = "Rating must be at most 5")
     private int rating;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    public Rating(String ratingId, String userId, String listingId, int rating, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Rating(String ratingId, String userId, String listingId, int rating) {
         this.ratingId = ratingId;
         this.userId = userId;
         this.listingId = listingId;
         this.rating = rating;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public Rating() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
     }
 
     public String getId() {
@@ -71,19 +62,4 @@ public class Rating {
         this.rating = rating;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
