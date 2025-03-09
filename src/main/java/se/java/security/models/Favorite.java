@@ -14,6 +14,7 @@ public class Favorite {
     private String hostId;
     @NotEmpty(message = "listingId cannot be empty")
     private String listingId;
+    private String createdAt;
 
 
     public Favorite() {
