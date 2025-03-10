@@ -1,14 +1,16 @@
 package se.java.security.services;
 
 import org.springframework.stereotype.Service;
+import se.java.security.dto.FavoriteDTO;
 import se.java.security.exceptions.ResourceNotFoundException;
 import se.java.security.models.Favorite;
+import se.java.security.models.Listing;
+import se.java.security.models.User;
 import se.java.security.repository.FavoriteRepository;
 import se.java.security.repository.ListingRepository;
 import se.java.security.repository.UserRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class FavoriteService {
@@ -23,15 +25,24 @@ public class FavoriteService {
         this.listingRepository = listingRepository;
     }
 
-    public Favorite createFavorite(Favorite favorite) {
+    // create a new favorite object
+    public Favorite createFavorite(FavoriteDTO favoriteDTO) {
+        User user = userRepository.findById(favoriteDTO.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        // check if a user object has already favorited a listing object
-        //if () {
-//
-        //}
+        Listing listing = listingRepository.findById(favoriteDTO.getListingId())
+                .orElseThrow(() -> new ResourceNotFoundException("Listing not found"));
 
-        // Return
-        return favoriteRepository.save(favorite);
+        // empty list
+        List<Favorite> favorites = new ArrayList<>();
+        Map<String, Integer> quantities = new HashMap<>();
+
+        Favorite newFavorite = new Favorite();
+        newFavorite.setUserId(user);
+        newFavorite.setHostId(user);
+        newFavorite.setListingId(listing);
+
+        return favoriteRepository.save(newFavorite);
     }
 
     public List<Favorite> getAllFavorites() {
