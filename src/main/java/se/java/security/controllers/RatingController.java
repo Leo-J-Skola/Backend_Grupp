@@ -30,13 +30,13 @@ public class RatingController {
     public ResponseEntity<Rating> rateListing(@Valid @RequestBody Rating rating) {
         try {
             ratingService.rateListing(rating);
-            return ResponseEntity.ok(rating);
+            return ResponseEntity.status(HttpStatus.OK).body(rating);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error. Couldn't rate listing", e);
         }
     }
 
-    @GetMapping("/average/{listingId}") //Get average rating of a listing
+  /*  @GetMapping("/average/{listingId}") //Get average rating of a listing
     public ResponseEntity<Double> getAverageRating(@PathVariable String listingId) {
         try {
             double averageRating = ratingService.getAverageRating(listingId);
@@ -44,5 +44,5 @@ public class RatingController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error. Couldn't get average rating", e);
         }
-    }
+    }*/
 }
