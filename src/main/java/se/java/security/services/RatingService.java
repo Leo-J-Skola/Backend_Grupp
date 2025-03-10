@@ -50,7 +50,7 @@ public class RatingService {
 
 
 
-    public void rateListing(@Valid Rating rating) {
+    public void rateListing(Rating rating) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
             throw new UnauthorizedException("User is not authenticated");
@@ -70,25 +70,27 @@ public class RatingService {
         }*/
 
         // check if user is not the owner of the listing
-        listingRepository.findById(user.getUsername())
-                .orElseThrow(() -> new ListingNotFoundException("You cannot rate your own listing"));
+       /* listingRepository.findById(user.getUsername())
+                .orElseThrow(() -> new ListingNotFoundException("You cannot rate your own listing"));*/
 
         // user will be able to rate a listing, but only once per listing
-        if (ratingRepository.findByUserIdAndListingId(rating.getUserId(), rating.getListingId()).isPresent()) {
+     /*   if (ratingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId()).isPresent()) {
             throw new IllegalArgumentException("You have already rated this listing");
             }
-
+*/
             // check if the user has a booking and that it has status booked
-            BookingDTO booking = bookingRepository.findByUserIdAndListingId(rating.getUserId(), rating.getListingId())
-                    .orElseThrow(() -> new ListingNotFoundException("User doesn´t have a booking"));
+           /* BookingDTO booking = bookingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId())
+                    .orElseThrow(() -> new ListingNotFoundException("User doesn´t have a booking"));*/
+/*
 
             Status status = booking.getStatus();
         { if (status != Status.BOOKED)
                     throw new BookingUnavailableException("You cannot rate this listing");
         }
+*/
 
         Rating newRating = new Rating();
-        newRating.setUserId(rating.getUserId());
+        newRating.setUserId(user.getId());
         newRating.setListingId(rating.getListingId());
         newRating.setRating(rating.getRating());
 

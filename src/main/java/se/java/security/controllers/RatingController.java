@@ -27,13 +27,13 @@ public class RatingController {
     }
 
     @PostMapping("/rate") //Rate a listing
-    public ResponseEntity<Rating> rateListing(@Valid @RequestBody Rating rating) {
-        try {
+    public ResponseEntity<Rating> rateListing(@RequestBody Rating rating) {
+     /*   try {*/
             ratingService.rateListing(rating);
             return ResponseEntity.status(HttpStatus.OK).body(rating);
-        } catch (Exception e) {
+       /* } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error. Couldn't rate listing", e);
-        }
+        }*/
     }
 
   /*  @GetMapping("/average/{listingId}") //Get average rating of a listing

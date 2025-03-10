@@ -10,17 +10,16 @@ import java.time.LocalDateTime;
 @Document(collection = "ratings")
 public class Rating {
     @Id
-    @CreatedDate
     private String ratingId;
 
-    @NotEmpty(message = "User id can not be empty")
+   /* @NotEmpty(message = "User id can not be empty")*/
     private String userId;
 
-    @NotEmpty(message = "Listing id can not be empty")
+   /* @NotEmpty(message = "Listing id can not be empty")*/
     private String listingId;
 
-    @Min(value = 1, message = "Rating must be at least 1")
-    @Max(value = 5, message = "Rating must be at most 5")
+   /* @Min(value = 1, message = "Rating must be at least 1")
+    @Max(value = 5, message = "Rating must be at most 5")*/
     private int rating;
 
     public Rating(String ratingId, String userId, String listingId, int rating) {
