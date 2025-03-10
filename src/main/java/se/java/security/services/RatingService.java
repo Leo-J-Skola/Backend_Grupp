@@ -67,11 +67,13 @@ public class RatingService {
       Listing existinglisting = listingRepository.findById(rating.getListingId())
               .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
 
-
-
+      Listing host = listingRepository.findByUsernameAndId(user.getUsername(), rating.getListingId());
+              if (host != null) {
+                  throw new RuntimeException("You cannot rate your own listing");
+              }
 
         // check if user is not the owner of the listing
-        /*listingRepository.findById(user.getId())
+        /*listingRepository.fi(rating.getListingId(), user.getUsername())
                 .orElseThrow(() -> new ListingNotFoundException("You cannot rate your own listing"));*/
 
         // user will be able to rate a listing, but only once per listing
