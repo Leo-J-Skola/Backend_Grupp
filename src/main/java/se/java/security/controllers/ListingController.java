@@ -6,27 +6,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import se.java.security.models.Listing;
+import se.java.security.models.User;
 import se.java.security.repository.ListingRepository;
+import se.java.security.repository.UserRepository;
 import se.java.security.services.ListingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import se.java.security.util.JwtUtil;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/listing")
 public class ListingController {
-    private final ListingService listingService;
-    private final ListingRepository listingRepository;
 
-    public ListingController(ListingService listingService, ListingRepository listingRepository) {
-        this.listingService = listingService;
-        this.listingRepository = listingRepository;
-    }
+    @Autowired
+    private ListingRepository listingRepository;
+
+    @Autowired
+    private ListingService listingService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/create")
-    public ResponseEntity<Listing> createListing(@RequestBody Listing listing) {
-        listingService.createListing(listing); //go to ListingService class to authenticate and validate before creating a listing
-        listingRepository.save(listing);
-        return ResponseEntity.status(HttpStatus.CREATED).body(listing);
+    public Listing createListing(@RequestBody Listing listing, @RequestHeader("Authorization") String token) { //Validate token (check if user is logged in and which user is creating the listing)
+        String username = jwtUtil.extractUsername(token.substring(7)); //Get username from token
+        User user = userRepository.findByUsername(username)                      //Find user by username
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+        listing.setHostId(user.getId());                                         //Set the users id as the hostId on the listing
+
+        //things still needed:
+        //implement a check to see if listing already exists
+        //check if listing input fields (title, description etc...) are valid
+
+        return listingRepository.save(listing);
     }
 
     // list all listing objects

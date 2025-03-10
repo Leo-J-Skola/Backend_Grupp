@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
@@ -17,6 +18,8 @@ public class Listing {
     @NotBlank
     private String id;
     private String username;
+    private String hostId; //Owner of the listing
+
     @NotBlank(message = "Title can not be empty")
     private String title;
     @NotBlank(message = "Description can not be empty")
@@ -120,4 +123,11 @@ public class Listing {
         this.username = username;
     }
 
+    public String getHostId() {
+        return hostId;
+    }
+
+    public void setHostId(String hostId) {
+        this.hostId = hostId;
+    }
 }
