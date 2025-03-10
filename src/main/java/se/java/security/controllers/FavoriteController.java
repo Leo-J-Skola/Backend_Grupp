@@ -3,8 +3,8 @@ package se.java.security.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import se.java.security.dto.FavoriteDTO;
+import se.java.security.dto.FavoriteResponse;
 import se.java.security.models.Favorite;
 import se.java.security.repository.FavoriteRepository;
 import se.java.security.services.FavoriteService;
@@ -22,46 +22,25 @@ public class FavoriteController {
         this.favoriteRepository = favoriteRepository;
     }
 
-    //@PostMapping("/create")
-    //public ResponseEntity<FavoriteDTO> createFavorite(@RequestBody FavoriteDTO favoriteDTO) {
-    //    Favorite favorite = favoriteService.createFavorite(favorite);
-    //    favoriteRepository.save(favorite);
-    //    return ResponseEntity.status(HttpStatus.CREATED).body(favoriteDTO);
-    //}
-
-    // list all favorite objects
-    @GetMapping
-    public ResponseEntity<List<Favorite>> getAllFavorites() {
-        // list all favorites
-        List<Favorite> favorite = favoriteRepository.findAll();
-
-        // return values of all favorite objects
-        return ResponseEntity.ok(favorite);
+    @PostMapping("/create")
+    public ResponseEntity<Favorite> createFavorite(@RequestBody FavoriteDTO favoriteDTO) {
+        Favorite newFavorite = favoriteService.createFavorite(favoriteDTO);
+        return new ResponseEntity<>(newFavorite, HttpStatus.CREATED);
     }
 
-    // get specific user object
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getSpecificFavorite(@PathVariable String id) {
-        // check if favorite id exists, or throw
-        Favorite favorite = favoriteRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Favorite not found"));
-
-        // return values of the favorite object
-        return ResponseEntity.ok(favorite);
+    @GetMapping("/all")
+    public ResponseEntity<List<FavoriteResponse>> getAllFavorites() {
+        List<FavoriteResponse> favorites = favoriteService.getAllFavorites();
+        return ResponseEntity.ok(favorites);
     }
 
-    // delete a favorite object
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteFavorite(@PathVariable String id) {
-        // check if favorite id exists, or throw
-        if(!favoriteRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Favorite not found");
-        }
-
-        // delete the object
-        favoriteRepository.deleteById(id);
-
-        // return no values
-        return ResponseEntity.noContent().build();
+    @GetMapping("/user{userId}")
+    public ResponseEntity<List<FavoriteResponse>> getUserFavorites(@PathVariable String userId) {
+        List<FavoriteResponse> favorites = favoriteService.getUserFavorites(userId);
+        return ResponseEntity.ok(favorites);
     }
+
+    //@DeleteMapping("/delete")
+    //public ResponseEntity<Favorite>
+
 }
