@@ -1,8 +1,11 @@
 package se.java.security.models;
 
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDate;
 
 @Document(collection = "favorites")
 public class Favorite {
@@ -14,8 +17,8 @@ public class Favorite {
     private String hostId;
     @NotEmpty(message = "listingId cannot be empty")
     private String listingId;
-    private String createdAt;
-
+    @CreatedDate
+    private LocalDate createdDate;
 
     public Favorite() {
     }

@@ -1,6 +1,7 @@
 package se.java.security.services;
 
 import org.springframework.stereotype.Service;
+import se.java.security.dto.FavoriteDTO;
 import se.java.security.models.Favorite;
 import se.java.security.repository.FavoriteRepository;
 import se.java.security.repository.ListingRepository;
@@ -24,8 +25,16 @@ public class FavoriteService {
         this.userService = userService;
     }
 
-    // Checks that the user hasnt already favorited the listing object
-    public void createFavorite(Favorite favorite) {
+    public Favorite createFavorite(FavoriteDTO FavoriteDTO) {
+        // instantiate object
+        Favorite favorite = new Favorite();
 
+        // check if a user object has already favorited a listing object
+        if () {
+
+        }
+
+        // Return
+        return favoriteRepository.save(favorite);
     }
 }

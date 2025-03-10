@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import se.java.security.dto.FavoriteDTO;
 import se.java.security.models.Favorite;
 import se.java.security.repository.FavoriteRepository;
 import se.java.security.services.FavoriteService;
@@ -22,11 +23,10 @@ public class FavoriteController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Favorite> createFavorite(@RequestBody Favorite favorite) {
-        //go to FavoriteService class to authenticate and validate before creating a favorite
-        favoriteService.createFavorite(favorite);
+    public ResponseEntity<FavoriteDTO> createFavorite(@RequestBody FavoriteDTO favoriteDTO) {
+        Favorite favorite = favoriteService.createFavorite(favoriteDTO);
         favoriteRepository.save(favorite);
-        return ResponseEntity.status(HttpStatus.CREATED).body(favorite);
+        return ResponseEntity.status(HttpStatus.CREATED).body(favoriteDTO);
     }
 
     // list all favorite objects
