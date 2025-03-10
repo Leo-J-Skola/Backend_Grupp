@@ -1,6 +1,5 @@
 package se.java.security.controllers;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,6 @@ import se.java.security.repository.BookingRepository;
 import se.java.security.services.BookingService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/booking")
@@ -29,9 +27,11 @@ public class BookingController {
 
     // create a booking object
     @PostMapping("/request")
-    public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody BookingDTO bookingDTO, Optional<Listing> listingOpt) {
-        bookingService.convertBookingDTO(bookingDTO);
-        BookingResponse response = bookingService.bookingRequest(bookingDTO);
+    public ResponseEntity<BookingResponse> createBooking(@RequestBody Booking booking) {
+
+        bookingService.convertBookingDTO(booking);
+
+        BookingResponse response = bookingService.bookingRequest(booking);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -58,17 +58,17 @@ public class BookingController {
 
     // update booking object
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBooking(@PathVariable String id, @RequestBody BookingDTO bookingDTO) {
+    public ResponseEntity<?> updateBooking(@PathVariable String id, @RequestBody Booking booking) {
         // check if booking id exists, or throw
         Booking existingBooking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
-        bookingService.confirmBooking(bookingDTO);
+        bookingService.confirmBooking(booking);
 
         // change booking details
-        existingBooking.setBookingId(bookingDTO.getBookingId());
-        existingBooking.setUserId(bookingDTO.getUserId());
-        existingBooking.setListingId(bookingDTO.getListingId());
-        existingBooking.setStatus(bookingDTO.getStatus());
+        existingBooking.setBookingId(booking.getBookingId());
+        existingBooking.setUserId(booking.getUserId());
+        existingBooking.setListingId(booking.getListingId());
+        existingBooking.setStatus(booking.getStatus());
         existingBooking.setFee(existingBooking.getFee());
         existingBooking.setTotalAmount(existingBooking.getTotalAmount());
 

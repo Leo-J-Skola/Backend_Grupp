@@ -43,7 +43,7 @@ public class ListingService {
             throw new IllegalArgumentException("All fields are required");
         }
                 listing.setUsername(username);
-                listing.setRating(0);
+                listing.setRating(listing.getRating());
                 listing.setImageUrl(listing.getImageUrl());
                 listing.setDescription(listing.getDescription());
                 listing.setTitle(listing.getTitle());

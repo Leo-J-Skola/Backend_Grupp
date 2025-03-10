@@ -4,9 +4,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
 import java.util.Set;
 
 @Document(collection = "listings")
@@ -31,7 +34,13 @@ public class Listing {
     private String imageUrl;
 
     private Set<Availability> availability;
-    private double rating;
+
+    private Rating rating;
+
+    @CreatedDate
+    private Date createdAt;
+    @CreatedDate
+    private Date updatedAt;
 
     public Listing(String id, String title, String description, Integer rooms, Double pricePerNight, Object location, String imageUrl, Set<Availability> availability) {
         this.id = id;
@@ -112,12 +121,12 @@ public class Listing {
         this.availability = availability;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public Rating getRating() {
+        return rating;
     }
 
-    public double getRating() {
-        return rating;
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 
     public String getUsername() {
@@ -128,4 +137,19 @@ public class Listing {
         this.username = username;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

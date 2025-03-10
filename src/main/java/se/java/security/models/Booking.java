@@ -26,7 +26,6 @@ public class Booking {
     @NotEmpty(message = "Listing id can not be empty")
     private String listingId;
 
-    @NotEmpty(message = "Status can not be empty")
     private Status status;
 
     @NotNull(message = "fee can not be null")
@@ -35,20 +34,17 @@ public class Booking {
     @NotNull(message = "Total amount can not be null")
     private double totalAmount;
 
-    private boolean acceptedByHost;
-
-    private Set<Availability> availabilities = new HashSet<>();
+    private Set<Availability> bookedDates;
 
 
-    public Booking(String bookingId, String userId, String listingId, Status status, double fee, double totalAmount, boolean acceptedByHost, Set<Availability> availabilities) {
+    public Booking(String bookingId, String userId, String listingId, Status status, double fee, double totalAmount, Set<Availability> bookedDates) {
         this.bookingId = bookingId;
         this.userId = userId;
         this.listingId = listingId;
         this.status = status;
         this.fee = fee;
         this.totalAmount = totalAmount;
-        this.acceptedByHost = acceptedByHost;
-        this.availabilities = availabilities;
+        this.bookedDates = bookedDates;
     }
 
     public Booking() {
@@ -94,14 +90,6 @@ public class Booking {
         this.fee = fee;
     }
 
-    public boolean isAcceptedByHost() {
-        return acceptedByHost;
-    }
-
-    public void setAcceptedByHost(boolean acceptedByHost) {
-        this.acceptedByHost = acceptedByHost;
-    }
-
     public double getTotalAmount() {
         return totalAmount;
     }
@@ -110,11 +98,11 @@ public class Booking {
         this.totalAmount = totalAmount;
     }
 
-    public Set<Availability> getAvailabilities() {
-        return availabilities;
+    public Set<Availability> getBookedDates() {
+        return bookedDates;
     }
 
-    public void setAvailabilities(Set<Availability> availabilities) {
-        this.availabilities = availabilities;
+    public void setBookedDates(Set<Availability> bookedDates) {
+        this.bookedDates = bookedDates;
     }
 }
