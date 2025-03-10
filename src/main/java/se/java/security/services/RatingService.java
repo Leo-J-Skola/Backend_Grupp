@@ -51,26 +51,27 @@ public class RatingService {
 
 
     public void rateListing(Rating rating) {
+
+        // check if user is logged in and has authetication
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
             throw new UnauthorizedException("User is not authenticated");
         }
 
+        // if the user has authentication we gather his info through his username
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = userRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-       /* String username = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
+        // checking if the listing exists
+      Listing existinglisting = listingRepository.findById(rating.getListingId())
+              .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
 
-        if (username == null) {
-            throw new IllegalArgumentException("User is not logged in");
-        }*/
+
+
 
         // check if user is not the owner of the listing
-       /* listingRepository.findById(user.getUsername())
+        /*listingRepository.findById(user.getId())
                 .orElseThrow(() -> new ListingNotFoundException("You cannot rate your own listing"));*/
 
         // user will be able to rate a listing, but only once per listing
@@ -79,15 +80,15 @@ public class RatingService {
             }
 */
             // check if the user has a booking and that it has status booked
-           /* BookingDTO booking = bookingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId())
-                    .orElseThrow(() -> new ListingNotFoundException("User doesn´t have a booking"));*/
-/*
+  /*          BookingDTO booking = bookingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId())
+                    .orElseThrow(() -> new ListingNotFoundException("User doesn´t have a booking"));
+
 
             Status status = booking.getStatus();
         { if (status != Status.BOOKED)
                     throw new BookingUnavailableException("You cannot rate this listing");
-        }
-*/
+        }*/
+
 
         Rating newRating = new Rating();
         newRating.setUserId(user.getId());
