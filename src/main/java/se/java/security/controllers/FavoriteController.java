@@ -24,7 +24,7 @@ public class FavoriteController {
 
     @PostMapping("/create")
     public ResponseEntity<FavoriteDTO> createFavorite(@RequestBody FavoriteDTO favoriteDTO) {
-        Favorite favorite = favoriteService.createFavorite(favoriteDTO);
+        Favorite favorite = favoriteService.createFavorite(favorite);
         favoriteRepository.save(favorite);
         return ResponseEntity.status(HttpStatus.CREATED).body(favoriteDTO);
     }
