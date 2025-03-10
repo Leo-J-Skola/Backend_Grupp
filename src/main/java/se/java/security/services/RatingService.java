@@ -3,11 +3,15 @@ package se.java.security.services;
 import jakarta.validation.Valid;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Unwrapped;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import se.java.security.dto.BookingDTO;
 import se.java.security.exceptions.BookingUnavailableException;
 import se.java.security.exceptions.ListingNotFoundException;
+import se.java.security.exceptions.UnauthorizedException;
 import se.java.security.exceptions.UserNotFoundException;
 import se.java.security.models.*;
 import se.java.security.repository.BookingRepository;
@@ -47,17 +51,26 @@ public class RatingService {
 
 
     public void rateListing(@Valid Rating rating) {
-        String username = SecurityContextHolder
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
+            throw new UnauthorizedException("User is not authenticated");
+        }
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+       /* String username = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getName();
 
         if (username == null) {
             throw new IllegalArgumentException("User is not logged in");
-        }
+        }*/
 
         // check if user is not the owner of the listing
-        listingRepository.findById(username)
+        listingRepository.findById(user.getUsername())
                 .orElseThrow(() -> new ListingNotFoundException("You cannot rate your own listing"));
 
         // user will be able to rate a listing, but only once per listing
@@ -74,10 +87,12 @@ public class RatingService {
                     throw new BookingUnavailableException("You cannot rate this listing");
         }
 
-        rating.setUserId(rating.getUserId());
-        rating.setListingId(rating.getListingId());
-        rating.setRating(rating.getRating());
-        ratingRepository.save(rating);
+        Rating newRating = new Rating();
+        newRating.setUserId(rating.getUserId());
+        newRating.setListingId(rating.getListingId());
+        newRating.setRating(rating.getRating());
+
+        ratingRepository.save(newRating);
     }
 
 
