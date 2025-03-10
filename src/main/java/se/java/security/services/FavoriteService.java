@@ -16,16 +16,11 @@ public class FavoriteService {
     private final FavoriteRepository favoriteRepository;
     private final UserRepository userRepository;
     private final ListingRepository listingRepository;
-    private final ListingService listingService;
-    private final UserService userService;
 
-
-    public FavoriteService(FavoriteRepository favoriteRepository, UserRepository userRepository, ListingRepository listingRepository, ListingService listingService, UserService userService) {
+    public FavoriteService(FavoriteRepository favoriteRepository, UserRepository userRepository, ListingRepository listingRepository) {
         this.favoriteRepository = favoriteRepository;
         this.userRepository = userRepository;
         this.listingRepository = listingRepository;
-        this.listingService = listingService;
-        this.userService = userService;
     }
 
     public Favorite createFavorite(Favorite favorite) {

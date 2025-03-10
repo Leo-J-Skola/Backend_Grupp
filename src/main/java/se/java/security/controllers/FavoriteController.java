@@ -22,12 +22,12 @@ public class FavoriteController {
         this.favoriteRepository = favoriteRepository;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<FavoriteDTO> createFavorite(@RequestBody FavoriteDTO favoriteDTO) {
-        Favorite favorite = favoriteService.createFavorite(favorite);
-        favoriteRepository.save(favorite);
-        return ResponseEntity.status(HttpStatus.CREATED).body(favoriteDTO);
-    }
+    //@PostMapping("/create")
+    //public ResponseEntity<FavoriteDTO> createFavorite(@RequestBody FavoriteDTO favoriteDTO) {
+    //    Favorite favorite = favoriteService.createFavorite(favorite);
+    //    favoriteRepository.save(favorite);
+    //    return ResponseEntity.status(HttpStatus.CREATED).body(favoriteDTO);
+    //}
 
     // list all favorite objects
     @GetMapping
