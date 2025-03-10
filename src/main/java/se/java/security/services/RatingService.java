@@ -47,8 +47,17 @@ public class RatingService {
 
 
     public void rateListing(@Valid Rating rating) {
+        String username = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        if (username == null) {
+            throw new IllegalArgumentException("User is not logged in");
+        }
+
         // check if user is not the owner of the listing
-        Listing host = listingRepository.findById(rating.getUserId())
+        listingRepository.findById(username)
                 .orElseThrow(() -> new ListingNotFoundException("You cannot rate your own listing"));
 
         // user will be able to rate a listing, but only once per listing
@@ -59,23 +68,21 @@ public class RatingService {
             // check if the user has a booking and that it has status booked
             BookingDTO booking = bookingRepository.findByUserIdAndListingId(rating.getUserId(), rating.getListingId())
                     .orElseThrow(() -> new ListingNotFoundException("User doesn´t have a booking"));
+
             Status status = booking.getStatus();
-            {
-                if (status != Status.BOOKED)
+        { if (status != Status.BOOKED)
                     throw new BookingUnavailableException("You cannot rate this listing");
-            }
         }
 
+        rating.setUserId(rating.getUserId());
+        rating.setListingId(rating.getListingId());
+        rating.setRating(rating.getRating());
+        ratingRepository.save(rating);
+    }
 
 
-        /*String username = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
 
-        if (username == null) {
-            throw new IllegalArgumentException("User is not logged in");
-        }*/
+
 
 
 
