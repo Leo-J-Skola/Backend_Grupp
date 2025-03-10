@@ -30,6 +30,9 @@ public class Rating {
     public Rating() {
     }
 
+    public Rating() {
+    }
+
     public String getId() {
         return id;
     }
