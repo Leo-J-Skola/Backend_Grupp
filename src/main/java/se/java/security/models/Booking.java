@@ -35,19 +35,17 @@ public class Booking {
     @NotNull(message = "Total amount can not be null")
     private double totalAmount;
 
-    private boolean acceptedByHost;
 
     private Set<Availability> availabilities = new HashSet<>();
 
 
-    public Booking(String bookingId, String userId, String listingId, Status status, double fee, double totalAmount, boolean acceptedByHost, Set<Availability> availabilities) {
+    public Booking(String bookingId, String userId, String listingId, Status status, double fee, double totalAmount,Set<Availability> availabilities) {
         this.bookingId = bookingId;
         this.userId = userId;
         this.listingId = listingId;
         this.status = status;
         this.fee = fee;
         this.totalAmount = totalAmount;
-        this.acceptedByHost = acceptedByHost;
         this.availabilities = availabilities;
     }
 
@@ -92,14 +90,6 @@ public class Booking {
 
     public void setFee(double fee) {
         this.fee = fee;
-    }
-
-    public boolean isAcceptedByHost() {
-        return acceptedByHost;
-    }
-
-    public void setAcceptedByHost(boolean acceptedByHost) {
-        this.acceptedByHost = acceptedByHost;
     }
 
     public double getTotalAmount() {

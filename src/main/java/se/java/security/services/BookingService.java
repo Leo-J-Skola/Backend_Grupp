@@ -32,7 +32,7 @@ public class BookingService {
     }
 
     // Try to send a booking request
-    public BookingResponse bookingRequest(@Valid BookingDTO bookingDTO) {
+    public BookingResponse bookingRequest(@Valid Booking bookingDTO) {
         // Check if the listing exists
         if (! listingRepository.existsById(bookingDTO.getListingId())) {
             throw new ListingNotFoundException("Listing not found");
@@ -53,7 +53,6 @@ public class BookingService {
         booking.setUserId(bookingDTO.getUserId());
         booking.setStatus(Status.PENDING); // Set status to pending
         booking.setFee(1.05); // Set fee to 5%
-        booking.setAcceptedByHost(false); // Set to false because the booking request has not been accepted yet
 
         // Create a new hash set and insert the available dates
         Set<Availability> availabilities = new HashSet<>();
@@ -84,13 +83,9 @@ public class BookingService {
     // The host must accept the booking request to successfully create a booking
     public void confirmBooking(BookingDTO bookingDTO) {
 
-        boolean isConfirmed = bookingDTO.isAcceptedByHost();
-
-        if (isConfirmed) {
            bookingDTO.setStatus(Status.BOOKED);
-           bookingDTO.setAcceptedByHost(true);
-        }
     }
+
     // Calculates the price by taking the listings price and multiplication it by the days a user wants to book
     // After im adding the fee which is 5%
     public void calculatePrice(Booking bookingDTO, Optional<Listing> listingOpt) {
@@ -124,13 +119,12 @@ public class BookingService {
             bookingDTO.setTotalAmount(totalPrice);
         }
     }
-    public void convertBookingDTO(BookingDTO bookingDTO) {
+    public void convertBookingDTO(@Valid Booking bookingDTO) {
         Booking booking = new Booking();
         booking.setListingId(bookingDTO.getListingId());
         booking.setUserId(bookingDTO.getUserId());
         booking.setStatus(bookingDTO.getStatus());
         booking.setFee(1.05);
-        booking.setAcceptedByHost(false);
         booking.setTotalAmount(bookingDTO.getTotalAmount());
 
         Set<Availability> availabilities = new HashSet<>();
