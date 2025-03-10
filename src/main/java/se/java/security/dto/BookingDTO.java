@@ -18,7 +18,6 @@ public class BookingDTO {
     private String listingId;
     private Status status;
     @NotNull
-    private boolean acceptedByHost;
 
     private Set<Availability> availabilities =  new HashSet<>();
 
@@ -26,11 +25,10 @@ public class BookingDTO {
     private double totalAmount = 150.0;
 
 
-    public BookingDTO(String userId, String listingId, Status status, boolean acceptedByHost, Set<Availability> availabilities, double totalAmount) {
+    public BookingDTO(String userId, String listingId, Status status, Set<Availability> availabilities, double totalAmount) {
         this.userId = userId;
         this.listingId = listingId;
         this.status = status;
-        this.acceptedByHost = acceptedByHost;
         this.availabilities = availabilities;
         this.totalAmount = totalAmount;
     }
@@ -68,14 +66,6 @@ public class BookingDTO {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public boolean isAcceptedByHost() {
-        return acceptedByHost;
-    }
-
-    public void setAcceptedByHost(boolean acceptedByHost) {
-        this.acceptedByHost = acceptedByHost;
     }
 
     public double getTotalAmount() {

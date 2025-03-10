@@ -30,7 +30,7 @@ public class BookingController {
     // create a booking object
     @PostMapping("/request")
     public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody Booking booking) {
-        bookingService.convertBookingDTO(booking);
+        bookingService.convertToBookingDTO(booking);
         BookingResponse response = bookingService.bookingRequest(booking);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

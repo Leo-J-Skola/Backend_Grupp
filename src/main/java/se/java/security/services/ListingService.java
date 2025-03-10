@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import se.java.security.models.Availability;
 import se.java.security.models.Listing;
 import se.java.security.repository.ListingRepository;
 
@@ -43,10 +44,10 @@ public class ListingService {
             throw new IllegalArgumentException("All fields are required");
         }
                 listing.setUsername(username);
-                listing.setRating(0);
                 listing.setImageUrl(listing.getImageUrl());
                 listing.setDescription(listing.getDescription());
                 listing.setTitle(listing.getTitle());
                 listing.setPricePerNight(listing.getPricePerNight());
+
     }
 }

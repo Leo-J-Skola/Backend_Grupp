@@ -55,7 +55,7 @@ public class BookingService {
         booking.setFee(1.05); // Set fee to 5%
 
         // Create a new hash set for dates
-        for (Availability availability :booking.getBookedDates()) {
+        for (Availability availability : booking.getBookedDates()) {
             Availability available = new Availability();
             available.setStartDate(availability.getStartDate());
             available.setEndDate(availability.getEndDate());
@@ -110,13 +110,13 @@ public class BookingService {
             booking.setTotalAmount(totalPrice);
         }
     }
-    public void convertBookingDTO(Booking bookingDTO) {
-        Booking booking = new Booking();
-        booking.setListingId(bookingDTO.getListingId());
-        booking.setUserId(bookingDTO.getUserId());
-        booking.setStatus(bookingDTO.getStatus());
-        booking.setFee(1.05);
-        booking.setTotalAmount(bookingDTO.getTotalAmount());
-
+    public void convertToBookingDTO(Booking booking) {
+        Booking bookingDTO = new Booking();
+        bookingDTO.setUserId(booking.getUserId());
+        bookingDTO.setListingId(booking.getListingId());
+        bookingDTO.setBookedDates(booking.getBookedDates());
+        bookingDTO.setStatus(booking.getStatus());
+        bookingDTO.setBookedDates(booking.getBookedDates());
+        bookingDTO.setTotalAmount(booking.getTotalAmount());
     }
 }
