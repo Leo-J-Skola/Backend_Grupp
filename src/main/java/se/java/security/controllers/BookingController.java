@@ -29,7 +29,7 @@ public class BookingController {
 
     // create a booking object
     @PostMapping("/request")
-    public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody Booking booking, Optional<Listing> listingOpt) {
+    public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody Booking booking) {
         bookingService.convertBookingDTO(booking);
         BookingResponse response = bookingService.bookingRequest(booking);
 
@@ -65,7 +65,7 @@ public class BookingController {
         bookingService.confirmBooking(bookingDTO);
 
         // change booking details
-        existingBooking.setBookingId(bookingDTO.getBookingId());
+        existingBooking.setId(bookingDTO.getBookingId());
         existingBooking.setUserId(bookingDTO.getUserId());
         existingBooking.setListingId(bookingDTO.getListingId());
         existingBooking.setStatus(bookingDTO.getStatus());

@@ -32,7 +32,7 @@ public class BookingService {
     }
 
     // Try to send a booking request
-    public BookingResponse bookingRequest(@Valid Booking bookingDTO) {
+    public BookingResponse bookingRequest(Booking bookingDTO) {
         // Check if the listing exists
         if (! listingRepository.existsById(bookingDTO.getListingId())) {
             throw new ListingNotFoundException("Listing not found");
@@ -54,18 +54,13 @@ public class BookingService {
         booking.setStatus(Status.PENDING); // Set status to pending
         booking.setFee(1.05); // Set fee to 5%
 
-        // Create a new hash set and insert the available dates
-        Set<Availability> availabilities = new HashSet<>();
-        for (Availability availability : bookingDTO.getAvailabilities()) {
+        // Create a new hash set for dates
+        for (Availability availability :booking.getBookedDates()) {
             Availability available = new Availability();
             available.setStartDate(availability.getStartDate());
             available.setEndDate(availability.getEndDate());
-            available.setBooking(booking); // Link the Availability to the Booking
-            availabilities.add(availability);
+            booking.getBookedDates().add(available);
         }
-        booking.setAvailabilities(availabilities);// Insert the available dates into a booking
-
-
         // Calculate the total price with the method called calculatePrice
         calculatePrice(booking, optional);
 
@@ -74,7 +69,7 @@ public class BookingService {
 
         // Return a BookingResponse
         return new BookingResponse(
-                savedBooking.getBookingId(), // Use savedBooking.getId() for MongoDB ObjectId
+                savedBooking.getId(), // Use savedBooking.getId() for MongoDB ObjectId
                 "Successfully created booking",
                 savedBooking.getStatus()
         );
@@ -88,7 +83,7 @@ public class BookingService {
 
     // Calculates the price by taking the listings price and multiplication it by the days a user wants to book
     // After im adding the fee which is 5%
-    public void calculatePrice(Booking bookingDTO, Optional<Listing> listingOpt) {
+    public void calculatePrice(Booking booking, Optional<Listing> listingOpt) {
 
         if (listingOpt.isEmpty()) {
             throw new IllegalArgumentException("Listing must not be null");
@@ -96,11 +91,7 @@ public class BookingService {
 
         Listing listing = listingOpt.get();
 
-        if (bookingDTO.getAvailabilities() == null || bookingDTO.getAvailabilities().isEmpty()) {
-            throw new IllegalArgumentException("Listing must have availabilities");
-        }
-
-        for (Availability availability : bookingDTO.getAvailabilities()) {
+        for (Availability availability : booking.getBookedDates()) {
             if (availability.getStartDate() == null) {
                 throw new IllegalArgumentException("Start date must not be null");
             }
@@ -116,25 +107,16 @@ public class BookingService {
             // Calculate price by listing price, how many days a user booked and add 5% booking fee
             double totalPrice = listing.getPricePerNight() * numberOfDays * 1.05;
 
-            bookingDTO.setTotalAmount(totalPrice);
+            booking.setTotalAmount(totalPrice);
         }
     }
-    public void convertBookingDTO(@Valid Booking bookingDTO) {
+    public void convertBookingDTO(Booking bookingDTO) {
         Booking booking = new Booking();
         booking.setListingId(bookingDTO.getListingId());
         booking.setUserId(bookingDTO.getUserId());
         booking.setStatus(bookingDTO.getStatus());
         booking.setFee(1.05);
         booking.setTotalAmount(bookingDTO.getTotalAmount());
-
-        Set<Availability> availabilities = new HashSet<>();
-        for (Availability availability : bookingDTO.getAvailabilities()) {
-            availability.setStartDate(availability.getStartDate());
-            availability.setEndDate(availability.getEndDate());
-            availability.setBooking(booking);
-            availabilities.add(availability);
-        }
-        bookingDTO.setAvailabilities(availabilities);
 
     }
 }

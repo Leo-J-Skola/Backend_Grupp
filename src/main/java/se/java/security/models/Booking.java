@@ -16,9 +16,7 @@ import java.util.Set;
 @Valid
 public class Booking {
     @Id
-    @NotBlank
-    @CreatedDate
-    private String bookingId;
+    private String id;
 
     @NotEmpty(message = "User id can not be empty")
     private String userId;
@@ -26,7 +24,6 @@ public class Booking {
     @NotEmpty(message = "Listing id can not be empty")
     private String listingId;
 
-    @NotEmpty(message = "Status can not be empty")
     private Status status;
 
     @NotNull(message = "fee can not be null")
@@ -36,29 +33,22 @@ public class Booking {
     private double totalAmount;
 
 
-    private Set<Availability> availabilities = new HashSet<>();
+    private Set<Availability> bookedDates = new HashSet<>();
 
-
-    public Booking(String bookingId, String userId, String listingId, Status status, double fee, double totalAmount,Set<Availability> availabilities) {
-        this.bookingId = bookingId;
+    public Booking(String id, String userId, String listingId, Status status, double fee, double totalAmount, Set<Availability> bookedDates) {
+        this.id = id;
         this.userId = userId;
         this.listingId = listingId;
         this.status = status;
         this.fee = fee;
         this.totalAmount = totalAmount;
-        this.availabilities = availabilities;
+        this.bookedDates = bookedDates;
     }
 
     public Booking() {
     }
 
-    public String getBookingId() {
-        return bookingId;
-    }
 
-    public void setBookingId(String bookingId) {
-        this.bookingId = bookingId;
-    }
 
     public String getUserId() {
         return userId;
@@ -100,11 +90,19 @@ public class Booking {
         this.totalAmount = totalAmount;
     }
 
-    public Set<Availability> getAvailabilities() {
-        return availabilities;
+    public Set<Availability> getBookedDates() {
+        return bookedDates;
     }
 
-    public void setAvailabilities(Set<Availability> availabilities) {
-        this.availabilities = availabilities;
+    public void setBookedDates(Set<Availability> bookedDates) {
+        this.bookedDates = bookedDates;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
