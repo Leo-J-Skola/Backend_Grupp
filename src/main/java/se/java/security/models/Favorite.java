@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Document(collection = "favorites")
 public class Favorite {
@@ -22,7 +23,7 @@ public class Favorite {
     private Listing listingId;
 
     @CreatedDate
-    private LocalDate createdDate;
+    private Date createdDate = new Date();
 
     public String getId() {
         return id;
@@ -48,21 +49,21 @@ public class Favorite {
         this.listingId = listingId;
     }
 
-    public LocalDate getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Favorite() {
-    }
-
-    public Favorite(String id, User userId, Listing listingId, LocalDate createdDate) {
+    public Favorite(String id, User userId, Listing listingId, Date createdDate) {
         this.id = id;
         this.userId = userId;
         this.listingId = listingId;
         this.createdDate = createdDate;
+    }
+
+    public Favorite() {
     }
 }
