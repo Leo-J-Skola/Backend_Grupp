@@ -70,14 +70,14 @@ public class RatingService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         // checking if the listing exists
-      Listing existinglisting = listingRepository.findById(rating.getListingId())
-              .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
+        Listing existinglisting = listingRepository.findById(rating.getListingId())
+                .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
 
         // check if user is the owner of the listing
-      Listing host = listingRepository.findByUsernameAndId(user.getUsername(), rating.getListingId());
-              if (host != null) {
-                  throw new RuntimeException("You cannot rate your own listing");
-              }
+        Listing host = listingRepository.findByUsernameAndId(user.getUsername(), rating.getListingId());
+        if (host != null) {
+            throw new RuntimeException("You cannot rate your own listing");
+        }
 
         // check if the user has a booking
         Booking booking = bookingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId())

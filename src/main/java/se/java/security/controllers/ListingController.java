@@ -82,6 +82,8 @@ public class ListingController {
         existingListing.setLocation(listingDetails.getLocation());
         existingListing.setImageUrl(listingDetails.getImageUrl());
 
+
+
         // return values of the listing object
         return ResponseEntity.ok(listingRepository.save(existingListing));
     }

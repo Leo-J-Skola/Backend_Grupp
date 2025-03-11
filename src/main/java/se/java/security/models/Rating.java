@@ -27,12 +27,6 @@ public class Rating {
         this.rating = rating;
     }
 
-    public Rating() {
-    }
-
-    public Rating() {
-    }
-
     public String getId() {
         return id;
     }
