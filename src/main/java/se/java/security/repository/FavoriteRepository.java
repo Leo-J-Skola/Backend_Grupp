@@ -4,9 +4,11 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import se.java.security.models.Favorite;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface FavoriteRepository extends MongoRepository<Favorite, String> {
-    Optional<Favorite> findById(String id);
+    //Optional<Favorite> findById(String id);
+    List<Favorite> findFavoritesByUserId_Id(String userIdId);
 }

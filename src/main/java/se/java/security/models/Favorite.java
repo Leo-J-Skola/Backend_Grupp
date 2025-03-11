@@ -1,61 +1,69 @@
 package se.java.security.models;
 
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Document(collection = "favorites")
 public class Favorite {
     @Id
-    private String favoriteId;
+    private String id;
+
+    @DBRef
     @NotEmpty(message = "userId cannot be empty")
-    private String userId;
-    @NotEmpty(message = "hostId cannot be empty")
-    private String hostId;
+    private User userId;
+
+    @DBRef
     @NotEmpty(message = "listingId cannot be empty")
-    private String listingId;
-    private String createdAt;
+    private Listing listingId;
 
+    @CreatedDate
+    private Date createdDate = new Date();
 
-    public Favorite() {
+    public String getId() {
+        return id;
     }
 
-    public String getFavoriteId() {
-        return favoriteId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setFavoriteId(String favoriteId) {
-        this.favoriteId = favoriteId;
-    }
-
-    public String getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
-    public String getHostId() {
-        return hostId;
-    }
-
-    public void setHostId(String hostId) {
-        this.hostId = hostId;
-    }
-
-    public String getListingId() {
+    public Listing getListingId() {
         return listingId;
     }
 
-    public void setListingId(String listingId) {
+    public void setListingId(Listing listingId) {
         this.listingId = listingId;
     }
 
-    public Favorite(String favoriteId, String userId, String hostId, String listingId) {
-        this.favoriteId = favoriteId;
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Favorite(String id, User userId, Listing listingId, Date createdDate) {
+        this.id = id;
         this.userId = userId;
-        this.hostId = hostId;
         this.listingId = listingId;
+        this.createdDate = createdDate;
+    }
+
+    public Favorite() {
     }
 }
