@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import se.java.security.dto.BookingDTO;
 import se.java.security.exceptions.BookingUnavailableException;
 import se.java.security.exceptions.ListingNotFoundException;
 import se.java.security.exceptions.UnauthorizedException;
@@ -81,7 +80,7 @@ public class RatingService {
               }
 
         // check if the user has a booking
-        BookingDTO booking = bookingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId())
+        Booking booking = bookingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId())
                 .orElseThrow(() -> new ListingNotFoundException("User doesn´t have a booking"));
 
         //  you can only rate if the booking has status booked

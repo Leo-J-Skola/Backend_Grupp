@@ -1,7 +1,6 @@
 package se.java.security.services;
 
 import org.springframework.stereotype.Service;
-import se.java.security.dto.BookingDTO;
 import se.java.security.dto.BookingRequest;
 import se.java.security.dto.BookingResponse;
 import se.java.security.exceptions.ListingNotFoundException;
@@ -18,12 +17,10 @@ import java.util.Optional;
 @Service
 public class BookingService {
 
-    private final UserRepository userRepository;
     private final ListingRepository listingRepository;
     private final BookingRepository bookingRepository;
 
-    public BookingService(UserRepository userRepository, ListingRepository listingRepository, BookingRepository bookingRepository) {
-        this.userRepository = userRepository;
+    public BookingService(ListingRepository listingRepository, BookingRepository bookingRepository) {
         this.listingRepository = listingRepository;
         this.bookingRepository = bookingRepository;
     }
@@ -39,10 +36,9 @@ public class BookingService {
         Booking booking = new Booking();
         booking.setUserId(booking.getUserId());
         booking.setListingId(listing);
-        booking.setStatus(bookingRequest.getStatus());
-        booking.setFee(bookingRequest.getFee());
-        booking.setTotalAmount(bookingRequest.getTotalAmount());
-        booking.setBookedDates(bookingRequest.getBookedDates());
+        booking.setStatus(Status.PENDING);
+        booking.setFee(1.05);
+
 
         // Create a new hash set for dates
         for (Availability availability : booking.getBookedDates()) {
@@ -66,18 +62,14 @@ public class BookingService {
     }
 
     // The host must accept the booking request to successfully create a booking
-    public void confirmBooking(Booking bookingDTO) {
+    public void confirmBooking(Booking booking) {
 
-           bookingDTO.setStatus(Status.BOOKED);
+           booking.setStatus(Status.BOOKED);
     }
 
     // Calculates the price by taking the listings price and multiplication it by the days a user wants to book
     // After im adding the fee which is 5%
     public void calculatePrice(Booking booking, Optional<Listing> listingOpt) {
-
-        if (listingOpt.isEmpty()) {
-            throw new IllegalArgumentException("Listing must not be null");
-        }
 
         Listing listing = listingOpt.get();
 
@@ -99,11 +91,5 @@ public class BookingService {
 
             booking.setTotalAmount(totalPrice);
         }
-    }
-    public void convertToBookingDTO(Booking booking) {
-       BookingDTO bookingDTO = new BookingDTO();
-       bookingDTO.setStatus(booking.getStatus());
-       bookingDTO.setAvailabilities(booking.getBookedDates());
-       bookingDTO.setTotalAmount(booking.getTotalAmount());
     }
 }

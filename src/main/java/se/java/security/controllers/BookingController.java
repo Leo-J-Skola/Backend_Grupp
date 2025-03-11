@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import se.java.security.dto.BookingDTO;
 import se.java.security.dto.BookingRequest;
 import se.java.security.dto.BookingResponse;
 import se.java.security.models.*;
@@ -30,8 +29,7 @@ public class BookingController {
 
     // create a booking object
     @PostMapping("/request")
-    public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody Booking booking, BookingRequest bookingRequest) {
-        bookingService.convertToBookingDTO(booking);
+    public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
         BookingResponse response = bookingService.bookingRequest(bookingRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
