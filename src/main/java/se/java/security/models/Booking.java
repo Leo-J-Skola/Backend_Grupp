@@ -16,8 +16,7 @@ public class Booking {
     @Id
     private String id;
 
-    @DBRef
-    private User userId;
+    private String userId;
 
     @DBRef
     private Listing listingId;
@@ -33,7 +32,7 @@ public class Booking {
 
     private Set<Availability> bookedDates = new HashSet<>();
 
-    public Booking(String id, User userId, Listing listingId, Status status, double fee, double totalAmount, Set<Availability> bookedDates) {
+    public Booking(String id, String userId, Listing listingId, Status status, double fee, double totalAmount, Set<Availability> bookedDates) {
         this.id = id;
         this.userId = userId;
         this.listingId = listingId;
@@ -46,12 +45,11 @@ public class Booking {
     public Booking() {
     }
 
-
-    public User getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

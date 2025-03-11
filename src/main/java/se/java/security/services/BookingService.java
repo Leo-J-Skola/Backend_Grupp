@@ -35,13 +35,10 @@ public class BookingService {
         // Try to retrieve the listing from the database
         Listing listing = listingRepository.findById(bookingRequest.getListingId())
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
-        // Try to retrieve the user from the database
-        User user = userRepository.findById(bookingRequest.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         // Create a new Booking entity
         Booking booking = new Booking();
-        booking.setUserId(user);
+        booking.setUserId(booking.getUserId());
         booking.setListingId(listing);
         booking.setStatus(bookingRequest.getStatus());
         booking.setFee(bookingRequest.getFee());

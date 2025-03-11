@@ -6,20 +6,11 @@ import se.java.security.models.Status;
 import java.util.Set;
 
 public class BookingRequest {
-    private String userId;
     private String listingId;
     private Status status;
     private double fee;
     private double totalAmount;
     private Set<Availability> bookedDates;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getListingId() {
         return listingId;
@@ -62,7 +53,6 @@ public class BookingRequest {
     }
 
     public BookingRequest(String userId, String listingId, Status status, double fee, double totalAmount, Set<Availability> bookedDates) {
-        this.userId = userId;
         this.listingId = listingId;
         this.status = status;
         this.fee = fee;
