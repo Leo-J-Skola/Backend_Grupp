@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.java.security.dto.FavoriteDTO;
 import se.java.security.dto.FavoriteResponse;
+import se.java.security.exceptions.ResourceNotFoundException;
 import se.java.security.models.Favorite;
 import se.java.security.repository.FavoriteRepository;
 import se.java.security.services.FavoriteService;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/favorite")
 public class FavoriteController {
+
     private final FavoriteService favoriteService;
     private final FavoriteRepository favoriteRepository;
 
@@ -32,19 +34,27 @@ public class FavoriteController {
     // get all favorite objects
     //MÅSTE FIXA RETURNERA BARA RESPONSE EGENSKAPER
     @GetMapping("/all")
-    public ResponseEntity<List<Favorite>> getAllFavorites() {
-        List<Favorite> favorites = favoriteService.getAllFavorites();
-        return ResponseEntity.ok(favorites);
+    public ResponseEntity<?> getAllFavorites() {
+        return ResponseEntity.ok(favoriteService.getAllFavorites());
     }
 
     // get a users favorites objects
     @GetMapping("/user-favorites/{userId}")
-    public ResponseEntity<List<FavoriteResponse>> getUserFavorites(@PathVariable String userId) {
+    public ResponseEntity<?> getUserFavorites(@PathVariable String userId) {
         List<FavoriteResponse> favorites = favoriteService.getUserFavorites(userId);
         return ResponseEntity.ok(favorites);
     }
 
-    //@DeleteMapping("/delete")
-    //public ResponseEntity<Favorite>
+    @GetMapping("/specific-favorite/{id}")
+    public ResponseEntity<Favorite> getSpecificFavorite(@PathVariable String id) {
+        Favorite favorite = favoriteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Favorite not found with id: " + id));
+        return ResponseEntity.ok(favorite);
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteFavorite(@PathVariable String id) {
+        favoriteService.deleteFavorite(id);
+        return ResponseEntity.ok("Favorite deleted");
+    }
 }
