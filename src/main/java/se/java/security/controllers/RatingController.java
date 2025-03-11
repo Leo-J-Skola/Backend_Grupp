@@ -26,17 +26,17 @@ public class RatingController {
         this.ratingRepository = ratingRepository;
     }
 
-    @PostMapping("/rate") //Rate a listing
+    @PostMapping("{id}") //Rate a listing
     public ResponseEntity<Rating> rateListing(@Valid @RequestBody Rating rating) {
-        try {
-            ratingService.rateListing(rating);
-            return ResponseEntity.ok(rating);
-        } catch (Exception e) {
+        // try {
+        ratingService.rateListing(rating);
+        return ResponseEntity.status(HttpStatus.OK).body(rating);
+    /*    } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error. Couldn't rate listing", e);
         }
-    }
+    }*/
 
-    @GetMapping("/average/{listingId}") //Get average rating of a listing
+  /*  @GetMapping("/average/{listingId}") //Get average rating of a listing
     public ResponseEntity<Double> getAverageRating(@PathVariable String listingId) {
         try {
             double averageRating = ratingService.getAverageRating(listingId);
@@ -44,5 +44,6 @@ public class RatingController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error. Couldn't get average rating", e);
         }
+    }*/
     }
 }
