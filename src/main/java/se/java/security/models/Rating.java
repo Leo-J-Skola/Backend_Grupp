@@ -3,7 +3,6 @@ package se.java.security.models;
 import jakarta.validation.constraints.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -13,27 +12,19 @@ public class Rating {
     @Id
     private String id;
 
-    @NotBlank(message = "userId cannot be empty")
+    private String userId;
 
-    private User userId;
-
-    @NotBlank(message = "listingId cannot be empty")
-    @DBRef
-    private Listing listingId;
+    @NotEmpty(message = "Listing id can not be empty")
+    private String listingId;
 
     @Min(value = 1, message = "Rating must be at least 1")
     @Max(value = 5, message = "Rating must be at most 5")
     private int rating;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    public Rating(String id, User userId, Listing listingId, int rating, LocalDateTime createdAt) {
+    public Rating(String id, String listingId, int rating) {
         this.id = id;
-        this.userId = userId;
         this.listingId = listingId;
         this.rating = rating;
-        this.createdAt = createdAt;
     }
 
     public Rating() {
@@ -43,23 +34,23 @@ public class Rating {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String ratingId) {
+        this.id = ratingId;
     }
 
-    public User getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public Listing getListingId() {
+    public String getListingId() {
         return listingId;
     }
 
-    public void setListingId(Listing listingId) {
+    public void setListingId(String listingId) {
         this.listingId = listingId;
     }
 
@@ -69,14 +60,6 @@ public class Rating {
 
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
 }
