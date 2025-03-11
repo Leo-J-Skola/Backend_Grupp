@@ -92,9 +92,12 @@ public class RatingService {
 
 
         // user will be able to rate a listing, but only once per listing
-        /*if (ratingRepository.findByUserIdAndListingId(rating.getUserId(), rating.getListingId()).isPresent()) {
+        Optional<Rating> rateOnce = ratingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId());
+        if (rateOnce.isPresent()){
             throw new RuntimeException("You cannot rate the same listing more than once");
-            }*/
+        }
+
+
 
 
 

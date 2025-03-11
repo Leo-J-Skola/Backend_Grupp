@@ -13,5 +13,4 @@ public interface RatingRepository extends MongoRepository<Rating, String> {
     Optional<Rating> findByListingId(String listingId);                //get the average rating of a listing
     double countRatingByListingId(String listingId);
 
-    Optional<Rating> findByIdAndUserIdAndListingId(String id, String userId, String listingId);
 }
