@@ -7,8 +7,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 
 @Document(collection = "favorites")
 public class Favorite {
@@ -16,25 +14,15 @@ public class Favorite {
     private String id;
 
     @DBRef
-    @NotEmpty(message = "userId cannot be null")
+    @NotEmpty(message = "userId cannot be empty")
     private User userId;
 
     @DBRef
-    @NotEmpty(message = "hostId cannot be null")
-    private User hostId;
-
-    @DBRef
-    @NotEmpty(message = "listingId cannot be null")
+    @NotEmpty(message = "listingId cannot be empty")
     private Listing listingId;
 
     @CreatedDate
     private LocalDate createdDate;
-
-    @DBRef
-    @NotEmpty(message = "Favorites must contain atleast one object")
-    private List<Favorite> favorites;
-
-    private Map<String, Integer> quantities;
 
     public String getId() {
         return id;
@@ -50,14 +38,6 @@ public class Favorite {
 
     public void setUserId(User userId) {
         this.userId = userId;
-    }
-
-    public User getHostId() {
-        return hostId;
-    }
-
-    public void setHostId(User hostId) {
-        this.hostId = hostId;
     }
 
     public Listing getListingId() {
@@ -76,32 +56,13 @@ public class Favorite {
         this.createdDate = createdDate;
     }
 
-    public List<Favorite> getFavorites() {
-        return favorites;
-    }
-
-    public void setFavorites(List<Favorite> favorites) {
-        this.favorites = favorites;
-    }
-
-    public Map<String, Integer> getQuantities() {
-        return quantities;
-    }
-
-    public void setQuantities(Map<String, Integer> quantities) {
-        this.quantities = quantities;
-    }
-
     public Favorite() {
     }
 
-    public Favorite(String id, User userId, User hostId, Listing listingId, LocalDate createdDate, List<Favorite> favorites, Map<String, Integer> quantities) {
+    public Favorite(String id, User userId, Listing listingId, LocalDate createdDate) {
         this.id = id;
         this.userId = userId;
-        this.hostId = hostId;
         this.listingId = listingId;
         this.createdDate = createdDate;
-        this.favorites = favorites;
-        this.quantities = quantities;
     }
 }

@@ -11,6 +11,14 @@ public class FavoriteResponse {
         this.userId = userId;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public List<String> getFavoritedListingsIds() {
+        return favoritedListingsIds;
+    }
+
     public void setFavoritedListingsIds(List<String> favoritedListingsIds) {
         this.favoritedListingsIds = favoritedListingsIds;
     }

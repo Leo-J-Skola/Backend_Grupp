@@ -22,19 +22,23 @@ public class FavoriteController {
         this.favoriteRepository = favoriteRepository;
     }
 
+    // create a favorite object
     @PostMapping("/create")
     public ResponseEntity<Favorite> createFavorite(@RequestBody FavoriteDTO favoriteDTO) {
         Favorite newFavorite = favoriteService.createFavorite(favoriteDTO);
         return new ResponseEntity<>(newFavorite, HttpStatus.CREATED);
     }
 
+    // get all favorite objects
+    //MÅSTE FIXA RETURNERA BARA RESPONSE EGENSKAPER
     @GetMapping("/all")
-    public ResponseEntity<List<FavoriteResponse>> getAllFavorites() {
-        List<FavoriteResponse> favorites = favoriteService.getAllFavorites();
+    public ResponseEntity<List<Favorite>> getAllFavorites() {
+        List<Favorite> favorites = favoriteService.getAllFavorites();
         return ResponseEntity.ok(favorites);
     }
 
-    @GetMapping("/user{userId}")
+    // get a users favorites objects
+    @GetMapping("/user-favorites/{userId}")
     public ResponseEntity<List<FavoriteResponse>> getUserFavorites(@PathVariable String userId) {
         List<FavoriteResponse> favorites = favoriteService.getUserFavorites(userId);
         return ResponseEntity.ok(favorites);

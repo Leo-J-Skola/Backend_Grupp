@@ -32,11 +32,7 @@ public class FavoriteService {
 
         favoriteResponse.setUserId(favorite.getUserId().getId());
 
-        favoriteResponse.setFavoritedListingsIds(
-                favorite.getFavorites().stream()
-                        .map(Favorite::getId)
-                        .collect(Collectors.toList())
-        );
+        favoriteResponse.getFavoritedListingsIds().add(favorite.getListingId().getId());
         return favoriteResponse;
     }
 
@@ -53,20 +49,20 @@ public class FavoriteService {
         Map<String, Integer> quantities = new HashMap<>();
 
         Favorite newFavorite = new Favorite();
+
         newFavorite.setUserId(user);
-        newFavorite.setHostId(user);
         newFavorite.setListingId(listing);
 
         return favoriteRepository.save(newFavorite);
     }
 
-    public List<FavoriteResponse> getAllFavorites() {
+    public List<Favorite> getAllFavorites() {
+        if (favoriteRepository.findAll().isEmpty()) {
+            throw new ResourceNotFoundException("No favorites found");
+        }
         List<Favorite> favorites = favoriteRepository.findAll();
 
-        // convert the favorite objects to favoriteResponse objects
-        return favorites.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        return favorites;
     }
 
     public List<FavoriteResponse> getUserFavorites(String userId) {
@@ -74,8 +70,6 @@ public class FavoriteService {
             throw new ResourceNotFoundException("User not found");
         }
 
-        // OBS
-        // DENNA SKA VA List<Favorite> men blev error!
         Optional<Favorite> favorites = favoriteRepository.findByUserId(userId);
 
         return favorites.stream()
@@ -83,13 +77,16 @@ public class FavoriteService {
                 .collect(Collectors.toList());
     }
 
-    //public Optional<Favorite> getFavoriteById(String id) {
-    //    return favoriteRepository.findById(id);
-    //}
-//
-    //public void deleteFavorite(String id) {
-    //    Favorite favorite = favoriteRepository.findById(id)
-    //                    .orElseThrow(() -> new ResourceNotFoundException("Favorite not found with id: " + id));
-    //    favoriteRepository.deleteById(id);
-    //}
+    public Optional<Favorite> getSpecificFavorite(String id) {
+        if(!favoriteRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Favorite not found");
+        }
+        return favoriteRepository.findById(id);
+    }
+
+    public void deleteFavorite(String id) {
+        Favorite favorite = favoriteRepository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("Favorite not found with id: " + id));
+        favoriteRepository.deleteById(id);
+    }
 }
