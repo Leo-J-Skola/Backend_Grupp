@@ -9,7 +9,7 @@ import se.java.security.repository.FavoriteRepository;
 import se.java.security.services.FavoriteService;
 
 import java.util.List;
-/*
+
 @RestController
 @RequestMapping("/favorite")
 public class FavoriteController {
@@ -64,4 +64,4 @@ public class FavoriteController {
         // return no values
         return ResponseEntity.noContent().build();
     }
-}*/
+}
