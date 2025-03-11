@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import se.java.security.dto.BookingDTO;
+import se.java.security.dto.BookingRequest;
 import se.java.security.dto.BookingResponse;
 import se.java.security.models.*;
 import se.java.security.repository.BookingRepository;
@@ -29,9 +29,8 @@ public class BookingController {
 
     // create a booking object
     @PostMapping("/request")
-    public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody BookingDTO bookingDTO, Optional<Listing> listingOpt) {
-        bookingService.convertBookingDTO(bookingDTO);
-        BookingResponse response = bookingService.bookingRequest(bookingDTO);
+    public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
+        BookingResponse response = bookingService.bookingRequest(bookingRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -57,20 +56,13 @@ public class BookingController {
     }
 
     // update booking object
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateBooking(@PathVariable String id, @RequestBody BookingDTO bookingDTO) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateBooking(@PathVariable String id, @RequestBody Booking booking) {
         // check if booking id exists, or throw
         Booking existingBooking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
-        bookingService.confirmBooking(bookingDTO);
-
         // change booking details
-        existingBooking.setBookingId(bookingDTO.getBookingId());
-        existingBooking.setUserId(bookingDTO.getUserId());
-        existingBooking.setListingId(bookingDTO.getListingId());
-        existingBooking.setStatus(bookingDTO.getStatus());
-        existingBooking.setFee(existingBooking.getFee());
-        existingBooking.setTotalAmount(existingBooking.getTotalAmount());
+        bookingService.confirmBooking(existingBooking);
 
 
         // return values of the booking object

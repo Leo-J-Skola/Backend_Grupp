@@ -5,8 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Document(collection = "listings")
@@ -16,6 +18,8 @@ public class Listing {
     @NotBlank
     private String id;
     private String username;
+    private String hostId; //Owner of the listing
+
     @NotBlank(message = "Title can not be empty")
     private String title;
     @NotBlank(message = "Description can not be empty")
@@ -30,8 +34,7 @@ public class Listing {
     @NotEmpty(message = "Photo cannot be empty")
     private String imageUrl;
 
-    private Set<Availability> availability;
-    private double rating;
+    private Set<Availability> availability = new HashSet<>();
 
     public Listing(String id, String title, String description, Integer rooms, Double pricePerNight, Object location, String imageUrl, Set<Availability> availability) {
         this.id = id;
@@ -112,14 +115,6 @@ public class Listing {
         this.availability = availability;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -128,4 +123,11 @@ public class Listing {
         this.username = username;
     }
 
+    public String getHostId() {
+        return hostId;
+    }
+
+    public void setHostId(String hostId) {
+        this.hostId = hostId;
+    }
 }
