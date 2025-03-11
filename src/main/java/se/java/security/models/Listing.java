@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Document(collection = "listings")
@@ -33,8 +34,7 @@ public class Listing {
     @NotEmpty(message = "Photo cannot be empty")
     private String imageUrl;
 
-    private Set<Availability> availability;
-    private double rating;
+    private Set<Availability> availability = new HashSet<>();
 
     public Listing(String id, String title, String description, Integer rooms, Double pricePerNight, Object location, String imageUrl, Set<Availability> availability) {
         this.id = id;
@@ -113,14 +113,6 @@ public class Listing {
 
     public void setAvailability(Set<Availability> availability) {
         this.availability = availability;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public double getRating() {
-        return rating;
     }
 
     public String getUsername() {

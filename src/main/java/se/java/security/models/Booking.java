@@ -1,12 +1,10 @@
 package se.java.security.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
@@ -16,17 +14,13 @@ import java.util.Set;
 @Valid
 public class Booking {
     @Id
-    @NotBlank
-    @CreatedDate
-    private String bookingId;
+    private String id;
 
-    @NotEmpty(message = "User id can not be empty")
     private String userId;
 
-    @NotEmpty(message = "Listing id can not be empty")
-    private String listingId;
+    @DBRef
+    private Listing listingId;
 
-    @NotEmpty(message = "Status can not be empty")
     private Status status;
 
     @NotNull(message = "fee can not be null")
@@ -35,31 +29,20 @@ public class Booking {
     @NotNull(message = "Total amount can not be null")
     private double totalAmount;
 
-    private boolean acceptedByHost;
 
-    private Set<Availability> availabilities = new HashSet<>();
+    private Set<Availability> bookedDates = new HashSet<>();
 
-
-    public Booking(String bookingId, String userId, String listingId, Status status, double fee, double totalAmount, boolean acceptedByHost, Set<Availability> availabilities) {
-        this.bookingId = bookingId;
+    public Booking(String id, String userId, Listing listingId, Status status, double fee, double totalAmount, Set<Availability> bookedDates) {
+        this.id = id;
         this.userId = userId;
         this.listingId = listingId;
         this.status = status;
         this.fee = fee;
         this.totalAmount = totalAmount;
-        this.acceptedByHost = acceptedByHost;
-        this.availabilities = availabilities;
+        this.bookedDates = bookedDates;
     }
 
     public Booking() {
-    }
-
-    public String getBookingId() {
-        return bookingId;
-    }
-
-    public void setBookingId(String bookingId) {
-        this.bookingId = bookingId;
     }
 
     public String getUserId() {
@@ -70,11 +53,11 @@ public class Booking {
         this.userId = userId;
     }
 
-    public String getListingId() {
+    public Listing getListingId() {
         return listingId;
     }
 
-    public void setListingId(String listingId) {
+    public void setListingId(Listing listingId) {
         this.listingId = listingId;
     }
 
@@ -94,14 +77,6 @@ public class Booking {
         this.fee = fee;
     }
 
-    public boolean isAcceptedByHost() {
-        return acceptedByHost;
-    }
-
-    public void setAcceptedByHost(boolean acceptedByHost) {
-        this.acceptedByHost = acceptedByHost;
-    }
-
     public double getTotalAmount() {
         return totalAmount;
     }
@@ -110,11 +85,20 @@ public class Booking {
         this.totalAmount = totalAmount;
     }
 
-    public Set<Availability> getAvailabilities() {
-        return availabilities;
+    public Set<Availability> getBookedDates() {
+        return bookedDates;
     }
 
-    public void setAvailabilities(Set<Availability> availabilities) {
-        this.availabilities = availabilities;
+    public void setBookedDates(Set<Availability> bookedDates) {
+        this.bookedDates = bookedDates;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 }
