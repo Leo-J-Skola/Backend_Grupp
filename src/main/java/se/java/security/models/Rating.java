@@ -23,7 +23,6 @@ public class Rating {
 
     public Rating(String id, String listingId, int rating) {
         this.id = id;
-        //this.userId = userId;
         this.listingId = listingId;
         this.rating = rating;
     }

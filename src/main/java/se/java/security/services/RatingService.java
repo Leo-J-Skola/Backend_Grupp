@@ -38,6 +38,13 @@ public class RatingService {
         this.bookingRepository = bookingRepository;
     }
 
+    //NÄR MAN ÄNDRAR STATUS PÅ BOKNING SÅ SKAPAS EN NY BOKNING
+
+    // Att fixa: det går ej att lägga rating om en användare har flera bokningar på samma listing(PROBLEMET ÄR att det blir en konflikt eftersom
+    // det skapas en dubblett av bokning när hosten ändrar status
+
+    // rad 80 fungerar ej, behöver fixas så att man ej kan ratea en listing en gång
+
     // check if the user has created a booking and if the host has accepted, through bookingService?
 
     // a user cannot rate his own listing
@@ -67,29 +74,29 @@ public class RatingService {
       Listing existinglisting = listingRepository.findById(rating.getListingId())
               .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
 
+        // check if user is not the owner of the listing
       Listing host = listingRepository.findByUsernameAndId(user.getUsername(), rating.getListingId());
               if (host != null) {
                   throw new RuntimeException("You cannot rate your own listing");
               }
 
-        // check if user is not the owner of the listing
-        /*listingRepository.fi(rating.getListingId(), user.getUsername())
-                .orElseThrow(() -> new ListingNotFoundException("You cannot rate your own listing"));*/
+        // check if the user has a booking
+        BookingDTO booking = bookingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId())
+                .orElseThrow(() -> new ListingNotFoundException("User doesn´t have a booking"));
+
+        //  you can only rate if the booking has status booked
+        Status status = booking.getStatus();
+        { if (status != Status.BOOKED)
+            throw new BookingUnavailableException("You can´t rate a listing if it hasn´t been booked");
+        }
+
 
         // user will be able to rate a listing, but only once per listing
-     /*   if (ratingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId()).isPresent()) {
-            throw new IllegalArgumentException("You have already rated this listing");
-            }
-*/
-            // check if the user has a booking and that it has status booked
-  /*          BookingDTO booking = bookingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId())
-                    .orElseThrow(() -> new ListingNotFoundException("User doesn´t have a booking"));
+        /*if (ratingRepository.findByUserIdAndListingId(rating.getUserId(), rating.getListingId()).isPresent()) {
+            throw new RuntimeException("You cannot rate the same listing more than once");
+            }*/
 
 
-            Status status = booking.getStatus();
-        { if (status != Status.BOOKED)
-                    throw new BookingUnavailableException("You cannot rate this listing");
-        }*/
 
 
         Rating newRating = new Rating();

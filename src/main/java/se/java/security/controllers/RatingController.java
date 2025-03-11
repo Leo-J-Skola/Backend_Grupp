@@ -26,7 +26,7 @@ public class RatingController {
         this.ratingRepository = ratingRepository;
     }
 
-    @PostMapping("/rate") //Rate a listing
+    @PostMapping("{id}") //Rate a listing
     public ResponseEntity<Rating> rateListing(@Valid @RequestBody Rating rating) {
         // try {
         ratingService.rateListing(rating);
