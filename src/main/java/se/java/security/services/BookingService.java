@@ -34,7 +34,7 @@ public class BookingService {
 
         // Create a new Booking entity
         Booking booking = new Booking();
-        booking.setUserId(booking.getUserId());
+        booking.setUserId(bookingRequest.getUserId());
         booking.setListingId(listing);
         booking.setStatus(Status.PENDING);
         booking.setFee(1.05);
