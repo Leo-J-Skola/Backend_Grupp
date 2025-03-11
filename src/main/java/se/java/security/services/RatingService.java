@@ -74,7 +74,7 @@ public class RatingService {
       Listing existinglisting = listingRepository.findById(rating.getListingId())
               .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
 
-        // check if user is not the owner of the listing
+        // check if user is the owner of the listing
       Listing host = listingRepository.findByUsernameAndId(user.getUsername(), rating.getListingId());
               if (host != null) {
                   throw new RuntimeException("You cannot rate your own listing");
