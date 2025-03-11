@@ -1,9 +1,6 @@
 package se.java.security.dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
-import java.util.List;
 
 public class FavoriteResponse {
 
@@ -11,23 +8,17 @@ public class FavoriteResponse {
     private String username;
     @NotEmpty(message = "email cannot be empty")
     private String email;
-    @DBRef
-    private List<String> favoritedListingsIds;
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    @NotEmpty(message = "title cannot be empty")
+    private String title;
+    @NotEmpty(message = "description cannot be empty")
+    private String description;
 
     public String getUsername() {
         return username;
     }
 
-    public List<String> getFavoritedListingsIds() {
-        return favoritedListingsIds;
-    }
-
-    public void setFavoritedListingsIds(List<String> favoritedListingsIds) {
-        this.favoritedListingsIds = favoritedListingsIds;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -38,10 +29,27 @@ public class FavoriteResponse {
         this.email = email;
     }
 
-    public FavoriteResponse(String username, String email, List<String> favoritedListingsIds) {
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public FavoriteResponse(String username, String email, String title, String description) {
         this.username = username;
         this.email = email;
-        this.favoritedListingsIds = favoritedListingsIds;
+        this.title = title;
+        this.description = description;
     }
 
     public FavoriteResponse() {

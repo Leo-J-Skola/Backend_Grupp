@@ -32,10 +32,13 @@ public class FavoriteService {
 
     private static List<FavoriteResponse> getFavoriteResponses(List<Favorite> favorites) {
         List<FavoriteResponse> favoriteResponses = favorites.stream()
-                .map(fav -> new FavoriteResponse(fav.getUserId().getUsername(),
+                .map(fav -> new FavoriteResponse(
+                        fav.getUserId().getUsername(),
                         fav.getUserId().getEmail(),
-                        Collections.singletonList(fav.getListingId().getId())))
-                .toList();
+                        fav.getListingId().getTitle(),
+                        fav.getListingId().getDescription()))
+                        .toList();
+
         return favoriteResponses;
     }
 
@@ -47,7 +50,6 @@ public class FavoriteService {
                 .orElseThrow(() -> new ResourceNotFoundException("Listing not found"));
 
         Favorite newFavorite = new Favorite();
-
         newFavorite.setUserId(user);
         newFavorite.setListingId(listing);
 
@@ -71,13 +73,16 @@ public class FavoriteService {
         if(!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException("User not found with id: " + userId);
         }
+
         List<Favorite> favorites = favoriteRepository.findFavoritesByUserId_Id(userId);
+
         return getFavoriteResponses(favorites);
     }
 
     public List<FavoriteResponse> getSpecificFavorite(String id) {
         List<Favorite> favorites = new ArrayList<>();
-        favorites.add(favoriteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Favorite not found")));
+        favorites.add(favoriteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Favorite not found with id: " + id)));
         return getFavoriteResponses(favorites);
     }
 
