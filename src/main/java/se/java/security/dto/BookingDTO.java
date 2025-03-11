@@ -11,53 +11,21 @@ import java.util.Set;
 
 public class BookingDTO {
     @Id
-    private String bookingId;
-    @NotBlank(message = "user id cannot be null")
-    private String userId;
-    @NotBlank(message = "listing id cannot be null")
-    private String listingId;
+    private String id;
     private Status status;
     @NotNull
-
     private Set<Availability> availabilities =  new HashSet<>();
 
     @NotNull
-    private double totalAmount = 150.0;
+    private double totalAmount;
 
-
-    public BookingDTO(String userId, String listingId, Status status, Set<Availability> availabilities, double totalAmount) {
-        this.userId = userId;
-        this.listingId = listingId;
+    public BookingDTO(Status status, Set<Availability> availabilities, double totalAmount) {
         this.status = status;
         this.availabilities = availabilities;
         this.totalAmount = totalAmount;
     }
 
     public BookingDTO() {
-    }
-
-    public String getBookingId() {
-        return bookingId;
-    }
-
-    public void setBookingId(String bookingId) {
-        this.bookingId = bookingId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getListingId() {
-        return listingId;
-    }
-
-    public void setListingId(String listingId) {
-        this.listingId = listingId;
     }
 
     public Status getStatus() {

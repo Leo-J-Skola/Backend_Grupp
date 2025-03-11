@@ -1,8 +1,8 @@
 package se.java.security.services;
 
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import se.java.security.dto.BookingDTO;
+import se.java.security.dto.BookingRequest;
 import se.java.security.dto.BookingResponse;
 import se.java.security.exceptions.ListingNotFoundException;
 import se.java.security.exceptions.UserNotFoundException;
@@ -13,9 +13,7 @@ import se.java.security.repository.ListingRepository;
 import se.java.security.repository.UserRepository;
 
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 
 @Service
@@ -32,27 +30,23 @@ public class BookingService {
     }
 
     // Try to send a booking request
-    public BookingResponse bookingRequest(Booking bookingDTO) {
-        // Check if the listing exists
-        if (! listingRepository.existsById(bookingDTO.getListingId())) {
-            throw new ListingNotFoundException("Listing not found");
-        }
+    public BookingResponse bookingRequest(BookingRequest bookingRequest) {
 
-        // Check if the user exists
-        if (! userRepository.existsById(bookingDTO.getUserId())) {
-            throw new UserNotFoundException("User not found");
-        }
         // Try to retrieve the listing from the database
-        Optional <Listing> optional = listingRepository.findById(bookingDTO.getListingId());
-        Listing listing = listingRepository.findById(bookingDTO.getListingId())
+        Listing listing = listingRepository.findById(bookingRequest.getListingId())
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
+        // Try to retrieve the user from the database
+        User user = userRepository.findById(bookingRequest.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        // Create a new Booking entity with values of BookingDTO
+        // Create a new Booking entity
         Booking booking = new Booking();
-        booking.setListingId(bookingDTO.getListingId());
-        booking.setUserId(bookingDTO.getUserId());
-        booking.setStatus(Status.PENDING); // Set status to pending
-        booking.setFee(1.05); // Set fee to 5%
+        booking.setUserId(user);
+        booking.setListingId(listing);
+        booking.setStatus(bookingRequest.getStatus());
+        booking.setFee(bookingRequest.getFee());
+        booking.setTotalAmount(bookingRequest.getTotalAmount());
+        booking.setBookedDates(bookingRequest.getBookedDates());
 
         // Create a new hash set for dates
         for (Availability availability : booking.getBookedDates()) {
@@ -62,7 +56,7 @@ public class BookingService {
             booking.getBookedDates().add(available);
         }
         // Calculate the total price with the method called calculatePrice
-        calculatePrice(booking, optional);
+        calculatePrice(booking, Optional.ofNullable(listing));
 
         // Save the booking
         Booking savedBooking = bookingRepository.save(booking);
@@ -76,7 +70,7 @@ public class BookingService {
     }
 
     // The host must accept the booking request to successfully create a booking
-    public void confirmBooking(BookingDTO bookingDTO) {
+    public void confirmBooking(Booking bookingDTO) {
 
            bookingDTO.setStatus(Status.BOOKED);
     }
@@ -111,12 +105,9 @@ public class BookingService {
         }
     }
     public void convertToBookingDTO(Booking booking) {
-        Booking bookingDTO = new Booking();
-        bookingDTO.setUserId(booking.getUserId());
-        bookingDTO.setListingId(booking.getListingId());
-        bookingDTO.setBookedDates(booking.getBookedDates());
-        bookingDTO.setStatus(booking.getStatus());
-        bookingDTO.setBookedDates(booking.getBookedDates());
-        bookingDTO.setTotalAmount(booking.getTotalAmount());
+       BookingDTO bookingDTO = new BookingDTO();
+       bookingDTO.setStatus(booking.getStatus());
+       bookingDTO.setAvailabilities(booking.getBookedDates());
+       bookingDTO.setTotalAmount(booking.getTotalAmount());
     }
 }

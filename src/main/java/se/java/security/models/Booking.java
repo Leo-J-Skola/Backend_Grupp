@@ -1,12 +1,10 @@
 package se.java.security.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
@@ -18,11 +16,11 @@ public class Booking {
     @Id
     private String id;
 
-    @NotEmpty(message = "User id can not be empty")
-    private String userId;
+    @DBRef
+    private User userId;
 
-    @NotEmpty(message = "Listing id can not be empty")
-    private String listingId;
+    @DBRef
+    private Listing listingId;
 
     private Status status;
 
@@ -35,7 +33,7 @@ public class Booking {
 
     private Set<Availability> bookedDates = new HashSet<>();
 
-    public Booking(String id, String userId, String listingId, Status status, double fee, double totalAmount, Set<Availability> bookedDates) {
+    public Booking(String id, User userId, Listing listingId, Status status, double fee, double totalAmount, Set<Availability> bookedDates) {
         this.id = id;
         this.userId = userId;
         this.listingId = listingId;
@@ -49,20 +47,19 @@ public class Booking {
     }
 
 
-
-    public String getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
-    public String getListingId() {
+    public Listing getListingId() {
         return listingId;
     }
 
-    public void setListingId(String listingId) {
+    public void setListingId(Listing listingId) {
         this.listingId = listingId;
     }
 
@@ -105,4 +102,5 @@ public class Booking {
     public void setId(String id) {
         this.id = id;
     }
+
 }
