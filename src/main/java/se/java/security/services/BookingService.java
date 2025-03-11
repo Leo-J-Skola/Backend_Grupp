@@ -5,7 +5,6 @@ import se.java.security.dto.BookingDTO;
 import se.java.security.dto.BookingRequest;
 import se.java.security.dto.BookingResponse;
 import se.java.security.exceptions.ListingNotFoundException;
-import se.java.security.exceptions.UserNotFoundException;
 import se.java.security.models.*;
 
 import se.java.security.repository.BookingRepository;
