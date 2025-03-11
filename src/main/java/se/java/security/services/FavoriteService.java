@@ -1,7 +1,6 @@
 package se.java.security.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import se.java.security.dto.FavoriteDTO;
 import se.java.security.dto.FavoriteResponse;
@@ -14,7 +13,6 @@ import se.java.security.repository.ListingRepository;
 import se.java.security.repository.UserRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class FavoriteService {
@@ -32,17 +30,6 @@ public class FavoriteService {
         this.listingRepository = listingRepository;
     }
 
-    private FavoriteResponse convertToDTO(Favorite favorite) {
-        FavoriteResponse favoriteResponse = new FavoriteResponse();
-
-        favoriteResponse.setUsername(favorite.getUserId().getId());
-        favoriteResponse.setEmail(favorite.getUserId().getEmail());
-
-        favoriteResponse.getFavoritedListingsIds().add(favorite.getListingId().getId());
-
-        return favoriteResponse;
-    }
-
     private static List<FavoriteResponse> getFavoriteResponses(List<Favorite> favorites) {
         List<FavoriteResponse> favoriteResponses = favorites.stream()
                 .map(fav -> new FavoriteResponse(fav.getUserId().getUsername(),
@@ -52,17 +39,12 @@ public class FavoriteService {
         return favoriteResponses;
     }
 
-    // create a new favorite object
     public Favorite createFavorite(FavoriteDTO favoriteDTO) {
         User user = userRepository.findById(favoriteDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Listing listing = listingRepository.findById(favoriteDTO.getListingId())
                 .orElseThrow(() -> new ResourceNotFoundException("Listing not found"));
-
-        // empty list
-        List<Favorite> favorites = new ArrayList<>();
-        Map<String, Integer> quantities = new HashMap<>();
 
         Favorite newFavorite = new Favorite();
 
@@ -72,40 +54,35 @@ public class FavoriteService {
         return favoriteRepository.save(newFavorite);
     }
 
-    //public favorite response
     public List<FavoriteResponse> getAllFavorites() {
         // check that there are favorite objects present
         if (favoriteRepository.findAll().isEmpty()) {
             throw new ResourceNotFoundException("No favorites found");
         }
-
+        // finds all favorite objects
         List<Favorite> favorites = favoriteRepository.findAll();
-
-        List<FavoriteResponse> favoriteResponses = getFavoriteResponses(favorites);
-
-        return favoriteResponses;
+        // only returns username, email and listingid using favoriteresponse
+        return getFavoriteResponses(favorites);
     }
 
+    // get a users favorited objects
     public List<FavoriteResponse> getUserFavorites(String userId) {
         // check that the user id exists
         if(!userRepository.existsById(userId)) {
-            throw new ResourceNotFoundException("User not found");
+            throw new ResourceNotFoundException("User not found with id: " + userId);
         }
-
         List<Favorite> favorites = favoriteRepository.findFavoritesByUserId_Id(userId);
-
-        List<FavoriteResponse> favoriteResponses = getFavoriteResponses(favorites);
-
-        return favoriteResponses;
+        return getFavoriteResponses(favorites);
     }
 
-    public Optional<Favorite> getSpecificFavorite(String id) {
-        if(!favoriteRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Favorite not found");
-        }
-        return favoriteRepository.findById(id);
+    public List<FavoriteResponse> getSpecificFavorite(String id) {
+        List<Favorite> favorites = new ArrayList<>();
+        favorites.add(favoriteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Favorite not found")));
+        return getFavoriteResponses(favorites);
     }
 
+    // This method deletes a favorite object
+    // validates that there is an existing favorite object id, or it will throw a message
     public void deleteFavorite(String id) {
         if (!favoriteRepository.existsById(id)) {
             throw new ResourceNotFoundException("Favorite not found with id: " + id);
