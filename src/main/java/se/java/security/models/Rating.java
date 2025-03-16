@@ -17,13 +17,16 @@ public class Rating {
     @NotEmpty(message = "Listing id can not be empty")
     private String listingId;
 
+    private String bookingId;
+
     @Min(value = 1, message = "Rating must be at least 1")
     @Max(value = 5, message = "Rating must be at most 5")
-    private int rating;
+    private Double rating;
 
-    public Rating(String id, String listingId, int rating) {
+    public Rating(String id, String listingId, String bookingId, Double rating) {
         this.id = id;
         this.listingId = listingId;
+        this.bookingId = bookingId;
         this.rating = rating;
     }
 
@@ -54,12 +57,19 @@ public class Rating {
         this.listingId = listingId;
     }
 
-    public int getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
+    }
 }

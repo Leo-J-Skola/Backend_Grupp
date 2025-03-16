@@ -19,6 +19,7 @@ import se.java.security.repository.UserRepository;
 import se.java.security.repository.ListingRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -104,6 +105,7 @@ public class RatingService {
         Rating newRating = new Rating();
         newRating.setUserId(user.getId());
         newRating.setListingId(rating.getListingId());
+        newRating.setBookingId(booking.getId());
         newRating.setRating(rating.getRating());
 
         ratingRepository.save(newRating);
@@ -117,12 +119,19 @@ public class RatingService {
 
 
 
-  /*  // get the average rating of a listing by using count to divide the rating with all the users that has given it a rating
-    public double getAverageRating(String listingId) {
-        double ratingCount = ratingRepository.countRatingByListingId(listingId);
+    // get the average rating of a listing by getting all rating objects of a listingId
+    public Double getAverageRating(String listingId) {
+        List<Rating> ratings = ratingRepository.findByListingId(listingId);
 
-        return ratingCount/getRating();
+        // iterate through each rating the listing has and get all of its ratings, then puts all the ratings combined into ratingSum
+        Double ratingSum = 0.0;
+        for (Rating rating : ratings) {
+            ratingSum += rating.getRating();
         }
-*/
+
+        // return the average rating of a listing;
+        return ratingSum / ratings.size();
+    }
+
 
 }
