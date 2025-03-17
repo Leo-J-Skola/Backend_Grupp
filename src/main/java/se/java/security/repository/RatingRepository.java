@@ -14,4 +14,6 @@ public interface RatingRepository extends MongoRepository<Rating, String> {
     double countRatingByListingId(String listingId);
 
     double getRatingByListingId(String listingId);
+
+    Optional<Rating> findByUserIdAndListingIdAndBookingId(String id, String listingId, String bookingId);
 }

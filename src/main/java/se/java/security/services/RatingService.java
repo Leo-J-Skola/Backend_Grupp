@@ -1,8 +1,5 @@
 package se.java.security.services;
 
-import jakarta.validation.Valid;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Unwrapped;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,16 +8,13 @@ import org.springframework.stereotype.Service;
 import se.java.security.exceptions.BookingUnavailableException;
 import se.java.security.exceptions.ListingNotFoundException;
 import se.java.security.exceptions.UnauthorizedException;
-import se.java.security.exceptions.UserNotFoundException;
 import se.java.security.models.*;
 import se.java.security.repository.BookingRepository;
 import se.java.security.repository.RatingRepository;
 import se.java.security.repository.UserRepository;
 import se.java.security.repository.ListingRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -74,15 +68,15 @@ public class RatingService {
       Listing existinglisting = listingRepository.findById(rating.getListingId())
               .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
 
-        // check if user is the owner of the listing
-      Listing host = listingRepository.findByUsernameAndId(user.getUsername(), rating.getListingId());
-              if (host != null) {
-                  throw new RuntimeException("You cannot rate your own listing");
-              }
-
         // check if the user has a booking
-        Booking booking = bookingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId())
+        Booking booking = (Booking) bookingRepository.findByUserIdAndListingIdAndId(user.getId(), rating.getListingId(), rating.getBookingId())
                 .orElseThrow(() -> new ListingNotFoundException("User doesn´t have a booking"));
+
+        // check if user is the owner of the listing
+        Listing host = listingRepository.findByUsernameAndId(user.getUsername(), rating.getListingId());
+        if (host != null) {
+            throw new RuntimeException("You cannot rate your own listing");
+        }
 
         //  you can only rate if the booking has status booked
         Status status = booking.getStatus();
@@ -92,7 +86,7 @@ public class RatingService {
 
 
         // user will be able to rate a listing, but only once per listing
-        Optional<Rating> rateOnce = ratingRepository.findByUserIdAndListingId(user.getId(), rating.getListingId());
+        Optional<Rating> rateOnce = ratingRepository.findByUserIdAndListingIdAndBookingId(user.getId(), rating.getListingId(), rating.getBookingId());
         if (rateOnce.isPresent()){
             throw new RuntimeException("You cannot rate the same listing more than once");
         }
