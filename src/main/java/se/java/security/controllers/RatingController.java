@@ -31,19 +31,15 @@ public class RatingController {
         // try {
         ratingService.rateListing(rating);
         return ResponseEntity.status(HttpStatus.OK).body(rating);
-    /*    } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error. Couldn't rate listing", e);
-        }
-    }*/
+       }
 
-  /*  @GetMapping("/average/{listingId}") //Get average rating of a listing
-    public ResponseEntity<Double> getAverageRating(@PathVariable String listingId) {
-        try {
-            double averageRating = ratingService.getAverageRating(listingId);
+    @GetMapping("/average/{listingId}") //Get average rating of a listing
+    public ResponseEntity<?> getAverageRating(@PathVariable String listingId) {
+        //try {
+            Double averageRating = ratingService.getAverageRating(listingId);
             return ResponseEntity.ok(averageRating);
-        } catch (Exception e) {
+       /* } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error. Couldn't get average rating", e);
-        }
-    }*/
+        }*/
     }
 }
