@@ -1,5 +1,6 @@
 package se.java.security.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class ListingController {
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createListing(@RequestBody Listing listing, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> createListing(@Valid @RequestBody Listing listing, @RequestHeader("Authorization") String token) {
         return listingService.createListing(listing, token);
     }
 
