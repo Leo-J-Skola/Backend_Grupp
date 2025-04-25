@@ -13,7 +13,6 @@ import se.java.security.repository.BookingRepository;
 import se.java.security.services.BookingService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/booking")
