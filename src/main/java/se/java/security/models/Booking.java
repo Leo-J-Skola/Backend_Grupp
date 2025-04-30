@@ -1,14 +1,14 @@
 package se.java.security.models;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.Date;
+
 
 @Document(collection = "bookings")
 @Valid
@@ -29,17 +29,33 @@ public class Booking {
     @NotNull(message = "Total amount can not be null")
     private double totalAmount;
 
+    public Date getStartDate() {
+        return startDate;
+    }
 
-    private Set<Availability> bookedDates = new HashSet<>();
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-    public Booking(String id, String userId, Listing listingId, Status status, double fee, double totalAmount, Set<Availability> bookedDates) {
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    private Date startDate;
+
+    private Date endDate;
+
+    public Booking(String id, String userId, Listing listingId, Status status, double fee, double totalAmount) {
         this.id = id;
         this.userId = userId;
         this.listingId = listingId;
         this.status = status;
         this.fee = fee;
         this.totalAmount = totalAmount;
-        this.bookedDates = bookedDates;
     }
 
     public Booking() {
@@ -83,14 +99,6 @@ public class Booking {
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
-    }
-
-    public Set<Availability> getBookedDates() {
-        return bookedDates;
-    }
-
-    public void setBookedDates(Set<Availability> bookedDates) {
-        this.bookedDates = bookedDates;
     }
 
     public String getId() {

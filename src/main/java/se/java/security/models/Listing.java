@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
@@ -15,7 +14,6 @@ import java.util.Set;
 public class Listing {
 
     @Id
-    @NotBlank
     private String id;
     private String username;
     private String hostId; //Owner of the listing

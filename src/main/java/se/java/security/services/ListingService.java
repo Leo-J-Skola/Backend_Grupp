@@ -2,6 +2,7 @@ package se.java.security.services;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import se.java.security.models.Availability;
 import se.java.security.models.Listing;
 import se.java.security.models.User;
 import se.java.security.repository.ListingRepository;
@@ -9,6 +10,8 @@ import se.java.security.repository.UserRepository;
 import se.java.security.util.JwtUtil;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
+
+import java.util.Date;
 import java.util.List;
 
 import java.util.Optional;
@@ -19,6 +22,8 @@ public class ListingService {
     private final ListingRepository listingRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+
+
 
     public ListingService(ListingRepository listingRepository, UserRepository userRepository, JwtUtil jwtUtil) {
         this.listingRepository = listingRepository;
@@ -37,15 +42,19 @@ public class ListingService {
         return ResponseEntity.ok(listing);
     }
 
-    public ResponseEntity<Listing> createListing(Listing listing, String token) {
+    public ResponseEntity<Listing> createListing(Listing listing, Date startDate, Date endDate, String token) {
+
         String username = extractUsernameFromToken(token);
         if (username == null) {
             return ResponseEntity.status(401).body(null);
         }
+
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User was not found"));
 
         listing.setHostId(user.getId());
+        listing.getAvailability().add(new Availability(startDate, endDate));
+        listing.setAvailability(listing.getAvailability());
         Listing savedListing = listingRepository.save(listing);
 
         return new ResponseEntity<>(savedListing, HttpStatus.CREATED);
@@ -104,5 +113,8 @@ public class ListingService {
         } catch (Exception e) {
             return null;
         }
+    }
+    public boolean removeAvailability(Availability availability, Listing listing) {
+        return listing.getAvailability().remove(availability);
     }
 }

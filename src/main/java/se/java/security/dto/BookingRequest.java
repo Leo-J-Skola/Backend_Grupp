@@ -1,18 +1,18 @@
 package se.java.security.dto;
 
-import se.java.security.models.Availability;
-import se.java.security.models.Booking;
 import se.java.security.models.Status;
 
-import java.util.Set;
+import java.util.Date;
+
 
 public class BookingRequest {
     private String listingId;
     private Status status;
     private double fee;
     private double totalAmount;
-    private Set<Availability> bookedDates;
     private String userId;
+    private Date startDate;
+    private Date endDate;
 
     public String getListingId() {
         return listingId;
@@ -46,14 +46,6 @@ public class BookingRequest {
         this.totalAmount = totalAmount;
     }
 
-    public Set<Availability> getBookedDates() {
-        return bookedDates;
-    }
-
-    public void setBookedDates(Set<Availability> bookedDates) {
-        this.bookedDates = bookedDates;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -62,15 +54,30 @@ public class BookingRequest {
         this.userId = userId;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
 
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-    public BookingRequest(String listingId, Status status, double fee, double totalAmount, Set<Availability> bookedDates, String userId) {
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public BookingRequest(String listingId, Status status, double fee, double totalAmount, String userId, Date startDate, Date endDate) {
         this.listingId = listingId;
         this.status = status;
         this.fee = fee;
         this.totalAmount = totalAmount;
-        this.bookedDates = bookedDates;
         this.userId = userId;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public BookingRequest() {

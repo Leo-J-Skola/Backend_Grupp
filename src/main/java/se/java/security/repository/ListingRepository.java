@@ -2,10 +2,12 @@ package se.java.security.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
+import se.java.security.models.Availability;
 import se.java.security.models.Listing;
 import se.java.security.models.User;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface ListingRepository extends MongoRepository<Listing, String> {
