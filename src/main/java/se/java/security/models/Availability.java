@@ -2,17 +2,18 @@ package se.java.security.models;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.Objects;
 
 
 public class Availability {
-    private Booking booking;
     @NotNull(message = "Start date must not be null")
-    private LocalDate startDate;
+    private Date startDate;
 
     @NotNull(message = "End date must not be null")
-    private LocalDate endDate;
+    private Date endDate;
 
-    public Availability(LocalDate startDate, LocalDate endDate) {
+    public Availability(Date startDate, Date endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -20,27 +21,31 @@ public class Availability {
     public Availability() {
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public @NotBlank LocalDate getEndDate() {
+    public @NotBlank Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(@NotBlank LocalDate endDate) {
+    public void setEndDate(@NotBlank Date endDate) {
         this.endDate = endDate;
     }
 
-    public Booking getBooking() {
-        return booking;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Availability that = (Availability) o;
+        return Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate);
     }
 
-    public void setBooking(Booking booking) {
-        this.booking = booking;
+    @Override
+    public int hashCode() {
+        return Objects.hash(startDate, endDate);
     }
 }

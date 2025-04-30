@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import se.java.security.models.Listing;
 import se.java.security.services.ListingService;
 import org.springframework.security.access.prepost.PreAuthorize;
+
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/listing")
@@ -34,8 +36,9 @@ public class ListingController {
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> createListing(@Valid @RequestBody Listing listing, @RequestHeader("Authorization") String token) {
-        return listingService.createListing(listing, token);
+    public ResponseEntity<?> createListing(@Valid @RequestBody Listing listing, Date startDate, Date endDate, @RequestHeader("Authorization") String token) {
+        return listingService.createListing(listing, startDate, endDate, token);
+
     }
 
     @PutMapping("/update/{id}")

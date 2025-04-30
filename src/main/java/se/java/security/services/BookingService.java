@@ -8,10 +8,11 @@ import se.java.security.models.*;
 
 import se.java.security.repository.BookingRepository;
 import se.java.security.repository.ListingRepository;
-import se.java.security.repository.UserRepository;
+
 
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -32,30 +33,28 @@ public class BookingService {
         Listing listing = listingRepository.findById(bookingRequest.getListingId())
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
 
+
         // Create a new Booking entity
         Booking booking = new Booking();
         booking.setUserId(bookingRequest.getUserId());
         booking.setListingId(listing);
         booking.setStatus(Status.PENDING);
-        booking.setFee(1.05);
+        booking.setFee(0.05);
+        booking.setStartDate(bookingRequest.getStartDate());
+        booking.setEndDate(bookingRequest.getEndDate());
 
 
-        // Create a new hash set for dates
-        for (Availability availability : booking.getBookedDates()) {
-            Availability available = new Availability();
-            available.setStartDate(availability.getStartDate());
-            available.setEndDate(availability.getEndDate());
-            booking.getBookedDates().add(available);
-        }
+
+
         // Calculate the total price with the method called calculatePrice
-        calculatePrice(booking, Optional.ofNullable(listing));
+        calculatePrice(booking, Optional.of(listing));
 
         // Save the booking
         Booking savedBooking = bookingRepository.save(booking);
 
         // Return a BookingResponse
         return new BookingResponse(
-                savedBooking.getId(), // Use savedBooking.getId() for MongoDB ObjectId
+                savedBooking.getId(), // Show booking id of created booking
                 "Successfully created booking",
                 savedBooking.getStatus()
         );
@@ -64,7 +63,15 @@ public class BookingService {
     // The host must accept the booking request to successfully create a booking
     public void confirmBooking(Booking booking) {
 
-           booking.setStatus(Status.BOOKED);
+        if (booking.getStartDate().before(booking.getEndDate())) {
+
+            booking.setStatus(Status.BOOKED);
+        }
+
+        if (booking.getEndDate().before(booking.getStartDate())) {
+            System.out.println("End date cannot be before start date");
+        }
+
     }
 
     // Calculates the price by taking the listings price and multiplication it by the days a user wants to book
@@ -73,7 +80,7 @@ public class BookingService {
 
         Listing listing = listingOpt.get();
 
-        for (Availability availability : booking.getBookedDates()) {
+        for (Availability availability : listing.getAvailability()) {
             if (availability.getStartDate() == null) {
                 throw new IllegalArgumentException("Start date must not be null");
             }
@@ -81,7 +88,9 @@ public class BookingService {
                 throw new IllegalArgumentException("End date must not be null");
             }
             System.out.println("Listing Price Per Night: " + listing.getPricePerNight());
-            long numberOfDays = ChronoUnit.DAYS.between(availability.getStartDate(), availability.getEndDate());
+            long diffInMillis = availability.getEndDate().getTime() - availability.getStartDate().getTime();
+            long numberOfDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
+
             System.out.println("Calculating price for availability:");
             System.out.println("Start Date: " + availability.getStartDate());
             System.out.println("End Date: " + availability.getEndDate());
