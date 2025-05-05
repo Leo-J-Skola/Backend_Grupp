@@ -134,5 +134,18 @@ public class AuthController {
         response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
         return ResponseEntity.ok("Logout successful");
     }
-}
 
+    // Get the current logged in user from jwt and return the users info
+    @GetMapping("/check")
+    public ResponseEntity<?> check() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = userDetails.getUsername();
+        User user = userService.findByUsername(username);
+        AuthResponse authResponse = new AuthResponse(
+                "User is logged in",
+                user.getUsername(),
+                user.getRoles()
+        );
+        return ResponseEntity.ok(authResponse);
+    }
+}
