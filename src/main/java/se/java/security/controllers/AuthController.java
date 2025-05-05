@@ -12,10 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.java.security.dto.AuthRequest;
 import se.java.security.dto.AuthResponse;
 import se.java.security.dto.RegisterRequest;
@@ -123,23 +120,19 @@ public class AuthController {
         }
     }
 
+        // Logout endpoint, clears the jwt cookie by setting its max age to 0 (max age is the timer for the cookie)
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        ResponseCookie jwtCookie = ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Strict")
+                .build();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
+        return ResponseEntity.ok("Logout successful");
+    }
 }
+
