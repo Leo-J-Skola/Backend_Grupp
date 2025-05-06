@@ -34,8 +34,7 @@ public class Listing {
 
     private Set<Availability> availability = new HashSet<>();
 
-    public Listing(String id, String title, String description, Integer rooms, Double pricePerNight, Object location, String imageUrl, Set<Availability> availability) {
-        this.id = id;
+    public Listing(String title, String description, Integer rooms, Double pricePerNight, Object location, String imageUrl, Set<Availability> availability) {
         this.title = title;
         this.description = description;
         this.rooms = rooms;
