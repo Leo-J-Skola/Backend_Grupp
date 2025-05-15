@@ -48,6 +48,17 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    // get specific user by username
+    @GetMapping("/findByUserName/{username}")
+    public ResponseEntity<?> getUserByUserName(@PathVariable String username) {
+        // check if user id exists, or throw
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        // return values of the user object
+        return ResponseEntity.ok(user);
+    }
+
     @PutMapping("/update")
     public ResponseEntity<?> updateUser(@Valid @RequestBody User userDetails, @RequestHeader("Authorization") String token) {
         String username = extractUsernameFromToken(token);
