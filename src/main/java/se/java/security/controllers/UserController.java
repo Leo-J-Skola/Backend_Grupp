@@ -49,8 +49,8 @@ public class UserController {
     }
 
     // get specific user by username
-    @GetMapping("/findByUserName/{username}")
-    public ResponseEntity<?> getUserByUserName(@PathVariable String username) {
+    @GetMapping("/username/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
         // check if user id exists, or throw
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
