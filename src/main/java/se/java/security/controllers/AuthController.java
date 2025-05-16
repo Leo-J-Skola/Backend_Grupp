@@ -1,5 +1,6 @@
 package se.java.security.controllers;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -74,8 +75,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login (@Valid @RequestBody AuthRequest authRequest, HttpServletResponse response) {
-
+    public ResponseEntity<?> login (@Valid @RequestBody AuthRequest authRequest) {
         try {
             // authenticate user
             Authentication authentication = authenticationManager.authenticate(
@@ -136,8 +136,7 @@ public class AuthController {
     }
 
     // Get the current logged in user from jwt and return the users info
-    @GetMapping("/check")
-    public ResponseEntity<?> check() {
+    @GetMapping("/check") public ResponseEntity<?> check() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = userDetails.getUsername();
         User user = userService.findByUsername(username);
@@ -148,4 +147,8 @@ public class AuthController {
         );
         return ResponseEntity.ok(authResponse);
     }
+
+
+
+
 }
