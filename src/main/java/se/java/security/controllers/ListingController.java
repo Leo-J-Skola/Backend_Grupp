@@ -28,7 +28,6 @@ public class ListingController {
         return listingService.getAllListings();
     }
 
-    @PreAuthorize("hasRole('USER' or hasRole('ADMIN'))")
     @GetMapping("/{id}")
     public ResponseEntity<?> getSpecificListing(@PathVariable String id) {
         return listingService.getSpecificListing(id);
