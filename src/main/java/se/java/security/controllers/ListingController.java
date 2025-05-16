@@ -19,7 +19,6 @@ public class ListingController {
     private final ListingService listingService;
 
     @Autowired
-
     public ListingController(ListingService listingService) {
         this.listingService = listingService;
     }
@@ -29,23 +28,26 @@ public class ListingController {
         return listingService.getAllListings();
     }
 
+    @PreAuthorize("hasRole('USER' or hasRole('ADMIN'))")
     @GetMapping("/{id}")
     public ResponseEntity<?> getSpecificListing(@PathVariable String id) {
         return listingService.getSpecificListing(id);
     }
 
+    @PreAuthorize("hasRole('USER' or hasRole('ADMIN'))")
     @PostMapping("/create")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> createListing(@Valid @RequestBody Listing listing, Date startDate, Date endDate, @RequestHeader("Authorization") String token) {
         return listingService.createListing(listing, startDate, endDate, token);
 
     }
 
+    @PreAuthorize("hasRole('USER' or hasRole('ADMIN'))")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateListing(@PathVariable String id, @RequestBody Listing updatedListing, @RequestHeader("Authorization") String token) {
         return listingService.updateListing(id, updatedListing, token);
     }
 
+    @PreAuthorize("hasRole('USER' or hasRole('ADMIN'))")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteListing(@PathVariable String id, @RequestHeader("Authorization") String token) {
         return listingService.deleteListing(id, token);
