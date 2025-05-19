@@ -30,21 +30,10 @@ public class BookingRequest {
         this.status = status;
     }
 
-    public double getFee() {
-        return fee;
-    }
-
-    public void setFee(double fee) {
-        this.fee = fee;
-    }
-
     public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
 
     public String getUserId() {
         return userId;
@@ -67,16 +56,6 @@ public class BookingRequest {
     }
 
     public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public BookingRequest(String listingId, Status status, double fee, double totalAmount, String userId, Date startDate, Date endDate) {
-        this.listingId = listingId;
-        this.status = status;
-        this.fee = fee;
-        this.totalAmount = totalAmount;
-        this.userId = userId;
-        this.startDate = startDate;
         this.endDate = endDate;
     }
 

@@ -43,6 +43,15 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.OK).body(booking);
     }
 
+    // list all booking objects by user id
+    @GetMapping("/user-bookings/{userId}")
+    public ResponseEntity<List<Booking>> getUserBookings(@PathVariable String userId) {
+        // list all bookings
+        List<Booking> bookings = bookingRepository.getAllBookingsByUserId(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No bookings found for user"));
+        return ResponseEntity.ok(bookings);
+    }
+
     // get specific booking
     @GetMapping("/{id}")
     public ResponseEntity<Booking> getSpecificBooking(@PathVariable String id) {

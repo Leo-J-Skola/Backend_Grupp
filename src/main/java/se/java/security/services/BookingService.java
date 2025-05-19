@@ -47,7 +47,7 @@ public class BookingService {
 
 
         // Calculate the total price with the method called calculatePrice
-        calculatePrice(booking, Optional.of(listing));
+        calculatePrice(booking, listing);
 
         // Save the booking
         Booking savedBooking = bookingRepository.save(booking);
@@ -76,29 +76,16 @@ public class BookingService {
 
     // Calculates the price by taking the listings price and multiplication it by the days a user wants to book
     // After im adding the fee which is 5%
-    public void calculatePrice(Booking booking, Optional<Listing> listingOpt) {
-
-        Listing listing = listingOpt.get();
-
-        for (Availability availability : listing.getAvailability()) {
-            if (availability.getStartDate() == null) {
-                throw new IllegalArgumentException("Start date must not be null");
-            }
-            if (availability.getEndDate() == null) {
-                throw new IllegalArgumentException("End date must not be null");
-            }
-            System.out.println("Listing Price Per Night: " + listing.getPricePerNight());
-            long diffInMillis = availability.getEndDate().getTime() - availability.getStartDate().getTime();
+    public void calculatePrice(Booking booking, Listing listing) {
+            long diffInMillis = booking.getEndDate().getTime() - booking.getStartDate().getTime();
             long numberOfDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
 
             System.out.println("Calculating price for availability:");
-            System.out.println("Start Date: " + availability.getStartDate());
-            System.out.println("End Date: " + availability.getEndDate());
+            System.out.println("Start Date: " + booking.getStartDate());
+            System.out.println("End Date: " + booking.getEndDate());
             System.out.println("Number of Days: " + numberOfDays);
             // Calculate price by listing price, how many days a user booked and add 5% booking fee
             double totalPrice = listing.getPricePerNight() * numberOfDays * 1.05;
-
             booking.setTotalAmount(totalPrice);
         }
     }
-}
