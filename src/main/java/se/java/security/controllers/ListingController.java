@@ -2,13 +2,15 @@ package se.java.security.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import se.java.security.models.Listing;
+import se.java.security.repository.ListingRepository;
 import se.java.security.services.ListingService;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +19,12 @@ import java.util.List;
 public class ListingController {
 
     private final ListingService listingService;
+    private final ListingRepository listingRepository;
 
     @Autowired
-    public ListingController(ListingService listingService) {
+    public ListingController(ListingService listingService, ListingRepository listingRepository) {
         this.listingService = listingService;
+        this.listingRepository = listingRepository;
     }
 
     @GetMapping
@@ -44,6 +48,14 @@ public class ListingController {
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateListing(@PathVariable String id, @RequestBody Listing updatedListing, @RequestHeader("Authorization") String token) {
         return listingService.updateListing(id, updatedListing, token);
+    }
+
+    @GetMapping("/user-listings/{hostId}")
+    public ResponseEntity<List<Listing>> getUserListings(@PathVariable String hostId) {
+        // list all listings
+        List<Listing> userListings = listingRepository.getAllListingsByHostId(hostId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No Listings found for user"));
+        return ResponseEntity.ok(userListings);
     }
 
     @PreAuthorize("hasRole('USER' or hasRole('ADMIN'))")

@@ -77,10 +77,12 @@ public class UserController {
             return ResponseEntity.status(403).body("You are not allowed to update this user");
         }
 
-        existingUser.setUsername(userDetails.getUsername());
-        existingUser.setEmail(userDetails.getEmail());
+        existingUser.setProfilePic(userDetails.getProfilePic());
         existingUser.setFirstName(userDetails.getFirstName());
+        existingUser.setLastName(userDetails.getLastName());
+        existingUser.setEmail(userDetails.getEmail());
         existingUser.setAge(userDetails.getAge());
+        existingUser.setBio(userDetails.getBio());
 
         return ResponseEntity.ok(userRepository.save(existingUser));
     }
