@@ -65,7 +65,7 @@ public class BookingController {
 
     // update booking object
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateBooking(@PathVariable String id, @RequestBody Booking booking) {
+    public ResponseEntity<?> updateBooking(@PathVariable String id) {
         // check if booking id exists, or throw
         Booking existingBooking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
