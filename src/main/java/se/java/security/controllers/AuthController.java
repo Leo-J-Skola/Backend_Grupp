@@ -55,6 +55,9 @@ public class AuthController {
         user.setEmail(registerRequest.getEmail());
         user.setAge(registerRequest.getAge());
         user.setFirstName(registerRequest.getFirstName());
+        user.setLastName(registerRequest.getLastName());
+        user.setProfilePic(registerRequest.getProfilePic());
+        user.setBio(registerRequest.getBio());
 
         // assign roles
         if(registerRequest.getRoles() == null || registerRequest.getRoles().isEmpty()) {

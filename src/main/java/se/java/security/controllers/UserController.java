@@ -74,14 +74,31 @@ public class UserController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User existingUser = userRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        existingUser.setAge(existingUser.getAge());
-        existingUser.setEmail(existingUser.getEmail());
-        existingUser.setRoles(existingUser.getRoles());
-        existingUser.setBio(existingUser.getBio());
-        existingUser.setId(existingUser.getId());
-        existingUser.setLastName(existingUser.getLastName());
-        existingUser.setFirstName(existingUser.getFirstName());
-        existingUser.setProfilePic(existingUser.getProfilePic());
+
+        if (user.getFirstName() != null && !user.getFirstName().isBlank()) {
+            existingUser.setFirstName(user.getFirstName());
+        }
+
+        if (user.getLastName() != null && !user.getLastName().isBlank()) {
+            existingUser.setLastName(user.getLastName());
+        }
+
+        if (user.getEmail() != null && !user.getEmail().isBlank()) {
+            existingUser.setEmail(user.getEmail());
+        }
+
+        if (user.getBio() != null) {
+            existingUser.setBio(user.getBio());
+        }
+
+        if (user.getAge() != null) {
+            existingUser.setAge(user.getAge());
+        }
+
+        if (user.getProfilePic() != null && !user.getProfilePic().isBlank()) {
+            existingUser.setProfilePic(user.getProfilePic());
+        }
+
         return ResponseEntity.ok(userRepository.save(existingUser));
     }
 

@@ -29,7 +29,7 @@ public class User {
     private String lastName;
 
     @Min(value = 18, message = "Minimum age is 18")
-    private int age;
+    private Integer age;
 
     @Size(max = 100, message = "A bio cannot be longer than 100 characters")
     private String bio; //this is "description" where a user can write something about themselves
@@ -44,7 +44,7 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, Set<Role> roles, String firstName, String lastName, int age, String bio, String profilePic) {
+    public User(String username, String password, Set<Role> roles, String firstName, String lastName, Integer age, String bio, String profilePic) {
         this.username = username;
         this.password = password;
         this.roles = roles;
@@ -109,11 +109,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
