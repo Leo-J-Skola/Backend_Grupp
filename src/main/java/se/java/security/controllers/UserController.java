@@ -3,8 +3,13 @@ package se.java.security.controllers;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import se.java.security.exceptions.UnauthorizedException;
 import se.java.security.models.Listing;
 import se.java.security.models.User;
 import se.java.security.repository.UserRepository;
@@ -60,30 +65,23 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody User userDetails, @RequestHeader("Authorization") String token) {
-        String username = extractUsernameFromToken(token);
-
-        if (username == null || username.isEmpty()) {
-            return ResponseEntity.status(401).body("Login expired, please log in again to update this user");
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
+            throw new UnauthorizedException("User is not authenticated");
         }
 
-        Optional<User> existingUserOptional = userRepository.findByUsername(username);
-        if (existingUserOptional.isEmpty()) {
-            return ResponseEntity.status(404).body("User " + username + " was not found");
-        }
-
-        User existingUser = existingUserOptional.get();
-        if (!existingUser.getId().equals(userRepository.findByUsername(username).get().getId())) {
-            return ResponseEntity.status(403).body("You are not allowed to update this user");
-        }
-
-        existingUser.setProfilePic(userDetails.getProfilePic());
-        existingUser.setFirstName(userDetails.getFirstName());
-        existingUser.setLastName(userDetails.getLastName());
-        existingUser.setEmail(userDetails.getEmail());
-        existingUser.setAge(userDetails.getAge());
-        existingUser.setBio(userDetails.getBio());
-
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User existingUser = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        existingUser.setAge(existingUser.getAge());
+        existingUser.setEmail(existingUser.getEmail());
+        existingUser.setRoles(existingUser.getRoles());
+        existingUser.setBio(existingUser.getBio());
+        existingUser.setId(existingUser.getId());
+        existingUser.setLastName(existingUser.getLastName());
+        existingUser.setFirstName(existingUser.getFirstName());
+        existingUser.setProfilePic(existingUser.getProfilePic());
         return ResponseEntity.ok(userRepository.save(existingUser));
     }
 
