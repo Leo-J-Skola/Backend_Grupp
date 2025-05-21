@@ -106,7 +106,15 @@ public class AuthController {
                     "Login successful",
                     userDetails.getUsername(),
                     userService.findByUsername(userDetails.getUsername()).getRoles(),
-                    userService.findByUsername(userDetails.getUsername()).getId()
+                    userService.findByUsername(userDetails.getUsername()).getId(),
+                    userService.findByUsername(userDetails.getUsername()).getProfilePic(),
+                    userService.findByUsername(userDetails.getUsername()).getFirstName(),
+                    userService.findByUsername(userDetails.getUsername()).getLastName(),
+                    userService.findByUsername(userDetails.getUsername()).getEmail(),
+                    userService.findByUsername(userDetails.getUsername()).getAge(),
+                    userService.findByUsername(userDetails.getUsername()).getBio()
+
+
             );
 
             return ResponseEntity.ok()
@@ -145,7 +153,13 @@ public class AuthController {
                 "User is logged in",
                 user.getUsername(),
                 user.getRoles(),
-                user.getId()
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getBio(),
+                user.getAge(),
+                user.getProfilePic()
         );
         return ResponseEntity.ok(authResponse);
     }
