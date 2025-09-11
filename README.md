@@ -2,7 +2,7 @@
 
 This project is our custom-built version of **Airbnb**, featuring core functionalities such as **user management**, **property listings**, and **booking services**. All data is stored using **MongoDB**.
 
-Our current focus is a **refactor of the booking system** to enhance performance and scalability.
+Our current focus is a **refactor of the booking system** to enhance performance, scalability and bug fixes.
 
 ---
 
