@@ -16,18 +16,24 @@ public class AuthenticationService {
         this.userRepository = userRepository;
     }
 
-    // check if user is logged in and has authetication
-    // if the user has authentication we gather his info through his username
-    public User validateCurrentUser () {
+    // check if user is logged in and is authenticated
+    public String validateCurrentUser () {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
             throw new UnauthorizedException("User is not authenticated");
         }
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        return userRepository.findByUsername(userDetails.getUsername())
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        // if the user is authenticated we get his details
+        Object user = authentication.getPrincipal();
+        if (user instanceof UserDetails userDetails) {
+            return userDetails.getUsername();
     }
-}
+        throw new UnauthorizedException("User details not found");
+    }
+        // get the current user from the database using the authenticated username
+        public User getCurrentUser() {
+            String username = validateCurrentUser();
+            return userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UnauthorizedException("Authenticated user was not found in database"));
+        }
+    }
