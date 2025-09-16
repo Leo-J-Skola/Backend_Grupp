@@ -18,7 +18,8 @@ public class BookingValidationService {
 //                    throw new UnauthorizedException("Booking failed. The selected dates are not available.");
 //                }
     }
-
+    // Call this method before creating a booking
+    // Validates so a user cannot book his own listing, and checks if the dates are still available
     public void validateBooking(User user, Listing listing) {
         listingAuthorizationService.checkIfUserCanBookListing(user, listing);
         checkBookingDatesAvailability();
