@@ -4,11 +4,13 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 import se.java.security.exceptions.UnauthorizedException;
 import se.java.security.models.User;
 import se.java.security.repository.UserRepository;
 import se.java.security.repository.BookingRepository;
 
+@Service
 public class AuthenticationService {
 
     private final UserRepository userRepository;

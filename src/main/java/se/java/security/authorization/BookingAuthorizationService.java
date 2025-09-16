@@ -1,10 +1,11 @@
 package se.java.security.authorization;
 
+import org.springframework.stereotype.Service;
 import se.java.security.exceptions.UnauthorizedException;
 import se.java.security.models.User;
 import se.java.security.models.Booking;
 
-
+@Service
 public class BookingAuthorizationService {
 
         /* This checks if the user is the owner of

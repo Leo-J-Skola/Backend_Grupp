@@ -1,9 +1,11 @@
 package se.java.security.authorization;
 
+import org.springframework.stereotype.Service;
 import se.java.security.exceptions.UnauthorizedException;
 import se.java.security.models.User;
 import se.java.security.models.Listing;
 
+@Service
 public class ListingAuthorizationService {
 
     /* Check if user is allowed to book a listing (for example, dont let user book his own) */

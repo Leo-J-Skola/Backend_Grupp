@@ -1,9 +1,11 @@
 package se.java.security.validation;
 
+import org.springframework.stereotype.Service;
 import se.java.security.models.User;
 import se.java.security.models.Listing;
 import se.java.security.authorization.ListingAuthorizationService;
 
+@Service
 public class BookingValidationService {
 
     private final ListingAuthorizationService listingAuthorizationService;
