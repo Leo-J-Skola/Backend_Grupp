@@ -59,6 +59,18 @@ public class BookingRequest {
         this.endDate = endDate;
     }
 
+    public double getFee() {
+        return fee;
+    }
+
+    public void setFee(double fee) {
+        this.fee = fee;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     public BookingRequest() {
     }
 }
