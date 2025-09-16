@@ -1,6 +1,7 @@
 package se.java.security.services;
 
 import org.springframework.stereotype.Service;
+import se.java.security.authentication.AuthenticationService;
 import se.java.security.dto.BookingRequest;
 import se.java.security.dto.BookingResponse;
 import se.java.security.exceptions.ListingNotFoundException;
@@ -22,10 +23,12 @@ public class BookingService {
 
     private final ListingRepository listingRepository;
     private final UserRepository userRepository;
+    private final AuthenticationService authenticationService;
 
-    public BookingService(ListingRepository listingRepository, UserRepository userRepository) {
+    public BookingService(ListingRepository listingRepository, UserRepository userRepository, AuthenticationService authenticationService) {
         this.listingRepository = listingRepository;
         this.userRepository = userRepository;
+        this.authenticationService = authenticationService;
     }
 
     // Try to send a booking request
@@ -35,6 +38,7 @@ public class BookingService {
 
         // Waiting for booking creation from BookingFactory class
         // Before this method can be completed
+        authenticationService.validateCurrentUser();
 
 
         Listing listing = listingRepository.findById(bookingRequest.getListingId())
