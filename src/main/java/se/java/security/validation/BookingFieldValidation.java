@@ -1,10 +1,17 @@
 package se.java.security.validation;
 
+import org.springframework.stereotype.Service;
+import se.java.security.authentication.AuthenticationService;
 import se.java.security.dto.BookingRequest;
-import se.java.security.models.Booking;
 import se.java.security.models.Status;
 
+@Service
 public class BookingFieldValidation {
+    private final AuthenticationService authenticationService;
+
+    public BookingFieldValidation(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
 
     public void validateBookingRequestData(BookingRequest bookingRequest) {
         // Set status to pending if status is null
@@ -12,7 +19,7 @@ public class BookingFieldValidation {
             bookingRequest.setStatus(Status.PENDING);
         }
         // Throws an error if userId is null
-        if(bookingRequest.getUserId() == null){
+        if(authenticationService.getCurrentUser().getId() == null){
             throw new IllegalArgumentException("userId is null");
         }
         // Throws an error if listingId is null
@@ -32,7 +39,7 @@ public class BookingFieldValidation {
             throw new IllegalArgumentException("startDate or endDate can't be null");
         }
         // Validation check to see if endDate is before the startDate
-        if(bookingRequest.getStartDate().before(bookingRequest.getEndDate())){
+        if(bookingRequest.getStartDate().after(bookingRequest.getEndDate())){
             throw new IllegalArgumentException("endDate can't be before startDate");
         }
 
