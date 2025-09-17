@@ -52,7 +52,7 @@ public class ListingService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User was not found"));
         listing.setHostId(user.getId());
-        listing.getAvailability().add(new Availability(startDate, endDate));
+        listing.getAvailability().add(new Availability(startDate, endDate, listingId));
         listing.setAvailability(listing.getAvailability());
         Listing savedListing = listingRepository.save(listing);
 

@@ -1,24 +1,31 @@
 package se.java.security.models;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
+import org.springframework.data.annotation.Id;
+
 import java.util.Date;
-import java.util.Objects;
+
 
 
 public class Availability {
-    @NotNull(message = "Start date must not be null")
+
+    @Id
+    private String id;
+
+    @NotBlank(message = "startDate cannot be blank")
     private Date startDate;
 
-    @NotNull(message = "End date must not be null")
+    @NotBlank(message = "endDate cannot be blank")
     private Date endDate;
 
-    public Availability(Date startDate, Date endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    @NotBlank(message = "listingId cannot be blank")
+    private String listingId;
+
+    public String getId() {
+        return id;
     }
 
-    public Availability() {
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Date getStartDate() {
@@ -29,23 +36,29 @@ public class Availability {
         this.startDate = startDate;
     }
 
-    public @NotBlank Date getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(@NotBlank Date endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Availability that = (Availability) o;
-        return Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate);
+    public String getListingId() {
+        return listingId;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(startDate, endDate);
+    public void setListingId(String listingId) {
+        this.listingId = listingId;
+    }
+
+    public Availability(String id, Date startDate, Date endDate, String listingId) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.listingId = listingId;
+    }
+
+    public Availability() {
     }
 }
