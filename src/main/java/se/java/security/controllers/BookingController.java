@@ -29,7 +29,7 @@ public class BookingController {
     // create a booking object
     @PostMapping("/request")
     public ResponseEntity<BookingResponse> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
-        BookingResponse response = bookingService.bookingRequest(bookingRequest);
+        BookingResponse response = bookingService.sendBookingRequest(bookingRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -70,7 +70,8 @@ public class BookingController {
         Booking existingBooking = bookingRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
         // change booking details
-        bookingService.confirmBooking(existingBooking);
+        //booking confirmation not yet implemented correctly
+//        bookingService.confirmBooking(existingBooking);
 
 
         // return values of the booking object
