@@ -3,7 +3,7 @@ package se.java.security.validation;
 import org.springframework.stereotype.Service;
 import se.java.security.authentication.AuthenticationService;
 import se.java.security.dto.BookingRequest;
-import se.java.security.models.Status;
+import se.java.security.models.BookingStatus;
 
 @Service
 public class BookingFieldValidation {
@@ -16,7 +16,7 @@ public class BookingFieldValidation {
     public void validateBookingRequestData(BookingRequest bookingRequest) {
         // Set status to pending if status is null
         if(bookingRequest.getStatus() == null ){
-            bookingRequest.setStatus(Status.PENDING);
+            bookingRequest.setStatus(BookingStatus.PENDING);
         }
         // Throws an error if userId is null
         if(authenticationService.getCurrentUser().getId() == null){

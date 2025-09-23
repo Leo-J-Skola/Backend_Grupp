@@ -1,26 +1,25 @@
 package se.java.security.dto;
 
-import se.java.security.models.Availability;
-import se.java.security.models.Status;
+import se.java.security.models.BookingStatus;
 
 public class BookingResponse {
 
     private String bookingId;
     private String message;
-    private Status status;
+    private BookingStatus bookingStatus;
 
-    public BookingResponse(String bookingId, String message, Status status) {
+    public BookingResponse(String bookingId, String message, BookingStatus bookingStatus) {
         this.bookingId = bookingId;
         this.message = message;
-        this.status = status;
+        this.bookingStatus = bookingStatus;
     }
 
-    public Status getStatus() {
-        return status;
+    public BookingStatus getStatus() {
+        return bookingStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(BookingStatus bookingStatus) {
+        this.bookingStatus = bookingStatus;
     }
 
     public String getMessage() {
