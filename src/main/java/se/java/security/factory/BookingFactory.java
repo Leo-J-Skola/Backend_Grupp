@@ -6,13 +6,14 @@ import se.java.security.models.Listing;
 import se.java.security.models.Status;
 import se.java.security.repository.BookingRepository;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
 @Component
 public class BookingFactory {
 
-    public Booking createBooking(Status status, String userId, Listing listing, double fee, double totalAmount, Date startDate, Date endDate) {
+    public Booking createBooking(Status status, String userId, Listing listing, double fee, double totalAmount, LocalDate startDate, LocalDate endDate) {
 
 
         // Create a new booking object
