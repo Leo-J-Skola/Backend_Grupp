@@ -1,11 +1,11 @@
 package se.java.security.models;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDate;
 
 
@@ -21,14 +21,14 @@ public class Booking {
     @DBRef
     private Listing listingId;
 
-    private Status status;
+    private BookingStatus bookingStatus;
 
     @NotNull(message = "fee can not be null")
     private double fee;
 
     @NotNull(message = "Total amount can not be null")
     private double totalAmount;
-
+  
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -49,16 +49,26 @@ public class Booking {
 
     private LocalDate endDate;
 
-    public Booking(String id, String userId, Listing listingId, Status status, double fee, double totalAmount) {
+    public Booking() {
+    }
+
+    public Booking(String id, String userId, Listing listingId, BookingStatus bookingStatus, double fee, double totalAmount, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.userId = userId;
         this.listingId = listingId;
-        this.status = status;
+        this.bookingStatus = bookingStatus;
         this.fee = fee;
         this.totalAmount = totalAmount;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    public Booking() {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserId() {
@@ -77,12 +87,12 @@ public class Booking {
         this.listingId = listingId;
     }
 
-    public Status getStatus() {
-        return status;
+    public BookingStatus getBookingStatus() {
+        return bookingStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setBookingStatus(BookingStatus bookingStatus) {
+        this.bookingStatus = bookingStatus;
     }
 
     public double getFee() {
@@ -101,12 +111,19 @@ public class Booking {
         this.totalAmount = totalAmount;
     }
 
-    public String getId() {
-        return id;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 }

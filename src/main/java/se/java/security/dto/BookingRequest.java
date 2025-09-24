@@ -1,13 +1,12 @@
 package se.java.security.dto;
 
-import se.java.security.models.Status;
 
 import java.time.LocalDate;
 
 
 public class BookingRequest {
     private String listingId;
-    private Status status;
+    private BookingStatus bookingStatus;
     private double fee;
     private double totalAmount;
     private LocalDate startDate;
@@ -21,12 +20,12 @@ public class BookingRequest {
         this.listingId = listingId;
     }
 
-    public Status getStatus() {
-        return status;
+    public BookingStatus getStatus() {
+        return bookingStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(BookingStatus bookingStatus) {
+        this.bookingStatus = bookingStatus;
     }
 
     public double getTotalAmount() {
