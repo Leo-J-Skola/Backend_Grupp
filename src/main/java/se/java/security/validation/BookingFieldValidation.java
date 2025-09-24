@@ -26,20 +26,12 @@ public class BookingFieldValidation {
         if(bookingRequest.getListingId() == null){
             throw new IllegalArgumentException("listingId is null");
         }
-        // Throws an error if fee is less than or equal to zero
-        if(bookingRequest.getFee() <= 0 ){
-            throw new IllegalArgumentException("Fee can't be less than or equal to 0");
-        }
-        // Throws an error if total amount is less than or equal to zero
-        if(bookingRequest.getTotalAmount()<= 0 ){
-            throw new IllegalArgumentException("Total amount can't be less than or equal to 0");
-        }
         // Throws an error if startDate or endDate is a null value
         if(bookingRequest.getStartDate() == null || bookingRequest.getEndDate() == null){
             throw new IllegalArgumentException("startDate or endDate can't be null");
         }
         // Validation check to see if endDate is before the startDate
-        if(bookingRequest.getStartDate().after(bookingRequest.getEndDate())){
+        if(bookingRequest.getStartDate().isAfter(bookingRequest.getEndDate())){
             throw new IllegalArgumentException("endDate can't be before startDate");
         }
 
