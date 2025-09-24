@@ -73,11 +73,11 @@ public class Booking {
         this.listingId = listingId;
     }
 
-    public BookingStatus getStatus() {
+    public BookingStatus getBookingStatus() {
         return bookingStatus;
     }
 
-    public void setStatus(BookingStatus bookingStatus) {
+    public void setBookingStatus(BookingStatus bookingStatus) {
         this.bookingStatus = bookingStatus;
     }
 

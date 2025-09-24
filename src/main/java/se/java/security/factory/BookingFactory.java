@@ -16,7 +16,7 @@ public class BookingFactory {
 
         // Create a new booking object
         Booking booking = new Booking();
-        booking.setStatus(bookingStatus);
+        booking.setBookingStatus(bookingStatus);
         booking.setUserId(userId);
         booking.setListingId(listing);
         booking.setFee(fee);
