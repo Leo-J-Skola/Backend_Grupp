@@ -1,8 +1,7 @@
 package se.java.security.dto;
 
-import se.java.security.models.BookingStatus;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 
 public class BookingRequest {
@@ -10,8 +9,8 @@ public class BookingRequest {
     private BookingStatus bookingStatus;
     private double fee;
     private double totalAmount;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public String getListingId() {
         return listingId;
@@ -34,19 +33,19 @@ public class BookingRequest {
     }
 
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

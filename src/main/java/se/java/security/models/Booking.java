@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDate;
 
-import java.util.Date;
 
 
 @Document(collection = "bookings")
@@ -28,17 +28,31 @@ public class Booking {
 
     @NotNull(message = "Total amount can not be null")
     private double totalAmount;
+  
+    public LocalDate getStartDate() {
+        return startDate;
+    }
 
-    @NotBlank(message = "startDate cannot be blank")
-    private Date startDate;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
 
-    @NotBlank(message = "endDate cannot be blank")
-    private Date endDate;
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     public Booking() {
     }
 
-    public Booking(String id, String userId, Listing listingId, BookingStatus bookingStatus, double fee, double totalAmount, Date startDate, Date endDate) {
+    public Booking(String id, String userId, Listing listingId, BookingStatus bookingStatus, double fee, double totalAmount, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.userId = userId;
         this.listingId = listingId;
@@ -97,19 +111,19 @@ public class Booking {
         this.totalAmount = totalAmount;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 }

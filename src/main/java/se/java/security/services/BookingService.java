@@ -1,6 +1,5 @@
 package se.java.security.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.java.security.authentication.AuthenticationService;
 import se.java.security.dto.BookingRequest;
@@ -8,7 +7,9 @@ import se.java.security.dto.BookingResponse;
 import se.java.security.exceptions.BookingUnavailableException;
 import se.java.security.exceptions.ListingNotFoundException;
 import se.java.security.factory.BookingFactory;
-import se.java.security.models.*;
+import se.java.security.models.Booking;
+import se.java.security.models.BookingStatus;
+import se.java.security.models.Listing;
 import se.java.security.repository.BookingRepository;
 import se.java.security.repository.ListingRepository;
 import se.java.security.validation.BookingFieldValidation;
@@ -20,55 +21,75 @@ public class BookingService {
 
     private final AuthenticationService authenticationService;
     private final BookingFieldValidation bookingFieldValidation;
-    @Autowired
     private final BookingRepository bookingRepository;
     private final BookingFactory bookingFactory;
     private final ListingRepository listingRepository;
+    private final PriceCalculationService priceCalculationService;
 
-    public BookingService(AuthenticationService authenticationService, BookingFieldValidation bookingFieldValidation, BookingRepository bookingRepository, BookingFactory bookingFactory, ListingRepository listingRepository) {
+    public BookingService(AuthenticationService authenticationService,
+                          BookingFieldValidation bookingFieldValidation,
+                          BookingRepository bookingRepository,
+                          BookingFactory bookingFactory,
+                          ListingRepository listingRepository,
+                          PriceCalculationService priceCalculationService) {
         this.authenticationService = authenticationService;
         this.bookingFieldValidation = bookingFieldValidation;
         this.bookingRepository = bookingRepository;
         this.bookingFactory = bookingFactory;
         this.listingRepository = listingRepository;
+        this.priceCalculationService = priceCalculationService;
     }
 
     // Try to send a booking request
     public BookingResponse sendBookingRequest(BookingRequest bookingRequest) {
+        // Validate booking request data
+        bookingFieldValidation.validateBookingRequestData(bookingRequest);
 
-        // Check if dates are booked
+        // Ensure dates are not already booked
         if (checkBooking(bookingRequest)) {
             throw new BookingUnavailableException("You cannot book this listing during these dates");
         }
 
-        // Get user from id from authentication
+        // Get user from authentication
         String userId = authenticationService.getCurrentUser().getId();
 
-        bookingFieldValidation.validateBookingRequestData(bookingRequest);
-
-        // Get listing object from database and use it when creating bookings
+        // Fetch listing from DB
         Listing listing = listingRepository.findById(bookingRequest.getListingId())
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
 
-        // Create booking
+        // Calculate total amount and fee
+        double totalAmount = priceCalculationService.calculateTotalAmount(
+                bookingRequest.getStartDate(),
+                bookingRequest.getEndDate(),
+                listing.getPricePerNight()
+        );
+        double fee = priceCalculationService.calculateFee(totalAmount);
+
+        // Create booking using validated/calculated values
         Booking booking = bookingFactory.createBooking(
                 bookingRequest.getStatus(),
-                userId, listing,
-                bookingRequest.getFee(),
-                bookingRequest.getTotalAmount(),
+                userId,
+                listing,
+                fee,
+                totalAmount,
                 bookingRequest.getStartDate(),
-                bookingRequest.getEndDate());
+                bookingRequest.getEndDate()
+        );
+
         bookingRepository.save(booking);
-        String bookingId = booking.getId();
-        return new BookingResponse(bookingId,"Booking successfully created",bookingRequest.getStatus());
+
+        return new BookingResponse(
+                booking.getId(),
+                "Booking successfully created",
+                bookingRequest.getStatus()
+        );
     }
 
     /*
-    checks if the booking request startdate to end date is overlapping
-    with any existing bookings that has status pending or booked
+     * Checks if the booking request dates overlap with
+     * existing bookings that have status PENDING or BOOKED.
      */
     public boolean checkBooking(BookingRequest bookingRequest) {
-
         Listing listing = listingRepository.findById(bookingRequest.getListingId())
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
 
@@ -78,8 +99,10 @@ public class BookingService {
         );
 
         for (Booking booking : existingBookings) {
-            if (bookingRequest.getStartDate().compareTo(booking.getEndDate()) <= 0 &&
-                    booking.getStartDate().compareTo(bookingRequest.getEndDate()) <= 0) {
+            boolean overlaps =
+                    bookingRequest.getStartDate().compareTo(booking.getEndDate()) <= 0 &&
+                    booking.getStartDate().compareTo(bookingRequest.getEndDate()) <= 0;
+            if (overlaps) {
                 return true;
             }
         }
