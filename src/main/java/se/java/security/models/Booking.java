@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 
 
+
 @Document(collection = "bookings")
 @Valid
 public class Booking {

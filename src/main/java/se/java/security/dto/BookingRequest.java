@@ -1,6 +1,5 @@
 package se.java.security.dto;
 
-import se.java.security.models.Listing;
 import se.java.security.models.Status;
 
 import java.time.LocalDate;
