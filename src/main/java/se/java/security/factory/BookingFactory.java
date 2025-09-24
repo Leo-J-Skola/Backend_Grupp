@@ -8,6 +8,7 @@ import se.java.security.models.Status;
 import java.time.LocalDate;
 
 
+
 @Component
 public class BookingFactory {
 
