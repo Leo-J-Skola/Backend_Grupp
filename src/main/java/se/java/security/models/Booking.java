@@ -28,22 +28,6 @@ public class Booking {
 
     @NotNull(message = "Total amount can not be null")
     private double totalAmount;
-  
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
 
     private LocalDate startDate;
 

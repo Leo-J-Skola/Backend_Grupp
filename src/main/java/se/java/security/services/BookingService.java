@@ -90,6 +90,7 @@ public class BookingService {
      * existing bookings that have status PENDING or BOOKED.
      */
     public boolean checkBooking(BookingRequest bookingRequest) {
+
         Listing listing = listingRepository.findById(bookingRequest.getListingId())
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
 
@@ -99,10 +100,8 @@ public class BookingService {
         );
 
         for (Booking booking : existingBookings) {
-            boolean overlaps =
-                    bookingRequest.getStartDate().compareTo(booking.getEndDate()) <= 0 &&
-                    booking.getStartDate().compareTo(bookingRequest.getEndDate()) <= 0;
-            if (overlaps) {
+            if (bookingRequest.getStartDate().compareTo(booking.getEndDate()) <= 0 &&
+                    booking.getStartDate().compareTo(bookingRequest.getEndDate()) <= 0) {
                 return true;
             }
         }

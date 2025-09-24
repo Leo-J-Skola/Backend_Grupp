@@ -1,6 +1,8 @@
 package se.java.security.dto;
 
 
+import se.java.security.models.BookingStatus;
+
 import java.time.LocalDate;
 
 
