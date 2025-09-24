@@ -4,10 +4,9 @@ import org.springframework.stereotype.Component;
 import se.java.security.models.Booking;
 import se.java.security.models.Listing;
 import se.java.security.models.Status;
-import se.java.security.repository.BookingRepository;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 
 @Component
