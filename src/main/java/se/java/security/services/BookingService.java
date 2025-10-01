@@ -50,7 +50,7 @@ public class BookingService {
         bookingFieldValidation.validateBookingRequestData(bookingRequest);
 
         // Ensure dates are not already booked
-        if (checkBooking(bookingRequest)) {
+        if (validateBookingDates(bookingRequest)) {
             throw new BookingUnavailableException("You cannot book this listing during these dates");
         }
 
@@ -93,7 +93,7 @@ public class BookingService {
      * Checks if the booking request dates overlap with
      * existing bookings that have status PENDING or BOOKED.
      */
-    public boolean checkBooking(BookingRequest bookingRequest) {
+    public boolean validateBookingDates(BookingRequest bookingRequest) {
 
         Listing listing = listingRepository.findById(bookingRequest.getListingId())
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
