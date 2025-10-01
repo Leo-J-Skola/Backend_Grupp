@@ -51,7 +51,7 @@ public class BookingService {
 
         // Ensure dates are not already booked
         if (validateBookingDates(bookingRequest)) {
-            throw new BookingUnavailableException("You cannot book this listing during these dates");
+            throw new BookingUnavailableException("The booking dates you have requested is already pending or booked");
         }
 
         // Get user from authentication
