@@ -12,6 +12,7 @@ import se.java.security.models.BookingStatus;
 import se.java.security.models.Listing;
 import se.java.security.repository.BookingRepository;
 import se.java.security.repository.ListingRepository;
+import se.java.security.services.strategy.BookingValidationStrategy;
 import se.java.security.validation.BookingFieldValidation;
 
 import java.util.List;
@@ -25,19 +26,22 @@ public class BookingService {
     private final BookingFactory bookingFactory;
     private final ListingRepository listingRepository;
     private final PriceCalculationService priceCalculationService;
+    private final BookingValidationStrategy bookingValidationStrategy;
 
     public BookingService(AuthenticationService authenticationService,
                           BookingFieldValidation bookingFieldValidation,
                           BookingRepository bookingRepository,
                           BookingFactory bookingFactory,
                           ListingRepository listingRepository,
-                          PriceCalculationService priceCalculationService) {
+                          PriceCalculationService priceCalculationService,
+                          BookingValidationStrategy bookingValidationStrategy) {
         this.authenticationService = authenticationService;
         this.bookingFieldValidation = bookingFieldValidation;
         this.bookingRepository = bookingRepository;
         this.bookingFactory = bookingFactory;
         this.listingRepository = listingRepository;
         this.priceCalculationService = priceCalculationService;
+        this.bookingValidationStrategy = bookingValidationStrategy;
     }
 
     // Try to send a booking request
@@ -99,12 +103,6 @@ public class BookingService {
                 List.of(BookingStatus.PENDING, BookingStatus.BOOKED)
         );
 
-        for (Booking booking : existingBookings) {
-            if (bookingRequest.getStartDate().compareTo(booking.getEndDate()) <= 0 &&
-                    booking.getStartDate().compareTo(bookingRequest.getEndDate()) <= 0) {
-                return true;
-            }
-        }
-        return false;
+        return bookingValidationStrategy.isValid(bookingRequest, existingBookings);
     }
 }
