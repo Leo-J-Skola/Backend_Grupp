@@ -1,4 +1,4 @@
-package se.java.security.services.strategy;
+package se.java.security.strategy;
 
 import se.java.security.dto.BookingRequest;
 import se.java.security.models.Booking;

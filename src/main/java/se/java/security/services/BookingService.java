@@ -12,7 +12,7 @@ import se.java.security.models.BookingStatus;
 import se.java.security.models.Listing;
 import se.java.security.repository.BookingRepository;
 import se.java.security.repository.ListingRepository;
-import se.java.security.services.strategy.BookingValidationStrategy;
+import se.java.security.strategy.BookingValidationStrategy;
 import se.java.security.validation.BookingFieldValidation;
 
 import java.util.List;
