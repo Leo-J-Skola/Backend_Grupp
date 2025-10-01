@@ -12,6 +12,7 @@ import se.java.security.models.BookingStatus;
 import se.java.security.models.Listing;
 import se.java.security.repository.BookingRepository;
 import se.java.security.repository.ListingRepository;
+import se.java.security.strategy.BookingValidationStrategy;
 import se.java.security.validation.BookingFieldValidation;
 
 import java.util.List;
@@ -25,19 +26,22 @@ public class BookingService {
     private final BookingFactory bookingFactory;
     private final ListingRepository listingRepository;
     private final PriceCalculationService priceCalculationService;
+    private final BookingValidationStrategy bookingValidationStrategy;
 
     public BookingService(AuthenticationService authenticationService,
                           BookingFieldValidation bookingFieldValidation,
                           BookingRepository bookingRepository,
                           BookingFactory bookingFactory,
                           ListingRepository listingRepository,
-                          PriceCalculationService priceCalculationService) {
+                          PriceCalculationService priceCalculationService,
+                          BookingValidationStrategy bookingValidationStrategy) {
         this.authenticationService = authenticationService;
         this.bookingFieldValidation = bookingFieldValidation;
         this.bookingRepository = bookingRepository;
         this.bookingFactory = bookingFactory;
         this.listingRepository = listingRepository;
         this.priceCalculationService = priceCalculationService;
+        this.bookingValidationStrategy = bookingValidationStrategy;
     }
 
     // Try to send a booking request
@@ -46,8 +50,8 @@ public class BookingService {
         bookingFieldValidation.validateBookingRequestData(bookingRequest);
 
         // Ensure dates are not already booked
-        if (checkBooking(bookingRequest)) {
-            throw new BookingUnavailableException("You cannot book this listing during these dates");
+        if (validateBookingDates(bookingRequest)) {
+            throw new BookingUnavailableException("The booking dates you have requested is already pending or booked");
         }
 
         // Get user from authentication
@@ -89,7 +93,7 @@ public class BookingService {
      * Checks if the booking request dates overlap with
      * existing bookings that have status PENDING or BOOKED.
      */
-    public boolean checkBooking(BookingRequest bookingRequest) {
+    public boolean validateBookingDates(BookingRequest bookingRequest) {
 
         Listing listing = listingRepository.findById(bookingRequest.getListingId())
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found"));
@@ -99,12 +103,6 @@ public class BookingService {
                 List.of(BookingStatus.PENDING, BookingStatus.BOOKED)
         );
 
-        for (Booking booking : existingBookings) {
-            if (bookingRequest.getStartDate().compareTo(booking.getEndDate()) <= 0 &&
-                    booking.getStartDate().compareTo(bookingRequest.getEndDate()) <= 0) {
-                return true;
-            }
-        }
-        return false;
+        return bookingValidationStrategy.isValid(bookingRequest, existingBookings);
     }
 }
