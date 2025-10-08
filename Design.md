@@ -13,8 +13,8 @@ We are doing a refactor of our booking feature to make the code easier to mainta
 - Anything frontend related
 - Functionality outside of our booking feature such as listing, favorites, ratings
 
-## Initial situation
-Before the refactor, the booking logic was placed directly inside the service and controller classes. This made it really hard to read, maintain and extend our code.
+## Before the refactor
+Booking logic was placed directly inside the service and controller classes. This made it really hard to read, maintain and extend our code.
 
 ### Problems we found
 - We had no way to validate overlapping booking dates
