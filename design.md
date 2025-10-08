@@ -10,10 +10,8 @@ We are doing a refactor of our booking feature to make the code easier to mainta
 
 ### Strategy pattern for Booking validation
 - Problem before refactor: The old code had no way to check dates.
-- Solutions:
-  1. We created a method in bookingService that compares the current bookingRequest with existing booking objects linked to that specific listing.
-  2. We created bookingValidationStrategy interface with a strategy class called overlapBoookingValidationStrategy
-- Benefits: It now validates the booking request dates so there won't be any overlaps. Its also easier to add new types of validation later.
+- Solutions: We created a method in bookingService that compares the current bookingRequest with existing booking objects linked to that specific listing. We also created bookingValidationStrategy interface with a strategy class called overlapBoookingValidationStrategy
+- Benefit: It now validates the booking request dates so there won't be any overlaps. Its also easier to add new types of validation later.
 
 ### Factory pattern for Booking creation
 - Problem before refactor: 
