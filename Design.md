@@ -26,6 +26,10 @@ Booking logic was placed directly inside the service and controller classes. Thi
 ## Design choises
 
 ### Principles used
+- MVC: 
+- Dependency injection: 
+- Single responsibility: 
+- KISS: 
 
 ### Design patterns used
 - Strategy pattern:
