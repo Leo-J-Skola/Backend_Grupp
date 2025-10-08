@@ -4,11 +4,12 @@
 We are doing a refactor of our booking feature to make the code easier to maintain and to extend in the future. Our main goals are to use authorization, validation for booking dates, object creation and accepting a pending booking by using design patterns.
 
 ### Scope
-What is included in our refactor:
+
+#### What is included in our refactor:
 - Authentication and authorization for booking actions
 - Validation of booking dates using strategy pattern
 - Creation of booking objects using factory pattern
-What is not included in our refactor:
+#### What is not included in our refactor:
 - Anything frontend related
 - Functionality outside of our booking feature such as listing, favorites, ratings
 
