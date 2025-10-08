@@ -26,14 +26,21 @@ Booking logic was placed directly inside the service and controller classes. Thi
 ## Design choises
 
 ### Principles used
-- MVC: 
-- Dependency injection: 
-- Single responsibility: 
-- KISS: 
+- MVC:
+  - Model: handles booking data and validation logic
+  - View: displays bookings
+  - Controller: handles the user actions for CRUD endpoints
+- Dependency injection: Implemented so that services like BookingFactory and validation strategies are injected into the BookingService instead of being created inside it directly. 
+- Single responsibility: Each class now has one clear responsibility:
+  - BookingService: manages booking validation and authorization
+  - BookingFactory: creates booking objects
+  - OverlapBookingValidationStrategy: validates dates before creating a new booking object
+- KISS: The booking logic was separated to make it more simple and easier to read, using clear methods and separate classes for each task
+- DRY: Code for validation and booking creation was centralized using the strategy and factory patterns. 
 
 ### Patterns used
-- Strategy pattern:
-- Factory pattern:
+- Strategy pattern: Implemented for booking date validation. Can also add new strategies for future development without needing to change existing code.
+- Factory pattern: Implemented to create new booking objects in a single place instead of doing it in the service class. 
 
 ### UML
 
