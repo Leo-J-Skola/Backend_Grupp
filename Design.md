@@ -62,7 +62,7 @@ After refactoring, the booking logic is now easier to maintain and to extend fur
 ### How it works
 - The user sends a booking request
 - bookingService checks authorization
-- The service calls the chosen validation strategy to confirm valid dates
+- The service calls OverlapBookingValidationStrategy to confirm that the requested booking does not overlap with existing booking dates for that specific listing object
 - The BookingFactory creates the booking object
 - The booking request is accepted by the host
 - The booking object is saved
