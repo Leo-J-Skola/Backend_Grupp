@@ -31,7 +31,7 @@ Booking logic was placed directly inside the service and controller classes. Thi
 - Single responsibility: 
 - KISS: 
 
-### Design patterns used
+### Patterns used
 - Strategy pattern:
 - Factory pattern:
 
