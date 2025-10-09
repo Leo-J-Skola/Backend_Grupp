@@ -13,9 +13,4 @@ public class AcceptedBookingState implements BookingState {
     public void decline(Booking booking) {
         throw new IllegalStateException("Accepted booking cannot be declined");
     }
-
-    @Override
-    public void printBookingStatus() {
-
-    }
 }

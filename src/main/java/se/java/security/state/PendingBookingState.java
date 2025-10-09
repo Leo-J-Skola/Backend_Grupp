@@ -14,9 +14,4 @@ public class PendingBookingState  implements BookingState {
     public void decline(Booking booking) {
         booking.setBookingStatus(BookingStatus.DECLINED);
     }
-
-    @Override
-    public void printBookingStatus() {
-
-    }
 }
