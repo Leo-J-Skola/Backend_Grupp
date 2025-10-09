@@ -6,11 +6,11 @@ public class AcceptedBookingState implements BookingState {
 
     @Override
     public void accept(Booking booking) {
-        throw new IllegalStateException("Booking is already accepted");
+        throw new IllegalStateException("The booking has already been accepted!");
     }
 
     @Override
     public void decline(Booking booking) {
-        throw new IllegalStateException("Accepted booking cannot be declined");
+        throw new IllegalStateException("The booking has already been accepted!");
     }
 }
