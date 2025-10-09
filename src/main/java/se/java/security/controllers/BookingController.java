@@ -91,4 +91,16 @@ public class BookingController {
         // return no values
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{id}/accept")
+    public ResponseEntity<Booking> acceptBooking(@PathVariable String id) {
+        Booking booking = bookingService.acceptBooking(id);
+        return ResponseEntity.ok(booking);
+    }
+
+    @PostMapping("/{id}/decline")
+    public ResponseEntity<Booking> declineBooking(@PathVariable String id) {
+        Booking booking = bookingService.declineBooking(id);
+        return ResponseEntity.ok(booking);
+    }
 }
