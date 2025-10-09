@@ -6,5 +6,6 @@ public interface BookingState {
 
     void accept(Booking booking);
     void decline(Booking booking);
+    void printBookingStatus();
 
 }
