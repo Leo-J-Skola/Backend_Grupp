@@ -124,8 +124,8 @@ public class BookingService {
     }
 
     // Decline booking request
-    public Booking declineBooking(String bookingId) {
-        Booking booking = bookingRepository.findById(bookingId)
+    public Booking declineBooking(String id) {
+        Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
         BookingState state = bookingStateHandler.getState(booking);
