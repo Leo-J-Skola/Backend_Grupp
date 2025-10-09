@@ -12,6 +12,8 @@ import se.java.security.models.BookingStatus;
 import se.java.security.models.Listing;
 import se.java.security.repository.BookingRepository;
 import se.java.security.repository.ListingRepository;
+import se.java.security.state.BookingState;
+import se.java.security.state.BookingStateHandler;
 import se.java.security.strategy.BookingValidationStrategy;
 import se.java.security.validation.BookingFieldValidation;
 
@@ -27,6 +29,7 @@ public class BookingService {
     private final ListingRepository listingRepository;
     private final PriceCalculationService priceCalculationService;
     private final BookingValidationStrategy bookingValidationStrategy;
+    private final BookingStateHandler bookingStateHandler;
 
     public BookingService(AuthenticationService authenticationService,
                           BookingFieldValidation bookingFieldValidation,
@@ -34,7 +37,8 @@ public class BookingService {
                           BookingFactory bookingFactory,
                           ListingRepository listingRepository,
                           PriceCalculationService priceCalculationService,
-                          BookingValidationStrategy bookingValidationStrategy) {
+                          BookingValidationStrategy bookingValidationStrategy,
+                          BookingStateHandler bookingStateHandler) {
         this.authenticationService = authenticationService;
         this.bookingFieldValidation = bookingFieldValidation;
         this.bookingRepository = bookingRepository;
@@ -42,6 +46,7 @@ public class BookingService {
         this.listingRepository = listingRepository;
         this.priceCalculationService = priceCalculationService;
         this.bookingValidationStrategy = bookingValidationStrategy;
+        this.bookingStateHandler = bookingStateHandler;
     }
 
     // Try to send a booking request
@@ -100,9 +105,33 @@ public class BookingService {
 
         List<Booking> existingBookings = bookingRepository.findByListingIdAndBookingStatusIn(
                 listing,
-                List.of(BookingStatus.PENDING, BookingStatus.BOOKED)
+                List.of(BookingStatus.PENDING, BookingStatus.ACCEPTED)
         );
 
         return bookingValidationStrategy.isValid(bookingRequest, existingBookings);
+    }
+
+    // Accept booking request
+    public Booking acceptBooking(String id) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        BookingState state = bookingStateHandler.getState(booking);
+        state.accept(booking);
+
+        bookingRepository.save(booking);
+        return booking;
+    }
+
+    // Decline booking request
+    public Booking declineBooking(String id) {
+        Booking booking = bookingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        BookingState state = bookingStateHandler.getState(booking);
+        state.decline(booking);
+
+        bookingRepository.save(booking);
+        return booking;
     }
 }
