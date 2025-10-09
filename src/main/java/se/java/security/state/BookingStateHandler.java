@@ -1,8 +1,10 @@
 package se.java.security.state;
 
+import org.springframework.stereotype.Component;
 import se.java.security.models.Booking;
 import se.java.security.models.BookingStatus;
 
+@Component
 public class BookingStateHandler {
 
     public static BookingState getState(Booking booking) {
