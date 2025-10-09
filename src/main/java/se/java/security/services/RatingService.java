@@ -80,7 +80,7 @@ public class RatingService {
 
         //  you can only rate if the booking has status booked
         BookingStatus bookingStatus = booking.getBookingStatus();
-        { if (bookingStatus != BookingStatus.BOOKED)
+        { if (bookingStatus != BookingStatus.DECLINED)
             throw new BookingUnavailableException("You can´t rate a listing if it hasn´t been booked");
         }
 
