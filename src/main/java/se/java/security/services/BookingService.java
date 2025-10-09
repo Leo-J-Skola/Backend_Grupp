@@ -122,4 +122,16 @@ public class BookingService {
         bookingRepository.save(booking);
         return booking;
     }
+
+    // Decline booking request
+    public Booking declineBooking(String bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        BookingState state = bookingStateHandler.getState(booking);
+        state.decline(booking);
+
+        bookingRepository.save(booking);
+        return booking;
+    }
 }
