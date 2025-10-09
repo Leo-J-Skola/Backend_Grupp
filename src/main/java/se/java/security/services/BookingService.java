@@ -100,7 +100,7 @@ public class BookingService {
 
         List<Booking> existingBookings = bookingRepository.findByListingIdAndBookingStatusIn(
                 listing,
-                List.of(BookingStatus.PENDING, BookingStatus.BOOKED)
+                List.of(BookingStatus.PENDING, BookingStatus.ACCEPTED)
         );
 
         return bookingValidationStrategy.isValid(bookingRequest, existingBookings);
