@@ -112,8 +112,8 @@ public class BookingService {
     }
 
     // Accept booking request
-    public Booking acceptBooking(String bookingId) {
-        Booking booking = bookingRepository.findById(bookingId)
+    public Booking acceptBooking(String id) {
+        Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
 
         BookingState state = bookingStateHandler.getState(booking);
