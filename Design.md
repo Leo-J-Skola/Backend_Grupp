@@ -40,7 +40,8 @@ Booking logic was placed directly inside the service and controller classes. Thi
 
 ### Patterns used
 - Strategy pattern: Implemented for booking date validation. Can also add new strategies for future development without needing to change existing code.
-- Factory pattern: Implemented to create new booking objects in a single place instead of doing it in the service class. 
+- Factory pattern: Implemented to create new booking objects in a single place instead of doing it in the service class.
+- State pattern: Implemented to be able to get the current BookingStatus, accept or decline a BookingStatus and also make sure its not already accepted or booked.
 
 ### UML
 
